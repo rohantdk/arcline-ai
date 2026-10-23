@@ -5,6 +5,9 @@ and export firms. Made in October 2026 because the owner wants Arcline niche: th
 while the full portfolio stays at `rohantdk/arcline.github.io`. The two sites stay separate; don't link one from
 the other. Read `README.md` for structure, tokens and motion.
 
+Live at https://arcline-ai-ace.vercel.app (Vercel project from this repo, deploys every push to `main`). The
+network here blocks `*.vercel.app`; check deployments with the Vercel tools and `web_fetch_vercel_url`.
+
 ## Ground rules (same as the main site)
 
 - **Vanilla only.** No libraries, frameworks or CDN scripts.
@@ -27,6 +30,8 @@ until one is built. These are sold as a build service; no finished product exist
 
 ## Owner's decisions (October 2026)
 
+- Share image: `assets/og-banner.jpg` (1200 × 630), headline on the dark band with the live address. Rebuild it
+  if the headline or address changes.
 - Name: "Arcline" only (not "Arcline AI" or "Arcline Ace").
 - Discovery call: 30 minutes.
 - No "pilots start from ₹X" line for now.
@@ -34,11 +39,10 @@ until one is built. These are sold as a build service; no finished product exist
 
 ## Open items
 
-1. Share image (`og:image`) and `og:url`: add once the live address is known.
-2. Fill the testimonial and result slots when real ones exist.
-3. A/B test: headline B "Private AI that answers from your own export files. Your data never leaves your
+1. Fill the testimonial and result slots when real ones exist.
+2. A/B test: headline B "Private AI that answers from your own export files. Your data never leaves your
    control."; CTA B "Show us one task that eats your team's week". Measure WhatsApp and email clicks.
-4. Studio email on an own domain to replace the Gmail address.
+3. Studio email on an own domain to replace the Gmail address.
 
 ## Checking a change
 
