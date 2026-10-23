@@ -1,0 +1,46 @@
+# Arcline AI — project memory
+
+Niche site of Arcline (studio founded by Rohan Tidke) that sells only AI engineering, to owners of manufacturing
+and export firms. Made in October 2026 because the owner wants Arcline niche: this site filters for AI clients,
+while the full portfolio stays at `rohantdk/arcline.github.io`. The two sites stay separate; don't link one from
+the other. Read `README.md` for structure, tokens and motion.
+
+## Ground rules (same as the main site)
+
+- **Vanilla only.** No libraries, frameworks or CDN scripts.
+- **Content is the owner's.** Don't change copy, numbers or claims unless asked.
+- **Never invent proof.** No made-up results, testimonials or client names. Two slots are waiting for real ones:
+  a client quote (name, role, firm type, with permission) and one measured result from a pilot. They go in Proof.
+- **Studio voice:** "we" / "Arcline", never "I". Rohan is named once, in Contact. Never claim a team; Arcline
+  "brings in specialist partners when a project needs them".
+- **Never say where the studio is.** No city, state or address anywhere (page, meta, README, commits).
+- **Motion:** without JavaScript the page reads in full (hidden states only under `html.js`); reduced motion gets
+  the finished state (hidden states inside `prefers-reduced-motion: no-preference`); pointer effects check
+  `(hover: hover) and (pointer: fine)`.
+
+## Promises the copy makes (must be deliverable)
+
+Answers that show their source document; an on-premises option (office computer) or a private cloud account in
+the client's name; never used to train AI; answers in English, Hindi and Marathi; reads email, spreadsheets and
+shared folders. "Tally" appears in the problem story only as where data lives; don't promise a Tally connection
+until one is built. These are sold as a build service; no finished product exists yet.
+
+## Owner's decisions (October 2026)
+
+- Name: "Arcline" only (not "Arcline AI" or "Arcline Ace").
+- Discovery call: 30 minutes.
+- No "pilots start from ₹X" line for now.
+- The hero example (spec sheet question) is illustrative and labelled "Example, not client data".
+
+## Open items
+
+1. Share image (`og:image`) and `og:url`: add once the live address is known.
+2. Fill the testimonial and result slots when real ones exist.
+3. A/B test: headline B "Private AI that answers from your own export files. Your data never leaves your
+   control."; CTA B "Show us one task that eats your team's week". Measure WhatsApp and email clicks.
+4. Studio email on an own domain to replace the Gmail address.
+
+## Checking a change
+
+Serve with `python3 -m http.server`, test in Playwright (Node package, `NODE_PATH=/opt/node22/lib/node_modules`)
+at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth` equal to the viewport width.
