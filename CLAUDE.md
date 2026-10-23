@@ -30,6 +30,9 @@ until one is built. These are sold as a build service; no finished product exist
 
 ## Owner's decisions (October 2026)
 
+- The owner wanted the main site's vibe: the hero "a." mark (three job dots instead of seven categories), the
+  scrolling strip, decoding labels, counting stats, nav section label, card spotlight. The headline stays the
+  promise under the mark; don't swap it back for the brand name (the Ogilvy audit's main fix).
 - Share image: `assets/og-banner.jpg` (1200 × 630), headline on the dark band with the live address. Rebuild it
   if the headline or address changes.
 - Name: "Arcline" only (not "Arcline AI" or "Arcline Ace").
