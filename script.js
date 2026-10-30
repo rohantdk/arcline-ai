@@ -4,9 +4,10 @@
    - Scroll progress on the nav logo's baseline, the section in view beside it, and
      the nav bar rounding into a pill once the page scrolls
    - Hero: the logo's "a." with a dot per job as its full stop
-   - Scroll reveals, counting stats, labels that decode; the hero example plays
-     question, answer, sources; it then plays the task out in a loop, and pausing it
-     with the mouse lets the visitor press Approve
+   - Scroll reveals, counting stats, labels that decode
+   - Try it (hero): a buyer's email in, what they want and a drafted reply out, for
+     the visitor to approve; two samples, or their own email sent to /api/demo
+   - Your first pilot: three answers build a one-page outline to send us
    - Strip of what the AI works with, which speeds up and turns with the scroll;
      pointing at a pill shows what the AI does with it (mouse only)
    - The mark in Contact, with a dot that slides along its line
@@ -246,69 +247,195 @@
   });
 
 
-  /* ─── THE EXAMPLE PLAYS ───
-     On its own, in a loop while it is on screen: typing, the answer, its sources,
-     the document, then approval. Hovering it with a mouse pauses at the document
-     so the visitor presses Approve; a tap on Approve works anywhere. */
+  /* ─── TRY IT: a buyer's email in; what they want and a reply out ───
+     The German sample is what the page shows without JavaScript; it plays once when
+     the box comes into view. The Dubai sample sits in a <template>. A pasted email
+     goes to /api/demo (an open-source model on Groq, api/demo.js); when that isn't
+     there (no key, busy, offline) the answer offers WhatsApp, so the box never
+     looks broken. Answers are written with textContent only. */
   {
-    const chat = $('.demo__chat', demo);
-    const ok   = $('.demo__ok', demo);
-    let timers = [], onScreen = false, hovering = false, first = true;
+    const chat   = $('.demo__chat', demo);
+    const ask    = $('.demo__ask', demo);
+    const own    = $('.demo__own', demo);
+    const field  = $('#demoMail');
+    const send   = $('.demo__send', demo);
+    const mode   = $('.demo__mode', demo);
+    const typing = $('.demo__typing', chat);
+    const tpl    = (id) => $('#' + id).content.cloneNode(true).firstElementChild;
+    const samples = {
+      de: [$('.demo__mail', chat).cloneNode(true), $('.demo__a', chat).cloneNode(true)],
+      ae: [...$('#demo-ae').content.children].map(n => n.cloneNode(true)),
+    };
+    let timers = [], asked = 0;
     const later = (ms, fn) => timers.push(setTimeout(fn, ms));
     const stop  = () => { timers.forEach(clearTimeout); timers = []; };
     const set   = (...cls) => {
-      demo.classList.remove('is-acting', 'is-answered', 'is-approved', 'is-clearing', 'is-waiting', 'is-yours');
+      demo.classList.remove('is-thinking', 'is-answered', 'is-approved');
       demo.classList.add(...cls);
     };
-    const wait  = () => { stop(); set('is-acting', 'is-answered', 'is-waiting'); };
-    const play  = () => {
-      stop();
-      if (reduce || !onScreen || document.hidden) return;
-      set('is-acting');
-      later(1100, () => set('is-acting', 'is-answered'));
-      later(2700, () => hovering ? wait() : set('is-acting', 'is-answered', 'is-approved'));
-      later(6600, () => demo.classList.add('is-clearing'));
-      later(7000, play);
+    const label = (live) => { mode.textContent = live ? 'Live' : 'Example'; mode.classList.toggle('is-live', live); };
+
+    // the answer's reply can be read in English when the buyer wrote in another language
+    const ready = (answer) => {
+      const reply = $('.demo__reply', answer), lang = $('.demo__lang', answer);
+      if (reply && lang && $('[data-alt]', reply)) lang.hidden = false;
     };
-    const replay = (ms) => { stop(); later(ms, () => { demo.classList.add('is-clearing'); later(400, play); }); };
+    ready(chat);
 
-    // the window keeps its height while the answer comes and goes
-    const measure = () => { chat.style.minHeight = ''; chat.style.minHeight = chat.offsetHeight + 'px'; };
-    demo.classList.add('is-live');
-    measure();
-    addEventListener('resize', () => { if (!demo.classList.contains('is-acting')) measure(); });
-
-    ok.addEventListener('click', () => {
+    const think = (mail) => {
       stop();
-      set('is-acting', 'is-answered', 'is-approved', 'is-yours');
-      if (!hovering && !reduce) replay(4000);
+      mail.classList.add('is-new');
+      chat.replaceChildren(mail, typing);
+      set('is-thinking');
+    };
+    const answer = (node, live, wait = 1100) => {
+      ready(node);
+      later(reduce ? 0 : wait, () => {
+        chat.append(node);
+        label(live);
+        set('is-answered');
+      });
+    };
+    const play = (key) => {
+      const [mail, a] = samples[key].map(n => n.cloneNode(true));
+      think(mail);
+      answer(a, false);
+    };
+
+    // a pasted email, sent to the model
+    const fill = (data) => {
+      const a = tpl('demo-live');
+      $$('[data-slot]', a).forEach(slot => {
+        const v = String(data[slot.dataset.slot] || '').trim();
+        const target = $('dd', slot) || slot;
+        if (slot.dataset.slot === 'language') { slot.textContent = v ? ' · ' + v : ''; return; }
+        if (!v) { slot.remove(); return; }
+        target.textContent = v;
+      });
+      if (!$('[data-alt]', a) || /^english$/i.test(data.language || '')) {
+        $('[data-alt]', a)?.remove();
+        $('.demo__lang', a)?.remove();
+      }
+      return a;
+    };
+    const rest = (text) => {
+      const a = tpl('demo-rest');
+      $('.demo__wa', a).href = 'https://wa.me/918857852631?text=' +
+        encodeURIComponent("Hi Arcline, here's a buyer email. Can you show me the reply our own AI would draft?\n\n" + text.slice(0, 1200));
+      return a;
+    };
+    const draft = async (text) => {
+      const mail = samples.de[0].cloneNode(true);
+      $('.demo__from', mail).textContent = "Your buyer's email";
+      $('.demo__text', mail).textContent = text;
+      think(mail);
+      send.disabled = true;
+      const id = ++asked;
+      let node, live = false;
+      try {
+        const r = await fetch('/api/demo', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }), signal: AbortSignal.timeout(15000),
+        });
+        if (!r.ok) throw new Error(r.status);
+        const data = await r.json();
+        if (data.enquiry === false) node = tpl('demo-odd');
+        else if (data.reply) { node = fill(data); live = true; }
+        else throw new Error('empty');
+      } catch (e) {
+        node = rest(text);
+      }
+      send.disabled = false;
+      if (id === asked) answer(node, live, 0);
+    };
+
+    ask.hidden = false;
+    ask.addEventListener('click', (e) => {
+      const pick = e.target.closest('.demo__pick');
+      if (!pick) return;
+      $$('.demo__pick', ask).forEach(b => b.setAttribute('aria-pressed', String(b === pick)));
+      const key = pick.dataset.sample;
+      own.hidden = key !== 'own';
+      if (key === 'own') { field.focus(); return; }
+      asked++;
+      play(key);
+    });
+    ask.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = field.value.trim();
+      own.classList.toggle('is-short', text.length < 20);
+      if (text.length < 20) { field.focus(); return; }
+      draft(text);
+    });
+    field.addEventListener('input', () => own.classList.remove('is-short'));
+
+    demo.addEventListener('click', (e) => {
+      if (e.target.closest('.demo__ok') && !e.target.closest('a')) set('is-answered', 'is-approved');
+      const lang = e.target.closest('.demo__lang');
+      if (lang) {
+        const alt = lang.closest('.demo__reply').classList.toggle('is-alt');
+        lang.textContent = alt ? lang.dataset.back : lang.dataset.to;
+      }
     });
 
-    if (fine && !reduce) {
-      demo.addEventListener('pointerenter', (e) => {
-        if (e.pointerType !== 'mouse') return;
-        hovering = true;
-        demo.classList.add('is-hover');
-        if (demo.classList.contains('is-answered') && !demo.classList.contains('is-yours')) wait();
-      });
-      demo.addEventListener('pointerleave', (e) => {
-        if (e.pointerType !== 'mouse') return;
-        hovering = false;
-        demo.classList.remove('is-hover');
-        replay(demo.classList.contains('is-yours') ? 1800 : 300);
-      });
-    }
-
+    // the first time the box is on screen, the German sample plays
     if (!reduce) {
-      new IntersectionObserver(([entry]) => {
-        onScreen = entry.isIntersecting;
-        if (!onScreen) { stop(); set(); return; }
-        stop();
-        later(first ? 1300 : 300, play);   // the first time, after the window has risen in
-        first = false;
-      }).observe(demo);
-      document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); set(); } else play(); });
+      set('is-thinking');
+      const io = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        later(2200, () => set('is-answered'));
+      });
+      io.observe(demo);
     }
+  }
+
+
+  /* ─── YOUR FIRST PILOT ───
+     Three answers build a one-page outline as they are picked. Its lines are the
+     inputs' data-build, data-still, data-needs and data-who in index.html (no model:
+     instant, and it only says what we can deliver). The outline goes to WhatsApp or
+     email as text. */
+  {
+    const form = $('.pilot__form');
+    const plan = $('.plan');
+    const slot = (k) => $(`[data-plan="${k}"]`, plan);
+    const wa   = $('.plan__wa', plan), mail = $('.plan__mail', plan);
+    const put  = (k, text) => {
+      const dd = slot(k), v = text || dd.dataset.empty || '';
+      if (dd.textContent === v) return;
+      dd.textContent = v;
+      dd.classList.toggle('is-empty', !text);
+      if (!reduce && text) { dd.classList.remove('is-new'); void dd.offsetWidth; dd.classList.add('is-new'); }
+    };
+    $$('dd[data-empty]', plan).forEach(dd => dd.classList.add('is-empty'));
+
+    const update = () => {
+      const task = $('input[name="task"]:checked', form);
+      const who  = $('input[name="who"]:checked', form);
+      const data = $$('input[name="data"]:checked', form);
+      const note = form.elements.note.value.trim();
+      slot('task').textContent = task ? task.value : 'Pick a task';
+      put('build', task && task.dataset.build);
+      put('still', task && task.dataset.still);
+      put('who', who && who.dataset.who);
+      const needs = data.map(d => d.dataset.needs);
+      put('needs', needs.length ? 'Access to ' + (needs.length > 1 ? needs.slice(0, -1).join(', ') + ' and ' + needs.at(-1) : needs[0]) + '.' : '');
+
+      const lines = ['Hi Arcline, here is my pilot outline.'];
+      if (task) lines.push('Task: ' + task.value);
+      if (data.length) lines.push('Data: ' + data.map(d => d.value).join(', '));
+      if (who) lines.push('Who does it today: ' + who.value);
+      if (note) lines.push('Note: ' + note);
+      lines.push("Can we book the 30-minute call?");
+      const text = lines.join('\n');
+      wa.href = 'https://wa.me/918857852631?text=' + encodeURIComponent(text);
+      mail.href = 'mailto:tidkerohan8228@gmail.com?subject=' + encodeURIComponent('Pilot outline' + (task ? ': ' + task.value : '')) + '&body=' + encodeURIComponent(text);
+    };
+    form.addEventListener('change', update);
+    form.addEventListener('input', update);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    update();
   }
 
 
