@@ -263,8 +263,10 @@
     const mode   = $('.demo__mode', demo);
     const typing = $('.demo__typing', chat);
     const mailTpl = $('.demo__mail', chat).cloneNode(true);
+    const firstA  = $('.demo__a', chat).cloneNode(true);
     const tpl    = (id) => $('#' + id).content.cloneNode(true).firstElementChild;
-    let asked = 0;
+    let asked = 0, resetTimer;
+    const keep = () => clearTimeout(resetTimer);
     const set = (...cls) => {
       demo.classList.remove('is-thinking', 'is-answered', 'is-approved');
       demo.classList.add(...cls);
@@ -283,7 +285,23 @@
         encodeURIComponent("Hi Arcline, here's a buyer email. Can you show me the reply our own AI would draft?\n\n" + text.slice(0, 1200));
       return a;
     };
+    // after Approve, the box goes back to the example, ready for the next visitor
+    const reset = () => {
+      asked++;
+      const mail = mailTpl.cloneNode(true);
+      mail.classList.add('is-new');
+      chat.replaceChildren(mail, typing, firstA.cloneNode(true));
+      mode.textContent = 'Example';
+      mode.classList.remove('is-live');
+      own.hidden = true;
+      open.setAttribute('aria-expanded', 'false');
+      field.value = '';
+      own.classList.remove('is-short');
+      set('is-answered');
+    };
+
     const draft = async (text) => {
+      keep();
       const mail = mailTpl.cloneNode(true);
       $('.demo__from', mail).textContent = "Your buyer's email";
       $('.demo__text', mail).textContent = text;
@@ -316,6 +334,7 @@
 
     ask.hidden = false;
     open.addEventListener('click', () => {
+      keep();
       own.hidden = !own.hidden;
       open.setAttribute('aria-expanded', String(!own.hidden));
       if (!own.hidden) field.focus();
@@ -327,10 +346,13 @@
       if (text.length < 20) { field.focus(); return; }
       draft(text);
     });
-    field.addEventListener('input', () => own.classList.remove('is-short'));
+    field.addEventListener('input', () => { keep(); own.classList.remove('is-short'); });
 
     demo.addEventListener('click', (e) => {
-      if (e.target.closest('button.demo__ok')) set('is-answered', 'is-approved');
+      if (!e.target.closest('button.demo__ok')) return;
+      set('is-answered', 'is-approved');
+      keep();
+      resetTimer = setTimeout(reset, 3000);
     });
 
     // the first time the box is on screen, the reply is drafted
