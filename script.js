@@ -1,11 +1,11 @@
-/* Arcline — Private AI for manufacturers and exporters
+/* Arcline — Your company's own AI
    - Mobile menu toggle
    - Highlight the nav link for the part of the page in view
    - Scroll progress on the nav logo's baseline, and the section in view beside it
    - Hero: the logo's "a." with a dot per job as its full stop
    - Scroll reveals, counting stats, labels that decode; the hero example plays
      question, answer, sources
-   - Strip of what the assistant reads, which speeds up and turns with the scroll
+   - Strip of what the AI works with, which speeds up and turns with the scroll
    - The mark in Contact, with a dot that slides along its line
    - Card spotlight, magnetic buttons and the contact glow (mouse only)
    - Copy email
@@ -103,18 +103,18 @@
 
 
   /* ─── SCROLL REVEALS ─── */
-  [['.hero__mark', 0], ['.hero .eyebrow', 0.5], ['.hero__title', 0.58], ['.hero__sub', 0.7], ['.hero__actions', 0.8], ['.hero__proof', 0.9]]
+  [['.hero__mark', 0], ['.hero__title', 0.5], ['.hero__sub', 0.7], ['.hero__actions', 0.8]]
     .forEach(([sel, d]) => {
       const el = $(sel);
       el.classList.add('reveal');
       el.style.setProperty('--d', d + 's');
     });
 
-  $$('.block .eyebrow, .block__title, .story p, .caption, .contact .eyebrow, .contact__title, .contact__lead, .contact__actions, .contact__mark')
+  $$('.block .eyebrow, .block__title, .statement, .statement__after, .contact .eyebrow, .contact__title, .contact__lead, .contact__actions, .contact__mark')
     .forEach(el => el.classList.add('reveal'));
 
   // groups whose children come in one after another
-  [['.jobs', 'li', 90], ['.stats', 'div', 90], ['.why', 'div', 80], ['.cards', '.card', 90], ['.steps', 'li', 280], ['.faq', 'div', 60], ['.contact__grid', 'div', 80]]
+  [['.jobs', 'li', 110], ['.vows', 'li', 140], ['.stats', 'div', 90], ['.cards', '.card', 90], ['.steps', 'li', 160], ['.faq', 'details', 70], ['.contact__grid', 'div', 80]]
     .forEach(([parent, child, step]) => $$(parent).forEach(p => {
       $$(':scope > ' + child, p).forEach((el, i) => {
         el.classList.add('reveal');
@@ -240,7 +240,7 @@
   });
 
 
-  /* ─── STRIP: what the assistant reads ─── */
+  /* ─── STRIP: what the AI works with ─── */
   const marquee = $('.marquee');
   const track   = $('.marquee__track', marquee);
   const list    = $('.marquee__list', track);

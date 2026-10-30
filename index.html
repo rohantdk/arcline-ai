@@ -34,14 +34,14 @@
 
   <a class="skip" href="#top">Skip to content</a>
 
-  <!-- NAV -->
+  <!-- NAV: a floating pill -->
   <header class="nav" id="nav">
-    <div class="wrap nav__inner">
+    <div class="nav__inner">
       <a class="nav__logo" href="#top"><svg class="nav__mark" viewBox="0 -3.50 392.59 81.00" role="img" aria-label="Arcline"><path d="M46.50,50 A20,20 0 1 0 6.50,50 A20,20 0 1 0 46.50,50 M46.50,30 V70 M74.65,70 V30 M74.65,52 C74.65,37 82.65,30 98.20,30 M150.34,35.86 A20,20 0 1 0 150.34,64.14 M181.49,4 V70 M209.64,30 V70 M237.79,70 V30 M237.79,50 C237.79,37 243.79,30 253.79,30 C263.79,30 269.79,37 269.79,50 V70 M297.94,50 H337.94 A20,20 0 1 0 332.08,64.14 M6.50,70 H360.94" class="nav__mark-word" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4"/><rect x="201.52" y="-1.00" width="16.25" height="16.25" class="nav__mark-dot"/><rect x="375.34" y="61.88" width="16.25" height="16.25" class="nav__mark-dot"/><path class="nav__mark-fill" d="M0.00,70 H367.44" pathLength="1"/></svg><span class="nav__where" aria-hidden="true"></span></a>
       <nav class="nav__links" id="navLinks" aria-label="Main">
         <a href="#build">What we build</a>
         <a href="#proof">Proof</a>
-        <a href="#process">How it works</a>
+        <a href="#process">Process</a>
         <a href="#questions">Questions</a>
         <a class="nav__cta" href="#contact">Book a call</a>
       </nav>
@@ -56,11 +56,8 @@
     <!-- HERO -->
     <section class="hero">
       <div class="wrap">
-      <p class="hero__meta"><span>Your own AI</span><span>Works 2026</span></p>
-      <div class="hero__grid">
-        <div class="hero__text">
-          <div class="hero__mark">
-            <svg class="mark" viewBox="0 124 360 174" role="group" aria-label="The three jobs we build">
+        <div class="hero__mark">
+          <svg class="mark" viewBox="0 124 360 174" role="group" aria-label="The three jobs we build">
               <g class="mark__a" aria-hidden="true" transform="translate(21.5 60.5) scale(3)"><path class="mark__line" pathLength="1" style="--d:.25s" d="M-6.5 70 H62.3" /><path class="mark__bowl" pathLength="1" style="--d:.45s" d="M40 50 A20 20 0 1 0 0 50 A20 20 0 1 0 40 50" /><path class="mark__stem" pathLength="1" style="--d:.6s" d="M40 23.5 V70" /></g>
               <g class="mark__dots">
                 <a class="mark__dot" href="#job-docs" data-job="docs" style="--i:0" transform="translate(237.3 270.5)"><rect class="mark__hit" x="-22" y="-22" width="44" height="44" /><g class="mark__pop"><rect class="mark__halo" x="-25" y="-25" width="50" height="50" /><rect class="mark__core" x="-15" y="-15" width="30" height="30" /></g></a>
@@ -68,42 +65,38 @@
                 <a class="mark__dot" href="#job-reports" data-job="reports" style="--i:2" transform="translate(325.3 270.5)"><rect class="mark__hit" x="-22" y="-22" width="44" height="44" /><g class="mark__pop"><rect class="mark__halo" x="-25" y="-25" width="50" height="50" /><rect class="mark__core" x="-15" y="-15" width="30" height="30" /></g></a>
               </g>
             </svg>
-            <p class="mark__tip" aria-hidden="true"></p>
-          </div>
-          <p class="eyebrow">Custom AI for manufacturers and exporters</p>
-          <h1 class="hero__title">Your company's own AI. Not rented. Not shared.</h1>
-          <p class="hero__sub">Built on your data. Running on your servers or your own cloud account. It answers, drafts and gets work done.</p>
-          <div class="hero__actions">
-            <a class="btn btn--solid" href="#contact">Book a call</a>
-            <a class="btn btn--line" href="#proof">See our work</a>
-          </div>
-          <ul class="hero__proof">
-            <li>Clients in India and Germany</li>
-            <li>Runs offline, on your own computer</li>
-          </ul>
+          <p class="mark__tip" aria-hidden="true"></p>
         </div>
-
-        <figure class="demo" aria-label="Example of the company AI preparing a document">
-          <div class="demo__window">
-            <p class="demo__bar"><i></i><i></i><i></i><span>Your company's AI</span><b>Example</b></p>
-            <div class="demo__chat">
-              <p class="demo__q">Prepare the packing list for the Netherlands order.</p>
-              <div class="demo__a">
-                <p>Done, from the order and last shipment's weights. Ready for your approval.</p>
-                <ul class="demo__src" aria-label="Sources">
-                  <li><span>Email</span>Purchase order · 14 Aug</li>
-                  <li><span>Excel</span>August shipment · weights</li>
-                </ul>
-              </div>
+        <h1 class="hero__title">Your company's own AI. <span>Not rented. Not shared.</span></h1>
+        <div class="hero__grid">
+          <div class="hero__text">
+            <p class="hero__sub">For manufacturers and exporters. On your servers, or your own cloud.</p>
+            <div class="hero__actions">
+              <a class="btn btn--solid" href="#contact">Book a call</a>
+              <a class="btn btn--line" href="#proof">See our work</a>
             </div>
           </div>
-          <figcaption><em>Example, not client data.</em></figcaption>
-        </figure>
-      </div>
+
+          <figure class="demo" aria-label="Example of the company AI preparing a document">
+            <div class="demo__window">
+              <p class="demo__bar"><i></i><i></i><i></i><span>Your company's AI</span><b>Example</b></p>
+              <div class="demo__chat">
+                <p class="demo__q">Prepare the packing list for the Netherlands order.</p>
+                <div class="demo__a">
+                  <p>Done, from the order and last shipment's weights. Ready for your approval.</p>
+                  <ul class="demo__src" aria-label="Sources">
+                    <li><span>Email</span>Purchase order · 14 Aug</li>
+                    <li><span>Excel</span>August shipment · weights</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
       </div>
     </section>
 
-    <!-- WHAT THE ASSISTANT READS -->
+    <!-- WHAT YOUR AI WORKS WITH -->
     <div class="marquee" role="region" aria-label="What your AI works with">
       <div class="marquee__track">
         <ul class="marquee__list">
@@ -121,56 +114,53 @@
       </div>
     </div>
 
-    <!-- PROBLEM -->
-    <section class="block block--tint" id="problem" aria-labelledby="problem-title">
+    <!-- PROBLEM: one dark panel -->
+    <section class="block block--tight" id="problem" aria-labelledby="problem-title">
       <div class="wrap">
-        <p class="eyebrow">The problem</p>
-        <h2 class="block__title" id="problem-title">Rented AI doesn't know your company.</h2>
-        <div class="story">
-          <p>It can't see your orders, prices or buyers.</p>
-          <p>And what your staff paste into it <strong>never comes back.</strong></p>
+        <div class="panel">
+          <p class="eyebrow eyebrow--light">The problem</p>
+          <h2 class="statement" id="problem-title">Rented AI doesn't know your company.</h2>
+          <p class="statement__after">And what you paste in <strong>never comes back.</strong></p>
         </div>
       </div>
     </section>
 
-    <!-- WHAT WE BUILD -->
+    <!-- WHAT WE BUILD: three tiles -->
     <section class="block" id="build" aria-labelledby="build-title">
       <div class="wrap">
         <p class="eyebrow">What we build</p>
         <h2 class="block__title" id="build-title">One AI for your whole company.</h2>
         <ul class="jobs">
           <li id="job-docs" data-job="docs">
-            <h3>Knows your business</h3>
-            <p>Answers from your orders, prices and emails, with the source attached. Learns your products and terms.</p>
+            <span class="jobs__n" aria-hidden="true">01</span>
+            <div><h3>Knows your business</h3><p>Answers from your orders, prices and emails, with sources.</p></div>
           </li>
           <li id="job-queries" data-job="queries">
-            <h3>Does the work</h3>
-            <p>Drafts quotes, fills export documents and updates your sheets across email, Excel and your ERP. A person approves.</p>
+            <span class="jobs__n" aria-hidden="true">02</span>
+            <div><h3>Does the work</h3><p>Quotes, export documents, sheet updates. You approve.</p></div>
           </li>
           <li id="job-reports" data-job="reports">
-            <h3>Fits every team</h3>
-            <p>Sales, accounts and production each get their own AI. Each sees only what it should.</p>
+            <span class="jobs__n" aria-hidden="true">03</span>
+            <div><h3>Fits every team</h3><p>Sales, accounts, production. Each sees only its own.</p></div>
           </li>
         </ul>
       </div>
     </section>
 
-    <!-- WHY ARCLINE -->
-    <section class="block block--tint" id="why" aria-labelledby="why-title">
+    <!-- WHY ARCLINE: three promises, the logo's square as their full stop -->
+    <section class="block" id="why" aria-labelledby="why-title">
       <div class="wrap">
-        <p class="eyebrow">Why Arcline</p>
-        <h2 class="block__title" id="why-title">Owned by you. Built for exporters.</h2>
+        <p class="eyebrow" id="why-title">Why Arcline</p>
+        <ul class="vows">
+          <li data-job="queries">You own it</li>
+          <li data-job="reports">Your data stays inside</li>
+          <li data-job="docs">It never trains anyone else's AI</li>
+        </ul>
         <dl class="stats">
-          <div><dt>30</dt><dd>projects delivered</dd></div>
-          <div><dt>14</dt><dd>websites and platforms</dd></div>
-          <div><dt>4</dt><dd>AI systems built</dd></div>
-          <div><dt>2</dt><dd>countries</dd></div>
-        </dl>
-        <dl class="why">
-          <div><dt>You own it.</dt><dd>The AI, its setup and your data belong to your company. Not rented, not shared.</dd></div>
-          <div><dt>Your data stays inside.</dt><dd>Your servers or your own cloud account. Never used to train anyone else's AI.</dd></div>
-          <div><dt>We know exporters.</dt><dd>Banana, turmeric and handicraft exporters among our clients.</dd></div>
-          <div><dt>Every answer shows its source.</dt><dd>Your team checks before anything reaches a buyer.</dd></div>
+          <div data-job="docs"><dt>30</dt><dd>projects delivered</dd></div>
+          <div data-job="queries"><dt>14</dt><dd>websites and platforms</dd></div>
+          <div data-job="reports"><dt>4</dt><dd>AI systems built</dd></div>
+          <div data-job="docs"><dt>2</dt><dd>countries</dd></div>
         </dl>
       </div>
     </section>
@@ -181,66 +171,66 @@
         <p class="eyebrow">Proof</p>
         <h2 class="block__title" id="proof-title">Four AI systems, already built.</h2>
         <div class="cards">
-          <article class="card">
+          <article class="card" data-job="docs">
             <div class="card__top"><span class="card__flag">B2B advisory firm · Germany</span><span class="chip chip--done">MVP</span></div>
             <h3 class="card__title">AI Risk-Assessment Tool</h3>
-            <p class="card__desc">A short questionnaire in, a board-level risk summary out. The client edits every prompt in a spreadsheet.</p>
+            <p class="card__desc">Questionnaire in, board-level risk summary out.</p>
           </article>
-          <article class="card">
+          <article class="card" data-job="queries">
             <div class="card__top"><span class="card__flag">Offline speech-to-text</span><span class="chip chip--done">Built</span></div>
             <h3 class="card__title">Marathi Transcription Pipeline</h3>
-            <p class="card__desc">Two-hour Marathi calls become a transcript, summary and English translation. Fully offline.</p>
+            <p class="card__desc">Marathi calls to transcript, summary and English translation. Fully offline.</p>
           </article>
-          <article class="card">
+          <article class="card" data-job="reports">
             <div class="card__top"><span class="card__flag">Restaurant ordering app</span><span class="chip chip--done">Live</span></div>
             <h3 class="card__title">Dastarkhan</h3>
-            <p class="card__desc">AI suggests dishes to real customers. If the AI is down, ordering still works.</p>
+            <p class="card__desc">AI picks dishes for real diners. Ordering still works if the AI is down.</p>
           </article>
-          <article class="card">
+          <article class="card" data-job="docs">
             <div class="card__top"><span class="card__flag">Health assistant</span><span class="chip chip--open">Hackathon 2026</span></div>
             <h3 class="card__title">CareCompanion</h3>
-            <p class="card__desc">Answers drawn from medical documents, by voice, in Marathi, Hindi and English.</p>
+            <p class="card__desc">Answers from medical documents, by voice, in Marathi, Hindi and English.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="block block--tint" id="process" aria-labelledby="process-title">
+    <!-- PROCESS: a staircase -->
+    <section class="block" id="process" aria-labelledby="process-title">
       <div class="wrap">
-        <p class="eyebrow">How it works</p>
-        <h2 class="block__title" id="process-title">Start with one job. Grow it across the company.</h2>
+        <p class="eyebrow">Process</p>
+        <h2 class="block__title" id="process-title">Start with one job. Grow from there.</h2>
         <ol class="steps">
-          <li><span class="steps__n">01</span><div><h3>30-minute call</h3><p>Where does your team lose time?</p></div></li>
-          <li><span class="steps__n">02</span><div><h3>Fixed quote</h3><p>Scope and price agreed up front.</p></div></li>
-          <li><span class="steps__n">03</span><div><h3>One-workflow pilot</h3><p>Built on your real documents.</p></div></li>
-          <li><span class="steps__n">04</span><div><h3>Expand and support</h3><p>More teams, more systems. Yearly support.</p></div></li>
+          <li><span class="steps__n">01</span><h3>30-minute call</h3></li>
+          <li><span class="steps__n">02</span><h3>Fixed quote</h3></li>
+          <li><span class="steps__n">03</span><h3>One-workflow pilot</h3></li>
+          <li><span class="steps__n">04</span><h3>Grow across teams</h3></li>
         </ol>
       </div>
     </section>
 
-    <!-- QUESTIONS -->
+    <!-- QUESTIONS: open on click -->
     <section class="block" id="questions" aria-labelledby="questions-title">
-      <div class="wrap">
-        <p class="eyebrow">Questions</p>
-        <h2 class="block__title" id="questions-title">What owners ask us first.</h2>
-        <dl class="faq">
-          <div><dt>How is this different from ChatGPT?</dt><dd>ChatGPT is rented and shared. This is yours: built on your data, inside your company.</dd></div>
-          <div><dt>Will our data train anyone else's AI?</dt><dd>No. It stays on your servers or in your own cloud account.</dd></div>
-          <div><dt>Do we change our software?</dt><dd>No. It reads the email, spreadsheets and folders you use today.</dd></div>
-          <div><dt>Our staff aren't technical.</dt><dd>If they can use WhatsApp, they can use this. In English, Hindi or Marathi.</dd></div>
-          <div><dt>What if it gets something wrong?</dt><dd>Every answer shows its source, so your team checks first.</dd></div>
-          <div><dt>What does it cost?</dt><dd>A fixed quote, agreed before work starts.</dd></div>
-        </dl>
+      <div class="wrap faq-wrap">
+        <div>
+          <p class="eyebrow">Questions</p>
+          <h2 class="block__title" id="questions-title">What owners ask first.</h2>
+        </div>
+        <div class="faq">
+          <details><summary>How is this different from ChatGPT?</summary><p>ChatGPT is rented and shared. This is yours.</p></details>
+          <details><summary>Does our data train anyone's AI?</summary><p>No. It stays on your servers or your own cloud.</p></details>
+          <details><summary>Our staff aren't technical.</summary><p>If they use WhatsApp, they can use this. In English, Hindi or Marathi.</p></details>
+          <details><summary>What does it cost?</summary><p>A fixed quote, agreed before work starts.</p></details>
+        </div>
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- CONTACT: a dark rounded panel -->
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap">
-        <p class="eyebrow eyebrow--light">Book a discovery call</p>
+        <p class="eyebrow eyebrow--light">Book a call</p>
         <h2 class="contact__title" id="contact-title">Let's build your company's own AI.</h2>
-        <p class="contact__lead">Tell us one task that eats your team's week. We'll reply with a fixed quote.</p>
+        <p class="contact__lead">Tell us one task that eats your week.</p>
         <div class="contact__actions">
           <a class="btn btn--light" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%27d%20like%20to%20book%20a%20discovery%20call%20about%20AI%20for%20our%20company." target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           <a class="btn btn--ghost" href="mailto:tidkerohan8228@gmail.com?subject=Discovery%20call">Email us</a>
@@ -254,7 +244,7 @@
         <dl class="contact__grid">
           <div><dt>Email</dt><dd><a href="mailto:tidkerohan8228@gmail.com">tidkerohan8228@gmail.com</a> <button class="copy" type="button" data-copy="tidkerohan8228@gmail.com" hidden>Copy</button></dd></div>
           <div><dt>WhatsApp</dt><dd><a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Message us</a></dd></div>
-          <div><dt>Studio</dt><dd>Founded by Rohan Tidke, AI engineer. Specialist partners join when a project needs them.</dd></div>
+          <div><dt>Studio</dt><dd>Founded by Rohan Tidke, AI engineer.</dd></div>
         </dl>
       </div>
     </section>
