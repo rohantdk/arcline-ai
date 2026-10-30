@@ -44,7 +44,7 @@
 
   --max: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
-  --nav-h: 60px;
+  --nav-h: 72px;
 }
 
 [data-job="docs"]    { --c: var(--docs);    --c-soft: var(--docs-soft);    --c-light: var(--docs-light); }
@@ -89,8 +89,8 @@ a { color: inherit; }
 /* ─── shared type ─── */
 .eyebrow {
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: clamp(13px, 1.1vw, 15px);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 16px;
@@ -145,14 +145,14 @@ a { color: inherit; }
 /* scrolled: it lifts off the top edge and rounds into a pill (script.js sets .is-scrolled) */
 .nav.is-scrolled .nav__inner {
   max-width: min(calc(var(--max) - 2 * var(--gutter)), calc(100% - 2 * var(--gutter)));
-  padding: 0 8px 0 24px;
+  padding: 0 10px 0 28px;
   border-radius: calc(var(--nav-h) / 2);
   transform: translateY(12px);
   background: rgba(255,255,255,0.82);
   box-shadow: 0 0 0 1px var(--rule), 0 14px 34px -22px rgba(34,22,42,0.45);
 }
 .nav__logo { display: inline-flex; align-items: center; text-decoration: none; }
-.nav__mark { height: 24px; width: auto; flex: none; display: block; }
+.nav__mark { height: 32px; width: auto; flex: none; display: block; }
 .nav__mark-word { fill: none; stroke: var(--ink); }
 .nav__mark-dot { fill: var(--c, var(--accent)); transition: fill .5s; }
 /* the logo's baseline fills with scroll progress */
@@ -172,13 +172,13 @@ a { color: inherit; }
 
 .nav__links { display: flex; align-items: center; gap: 4px; }
 .nav__links a {
-  font-size: 15px; text-decoration: none; color: var(--muted);
-  padding: 8px 14px; border-radius: var(--pill);
+  font-size: 16.5px; text-decoration: none; color: var(--muted);
+  padding: 10px 16px; border-radius: var(--pill);
   transition: color .2s, background .2s;
 }
 .nav__links a:hover, .nav__links a.is-active { color: var(--text); }
 .nav__links a.is-active:not(.nav__cta) { background: var(--accent-soft); }
-.nav__links .nav__cta { color: #fff; background: var(--accent); padding: 11px 20px; font-weight: 500; margin-left: 8px; }
+.nav__links .nav__cta { color: #fff; background: var(--accent); padding: 14px 24px; font-weight: 500; margin-left: 10px; }
 .nav__links .nav__cta:hover { color: #fff; background: var(--ink); }
 
 .nav__toggle {
@@ -229,9 +229,9 @@ a { color: inherit; }
 
 .hero__title {
   font-family: var(--display); font-weight: 800;
-  font-size: clamp(44px, 7.4vw, 108px); line-height: .94; letter-spacing: -0.05em;
-  max-width: 11em;
-  margin-bottom: clamp(36px, 5vw, 64px);
+  font-size: clamp(38px, 5.6vw, 80px); line-height: .98; letter-spacing: -0.045em;
+  max-width: 14em;
+  margin-bottom: clamp(32px, 4.5vw, 56px);
 }
 .hero__title span { display: block; color: var(--accent); }
 
@@ -520,6 +520,19 @@ a { color: inherit; }
 }
 .faq details[open] summary::after { transform: rotate(45deg); background: var(--accent); color: #fff; }
 .faq details p { padding: 0 24px 22px; color: var(--muted); font-size: 16.5px; max-width: 32em; }
+/* answers slide open and fade in: CSS where ::details-content exists (Chrome, Edge),
+   script.js elsewhere; under reduced motion they simply open */
+@media (prefers-reduced-motion: no-preference) {
+  :root { interpolate-size: allow-keywords; }
+  .faq details::details-content {
+    block-size: 0; overflow: hidden;
+    transition: block-size .45s var(--ease), content-visibility .45s allow-discrete;
+  }
+  .faq details[open]::details-content { block-size: auto; }
+  .faq details p { transition: opacity .4s ease .08s, translate .45s var(--ease) .05s; }
+  .faq details:not([open]) p { opacity: 0; translate: 0 -8px; }
+  @starting-style { .faq details[open] p { opacity: 0; translate: 0 -8px; } }
+}
 
 /* ════ CONTACT: a dark rounded panel ════ */
 .contact {
@@ -530,8 +543,8 @@ a { color: inherit; }
 }
 .contact__title {
   font-family: var(--display); font-weight: 800;
-  font-size: clamp(42px, 7.4vw, 108px); line-height: .94; letter-spacing: -0.05em;
-  max-width: 10em; text-wrap: balance;
+  font-size: clamp(38px, 5.6vw, 80px); line-height: .98; letter-spacing: -0.045em;
+  max-width: 13em; text-wrap: balance;
   margin-bottom: 24px;
 }
 .contact__lead { color: var(--on-band); font-size: clamp(19px, 2vw, 24px); max-width: 30em; margin-bottom: 32px; }

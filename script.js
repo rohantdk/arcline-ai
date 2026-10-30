@@ -362,6 +362,31 @@
   }
 
 
+  /* ─── QUESTIONS: answers slide open and shut ───
+     Browsers with ::details-content do this in CSS; this covers the rest. */
+  if (!reduce && !CSS.supports('selector(::details-content)')) {
+    $$('.faq details').forEach(d => {
+      const answer = $('p', d);
+      let anim = null, isOpen = d.open;
+      const slide = (open) => {
+        if (anim) anim.cancel();
+        if (open) d.open = true;
+        const h = answer.offsetHeight;
+        answer.style.overflow = 'hidden';
+        anim = answer.animate(
+          [{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }],
+          { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)', direction: open ? 'normal' : 'reverse' });
+        anim.onfinish = () => { if (!open) d.open = false; answer.style.overflow = ''; anim = null; };
+      };
+      $('summary', d).addEventListener('click', (e) => {
+        e.preventDefault();
+        isOpen = !isOpen;
+        slide(isOpen);
+      });
+    });
+  }
+
+
   /* ─── COPY EMAIL + TOAST ─── */
   const toast = document.createElement('p');
   toast.className = 'toast';
