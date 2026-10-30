@@ -70,6 +70,11 @@ one is built. These are sold as a build service; no finished product exists yet.
   task on hover. Reviewed first on a private claude.ai preview page, because this Vercel project builds only
   `main` (branches get no preview).
 - The hero example (packing list request) is illustrative and labelled "Example".
+- **Example loops, pills explain (30 October 2026):** the owner asked for the hero example to play by default and
+  for each strip pill to show something of its own on hover. The example now loops while on screen; hovering pauses
+  it so the visitor presses Approve ("That's your team's only step."). Each pill shows a small card: a question and
+  what the AI does with it (illustrative, like the hero example; no numbers or results claimed, nothing beyond the
+  confirmed promises). The strip still stops under the pointer so the card can be read.
 - **Founder face (30 October 2026), live:** after rameerez.com's squishy face. The owner chose full squish and a
   geometric avatar drawn from the owner's photo (quiff, trimmed beard and moustache, strong brows, warm skin, dark suit
   over a light shirt; the photo itself is not in the repo); it first went live in the portfolio's About, then moved here at the owner's request.

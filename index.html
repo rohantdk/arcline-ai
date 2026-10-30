@@ -89,7 +89,8 @@
                     <li><span>Email</span>Purchase order · 14 Aug</li>
                     <li><span>Excel</span>August shipment · weights</li>
                   </ul>
-                  <p class="demo__doc"><span class="demo__file">PDF</span><span class="demo__name">Packing list · Netherlands</span><span class="demo__ok"><span>Approve</span><span>Approved</span></span></p>
+                  <p class="demo__doc"><span class="demo__file">PDF</span><span class="demo__name">Packing list · Netherlands</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
+                  <p class="demo__note">That's your team's only step.</p>
                 </div>
               </div>
             </div>
@@ -102,16 +103,16 @@
     <div class="marquee" role="region" aria-label="What your AI works with">
       <div class="marquee__track">
         <ul class="marquee__list">
-          <li>Invoices</li>
-          <li>Packing lists</li>
-          <li>Certificates</li>
-          <li>Specification sheets</li>
-          <li>Price lists</li>
-          <li>Buyer emails</li>
-          <li>Purchase orders</li>
-          <li>Excel sheets</li>
-          <li>Shared folders</li>
-          <li>Sales data</li>
+          <li data-ask="Which buyers haven&#39;t paid this month?" data-does="Lists them, each invoice linked.">Invoices</li>
+          <li data-ask="Make the packing list for the Netherlands order." data-does="Drafts it from the order and weights, for your approval.">Packing lists</li>
+          <li data-ask="Is the test certificate for this batch ready?" data-does="Finds it and attaches it to the shipment.">Certificates</li>
+          <li data-ask="What&#39;s the tolerance on our 40 mm flange?" data-does="Answers from the spec sheet and shows the page.">Specification sheets</li>
+          <li data-ask="Quote 500 units for the German buyer." data-does="Drafts the quote from your latest price list.">Price lists</li>
+          <li data-ask="What did the Dubai buyer ask last week?" data-does="Sums up the thread and drafts a reply.">Buyer emails</li>
+          <li data-ask="Which orders ship this week?" data-does="Lists them with due dates, from your POs.">Purchase orders</li>
+          <li data-ask="Update stock after today&#39;s dispatch." data-does="Changes the sheet once you approve.">Excel sheets</li>
+          <li data-ask="Find last year&#39;s contract with the UK distributor." data-does="Opens the right file, wherever it was saved.">Shared folders</li>
+          <li data-ask="How did 20-litre drums sell this quarter?" data-does="A short report, with the figures it used.">Sales data</li>
         </ul>
       </div>
     </div>

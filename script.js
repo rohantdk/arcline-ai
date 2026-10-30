@@ -5,8 +5,10 @@
      the nav bar rounding into a pill once the page scrolls
    - Hero: the logo's "a." with a dot per job as its full stop
    - Scroll reveals, counting stats, labels that decode; the hero example plays
-     question, answer, sources; hovering it plays the task out (mouse only)
-   - Strip of what the AI works with, which speeds up and turns with the scroll
+     question, answer, sources; it then plays the task out in a loop, and pausing it
+     with the mouse lets the visitor press Approve
+   - Strip of what the AI works with, which speeds up and turns with the scroll;
+     pointing at a pill shows what the AI does with it (mouse only)
    - The mark in Contact, with a dot that slides along its line
    - The founder's face in Contact: eyes follow the cursor, drag to squish
    - Card spotlight, magnetic buttons and the contact glow (mouse only)
@@ -244,26 +246,69 @@
   });
 
 
-  /* ─── THE EXAMPLE ACTS (mouse only) ───
-     Hovering the example plays the task: typing, the answer, its sources, the
-     document, then approval. Leaving puts back the finished example. */
-  if (fine && !reduce) {
+  /* ─── THE EXAMPLE PLAYS ───
+     On its own, in a loop while it is on screen: typing, the answer, its sources,
+     the document, then approval. Hovering it with a mouse pauses at the document
+     so the visitor presses Approve; a tap on Approve works anywhere. */
+  {
     const chat = $('.demo__chat', demo);
-    let timers = [];
-    const reset = () => {
-      timers.forEach(clearTimeout);
-      timers = [];
-      demo.classList.remove('is-acting', 'is-answered', 'is-approved');
-      chat.style.minHeight = '';
+    const ok   = $('.demo__ok', demo);
+    let timers = [], onScreen = false, hovering = false, first = true;
+    const later = (ms, fn) => timers.push(setTimeout(fn, ms));
+    const stop  = () => { timers.forEach(clearTimeout); timers = []; };
+    const set   = (...cls) => {
+      demo.classList.remove('is-acting', 'is-answered', 'is-approved', 'is-clearing', 'is-waiting', 'is-yours');
+      demo.classList.add(...cls);
     };
-    demo.addEventListener('pointerenter', (e) => {
-      if (e.pointerType !== 'mouse' || demo.classList.contains('is-acting')) return;
-      chat.style.minHeight = chat.offsetHeight + 'px';   // the window keeps its height while it plays
-      demo.classList.add('is-acting');
-      timers.push(setTimeout(() => demo.classList.add('is-answered'), 1100));
-      timers.push(setTimeout(() => demo.classList.add('is-approved'), 2700));
+    const wait  = () => { stop(); set('is-acting', 'is-answered', 'is-waiting'); };
+    const play  = () => {
+      stop();
+      if (reduce || !onScreen || document.hidden) return;
+      set('is-acting');
+      later(1100, () => set('is-acting', 'is-answered'));
+      later(2700, () => hovering ? wait() : set('is-acting', 'is-answered', 'is-approved'));
+      later(6600, () => demo.classList.add('is-clearing'));
+      later(7000, play);
+    };
+    const replay = (ms) => { stop(); later(ms, () => { demo.classList.add('is-clearing'); later(400, play); }); };
+
+    // the window keeps its height while the answer comes and goes
+    const measure = () => { chat.style.minHeight = ''; chat.style.minHeight = chat.offsetHeight + 'px'; };
+    demo.classList.add('is-live');
+    measure();
+    addEventListener('resize', () => { if (!demo.classList.contains('is-acting')) measure(); });
+
+    ok.addEventListener('click', () => {
+      stop();
+      set('is-acting', 'is-answered', 'is-approved', 'is-yours');
+      if (!hovering && !reduce) replay(4000);
     });
-    demo.addEventListener('pointerleave', reset);
+
+    if (fine && !reduce) {
+      demo.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        hovering = true;
+        demo.classList.add('is-hover');
+        if (demo.classList.contains('is-answered') && !demo.classList.contains('is-yours')) wait();
+      });
+      demo.addEventListener('pointerleave', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        hovering = false;
+        demo.classList.remove('is-hover');
+        replay(demo.classList.contains('is-yours') ? 1800 : 300);
+      });
+    }
+
+    if (!reduce) {
+      new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (!onScreen) { stop(); set(); return; }
+        stop();
+        later(first ? 1300 : 300, play);   // the first time, after the window has risen in
+        first = false;
+      }).observe(demo);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); set(); } else play(); });
+    }
   }
 
 
@@ -311,6 +356,57 @@
       last = 0;
       if (entry.isIntersecting) raf = requestAnimationFrame(step);
     }).observe(marquee);
+  }
+
+
+  /* ─── WHAT EACH PILL DOES (mouse only) ───
+     Pointing at a pill stops the strip and shows a small card: something the
+     team might ask, and what the AI does with it. Words come from the pill's
+     data-ask / data-does in index.html. */
+  if (fine && !reduce) {
+    const card = document.createElement('div');
+    card.className = 'pill-card';
+    card.setAttribute('aria-hidden', 'true');
+    card.innerHTML = '<p class="pill-card__label"></p><p class="pill-card__ask"></p><p class="pill-card__does"></p>';
+    document.body.appendChild(card);
+    const [label, ask, does] = card.children;
+
+    const show = (li) => {
+      label.textContent = li.textContent;
+      ask.textContent = li.dataset.ask;
+      does.textContent = li.dataset.does;
+      card.style.setProperty('--dot', getComputedStyle(li, '::before').backgroundColor);
+      card.classList.add('is-on');
+      current = li;
+      if (!follow) follow = requestAnimationFrame(place);
+    };
+    // the strip glides to a stop, so the card follows its pill until it settles
+    let current = null, follow = 0;
+    const place = () => {
+      follow = 0;
+      if (!current) return;
+      const r = current.getBoundingClientRect(), w = card.offsetWidth, h = card.offsetHeight;
+      const x = clamp(r.left + r.width / 2 - w / 2, 16, innerWidth - w - 16);
+      const y = r.top - h - 12 > 8 ? r.top - h - 12 : r.bottom + 12;
+      card.style.left = x.toFixed(1) + 'px';
+      card.style.top = y.toFixed(1) + 'px';
+      follow = requestAnimationFrame(place);
+    };
+    const hide = () => {
+      card.classList.remove('is-on');
+      current = null;
+      cancelAnimationFrame(follow);
+      follow = 0;
+    };
+
+    marquee.addEventListener('pointerover', (e) => {
+      const li = e.target.closest('li[data-ask]');
+      if (li && e.pointerType === 'mouse') show(li);
+    });
+    marquee.addEventListener('pointerout', (e) => {
+      if (!e.relatedTarget || !e.relatedTarget.closest || e.relatedTarget.closest('li[data-ask]') !== e.target.closest('li[data-ask]')) hide();
+    });
+    addEventListener('scroll', hide, { passive: true });
   }
 
 
