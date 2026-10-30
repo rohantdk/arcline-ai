@@ -39,7 +39,8 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   "What we build" list; click jumps there.
 - Nav: a flat edge-to-edge bar at the top that lifts into a rounded pill once the page scrolls.
 - A strip of pills under the hero lists what the AI works with; it drifts, speeds up with the scroll and turns with its
-  direction. Stops under the pointer.
+  direction. Pointing at a pill (mouse only) stops the strip and shows a card above it: something the team might
+  ask, and what the AI does with it. The words are each pill's `data-ask` and `data-does` in `index.html`.
 - Mono labels decode letter by letter; the stats count up.
 - The section in view shows beside the nav logo (wide screens), named from each section's label.
 - Live chips pulse; a spotlight follows the cursor on proof cards.
@@ -47,8 +48,10 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   violet in turn) for each section, and the section's name shows beside the logo on wide screens.
 - Sections and cards fade up on scroll; the process steps grow up from the floor like a staircase.
 - Tiles lift on hover; pointing at one promise fades the other two (mouse only).
-- Hero example plays in order on load: request, answer, each source, the document. Hovering it with a mouse
-  plays the task out: typing dots, the answer, sources, the packing list, then Approve turns to Approved.
+- Hero example plays the task on its own, in a loop while it is on screen: typing dots, the answer, sources, the
+  packing list, then Approve turns to Approved; it rests, fades and plays again. Hovering it with a mouse pauses at
+  the packing list with Approve pulsing; clicking Approve (a tap works too) shows Approved and "That's your
+  team's only step." Under reduced motion it stays finished; Approve still works.
 - Contact: the "a." draws in and a dot slides along its line to land as the full stop.
 - Contact: the founder's face, a geometric face in the logo's style on a violet disc beside the headline. Its
   square pupils follow the cursor and it blinks; drag it (mouse or touch) and it stretches toward the pointer, then
