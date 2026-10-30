@@ -587,6 +587,28 @@ a { color: inherit; }
 }
 .contact__mark.is-landed .mark__halo { animation: halo 4.2s ease-in-out .2s infinite; }
 
+/* the founder's face: eyes follow the cursor, drag to squish (script.js) */
+.contact .wrap { position: relative; }
+.founder {
+  position: absolute; top: 0; right: var(--gutter);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.founder__face { width: clamp(200px, 21vw, 260px); overflow: visible; touch-action: none; }
+.founder__face path, .founder__face rect { stroke-linejoin: round; }
+.founder__disc { fill: var(--accent); }
+.founder__body, .founder__hair, .founder__pupil { fill: var(--ink); }
+.founder__head { fill: var(--paper-2); stroke: var(--ink); stroke-width: 13; }
+.founder__white { fill: var(--paper-2); stroke: var(--ink); stroke-width: 6; }
+.founder__brow, .founder__mouth { fill: none; stroke: var(--ink); stroke-width: 8; stroke-linecap: square; }
+.founder figcaption { text-align: center; }
+.founder__label {
+  display: block; margin-bottom: 4px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light);
+}
+.founder__hint { display: block; font-size: 14px; color: var(--on-band); }
+.founder.is-live .founder__face { cursor: grab; }
+.founder.is-dragging .founder__face { cursor: grabbing; }
+
 /* ─── toast ─── */
 .toast {
   position: fixed; left: 50%; bottom: 24px; z-index: 400;
@@ -687,6 +709,9 @@ a { color: inherit; }
   .faq-wrap { grid-template-columns: 1fr; }
   .contact__grid { grid-template-columns: 1fr 1fr; }
   .contact__grid div:last-child { grid-column: 1 / -1; }
+  .founder { position: static; flex-direction: row; justify-content: flex-start; gap: 20px; margin-bottom: 40px; }
+  .founder__face { width: 170px; }
+  .founder figcaption { text-align: left; }
 }
 
 @media (max-width: 760px) {

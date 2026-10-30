@@ -50,6 +50,10 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Hero example plays in order on load: request, answer, each source, the document. Hovering it with a mouse
   plays the task out: typing dots, the answer, sources, the packing list, then Approve turns to Approved.
 - Contact: the "a." draws in and a dot slides along its line to land as the full stop.
+- Contact: the founder's face, a geometric face in the logo's style on a violet disc beside the headline. Its
+  square pupils follow the cursor and it blinks; drag it (mouse or touch) and it stretches toward the pointer, then
+  wobbles back on a spring. Shapes are read from the SVG in `index.html`. Static without JavaScript and under
+  reduced motion.
 - Magnetic buttons and the contact glow, mouse only.
 
 Without JavaScript the page reads in full; under `prefers-reduced-motion: reduce` everything is in its finished
