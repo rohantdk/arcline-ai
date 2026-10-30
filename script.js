@@ -61,13 +61,17 @@
     updateWhere();
   };
 
-  /* ─── WHERE AM I: the section in view, beside the logo ─── */
-  const where = $('.nav__where');
+  /* ─── WHERE AM I: the section in view, beside the logo, tints the logo ─── */
+  const logo  = $('.nav__logo');
+  const where = $('.nav__where', logo);
+  // each section takes the next of the three job colours
+  const tints = ['queries', 'reports', 'docs'];
   // numbered in page order, named by each section's own label
   const sections = $$('main > section[id]').filter(s => $('.eyebrow', s));
   const sectionLabels = new Map(sections.map((s, i) => [s, {
     n: String(i + 1).padStart(2, '0'),
     t: $('.eyebrow', s).textContent,
+    job: tints[i % tints.length],
   }]));
   let shownSection = null;
 
@@ -80,8 +84,9 @@
     if (cur && cur.getBoundingClientRect().bottom < mid) cur = null;
     if (cur === shownSection) return;
     shownSection = cur;
-    if (!cur) { where.classList.remove('is-on'); return; }
-    const { n, t } = sectionLabels.get(cur);
+    if (!cur) { logo.removeAttribute('data-job'); where.classList.remove('is-on'); return; }
+    const { n, t, job } = sectionLabels.get(cur);
+    logo.dataset.job = job;
     where.textContent = '';
     const b = document.createElement('b');
     b.textContent = n;

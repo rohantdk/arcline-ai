@@ -130,9 +130,9 @@ a { color: inherit; }
 .nav__logo { display: inline-flex; align-items: center; text-decoration: none; }
 .nav__mark { height: 26px; width: auto; flex: none; display: block; }
 .nav__mark-word { fill: none; stroke: var(--ink); }
-.nav__mark-dot { fill: var(--accent); }
+.nav__mark-dot { fill: var(--c, var(--accent)); transition: fill .5s; }
 /* the logo's baseline fills with scroll progress */
-.nav__mark-fill { fill: none; stroke: var(--accent); stroke-width: 13; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.nav__mark-fill { fill: none; stroke: var(--c, var(--accent)); stroke-width: 13; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke .5s; }
 
 /* the section in view, beside the logo */
 .nav__where {
@@ -141,7 +141,7 @@ a { color: inherit; }
   color: var(--muted); white-space: nowrap;
   opacity: 0; transition: opacity .3s;
 }
-.nav__where b { font-weight: 400; color: var(--accent); margin-right: 6px; }
+.nav__where b { font-weight: 400; color: var(--c, var(--accent)); margin-right: 6px; }
 .nav__where.is-on { opacity: 1; animation: where-in .45s var(--ease); }
 @keyframes where-in { from { opacity: 0; transform: translateY(6px); } }
 @media (max-width: 1099px) { .nav__where { display: none; } }

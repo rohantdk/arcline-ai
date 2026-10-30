@@ -39,7 +39,8 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Mono labels decode letter by letter; the stats in Why Arcline count up.
 - The section in view shows beside the nav logo (wide screens), named from each section's label.
 - Live chips pulse; a spotlight follows the cursor on proof cards.
-- Nav logo's baseline fills with scroll progress.
+- Nav logo's baseline fills with scroll progress; it and the logo's dots take the next job colour (wine, teal,
+  violet in turn) for each section, and the section's name shows beside the logo on wide screens.
 - Sections and cards fade up on scroll; section rules and process lines draw in.
 - Hero example plays in order: question, answer, then each source.
 - Contact: the "a." draws in and a dot slides along its line to land as the full stop.
