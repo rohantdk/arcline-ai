@@ -23,10 +23,16 @@ network here blocks `*.vercel.app`; check deployments with the Vercel tools and 
 
 ## Positioning (30 October 2026)
 
-"Your company's own AI. Not rented. Not shared." Arcline builds custom AI for the whole company, owned by the
-company: built on its data, on its own servers or a private cloud account in its name (the client's choice). Not
-"a private ChatGPT that finds documents". The way in stays one workflow pilot, then grow across teams; don't sell
-a company-wide setup from day one until a reference client exists.
+**First: outcomes.** "Save time. Cut costs. Win more orders." The owner wants time, cost and revenue as the main
+message; privacy and ownership are the second message ("And it stays yours"). Keep outcomes concrete (tasks:
+quotes, export documents, reports, sheet updates) and never print numbers until a pilot has measured them.
+Angles advised: speed wins export orders ("reply to buyers first"); the big tools sell seats, Arcline builds the
+finished workflow. Pending the owner's yes: "no per-user fees" (ownership as a cost argument) and "we measure
+your hours before and after the pilot".
+
+**Second: ownership.** Your company's own AI, built on its data, on its own servers or a private cloud account in
+its name (the client's choice), never used to train anyone else's AI. The way in stays one workflow pilot, then
+grow across teams; don't sell a company-wide setup from day one until a reference client exists.
 
 ## Promises the copy makes (must be deliverable)
 
@@ -39,8 +45,8 @@ one is built. These are sold as a build service; no finished product exists yet.
 
 ## Owner's decisions (October 2026)
 
-- The owner wanted the main site's vibe: the hero "a." mark (three dots instead of seven categories: "Knows your
-  business", "Does the work", "Fits every team"; ids and colours still named docs, queries, reports), the
+- The owner wanted the main site's vibe: the hero "a." mark (three dots instead of seven categories: "Win more
+  orders", "Save hours", "Cut costs"; ids and colours still named docs, queries, reports), the
   scrolling strip, decoding labels, counting stats, nav section label, card spotlight. The headline stays the
   promise under the mark; don't swap it back for the brand name (the Ogilvy audit's main fix).
 - Share image: `assets/og-banner.jpg` (1200 × 630), headline on the dark band with the live address. Rebuild it
