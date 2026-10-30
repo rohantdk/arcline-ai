@@ -71,7 +71,8 @@ one is built. These are sold as a build service; no finished product exists yet.
   `main` (branches get no preview).
 - The hero example (packing list request) is illustrative and labelled "Example".
 - **Founder face (30 October 2026), live:** after rameerez.com's squishy face. The owner chose full squish and a
-  geometric avatar for now; it first went live in the portfolio's About, then moved here at the owner's request.
+  geometric avatar drawn from the owner's photo (quiff, trimmed beard and moustache, strong brows, warm skin, dark suit
+  over a light shirt; the photo itself is not in the repo); it first went live in the portfolio's About, then moved here at the owner's request.
   It sits right of the Contact headline on a violet disc (stacked under the buttons below 960px), captioned
   "Founder" (Rohan is still named once, in the Studio line) with a "Drag the face" hint shown only when it's
   interactive. Pupils follow the mouse only; dragging works with touch. **Next:** the owner will send a photo to

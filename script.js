@@ -374,7 +374,7 @@
     const head = $('.founder__head', founder);
     const shapes = $$('[data-squish]', founder).map(el => {
       const len = el.getTotalLength();
-      const n = el === head ? 72 : 28;
+      const n = el === head ? 72 : Math.max(28, Math.round(len / 5));
       const pts = Array.from({ length: n + 1 }, (_, i) => {
         const p = el.getPointAtLength(len * i / n);
         return [p.x, p.y];
