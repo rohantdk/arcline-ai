@@ -54,7 +54,8 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   shows "That's your team's only step." Under the box, "Try it with your own buyer email" opens a text box; that
   email goes to `/api/demo` (`api/demo.js`, an open-source model on Groq) and the answer fills the `demo-live`
   template. When the API isn't there (no key, busy, timeout, or a local server) the `demo-rest` template offers
-  WhatsApp with the email pre-filled. The bar's chip reads "Example", or "Live" for a model answer.
+  WhatsApp with the email pre-filled. The bar's chip reads "Example", or "Live" for a model answer. Three seconds after Approve the box returns
+  to the example (own-email box closed and cleared), unless the visitor is using that box.
 - Your first pilot: picking a task fills the pilot beside it (`data-build`, `data-still` on the inputs in
   `index.html`; no model) and the WhatsApp link. Without JavaScript the chips are hidden and a line with a WhatsApp
   link shows instead.
