@@ -97,7 +97,7 @@ one is built. These are sold as a build service; no finished product exists yet.
   with five chips and a three-line pilot. Don't add back detail without asking.
   The pilot is rule-based, not a model: instant, and it only says what's confirmed. Pasted emails go to a public
   host, so the box says so. Not live until the owner adds `GROQ_API_KEY` in Vercel; until then pasted emails get
-  the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default.
+  the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default. The first default, `llama-3.3-70b-versatile`, was shut down for free and developer accounts on 16 August 2026 (the owner spotted it; the 503 said "resting"); now `openai/gpt-oss-120b` with `reasoning_effort: 'low'`. Check console.groq.com/docs/deprecations when the demo stops answering; the 503's `why` names Groq's error code.
 
 ## Portable copy for other hosts (30 October 2026)
 

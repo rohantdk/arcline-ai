@@ -62,7 +62,7 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 ## The live demo (`api/demo.js`)
 
 A Vercel serverless function with no dependencies. It needs `GROQ_API_KEY` in the Vercel project's environment
-variables; `GROQ_MODEL` (default `llama-3.3-70b-versatile`) and `ALLOWED_ORIGINS` (default the live site) are
+variables; `GROQ_MODEL` (default `openai/gpt-oss-120b`, with low reasoning effort) and `ALLOWED_ORIGINS` (default the live site) are
 optional. It accepts POSTs from the site only, 1,500 characters at most, six calls per visitor per 10 minutes (per
 server instance) and waits 9 seconds at most. It returns only `missing` and `reply`. The prompt tells the model never to state prices, stock, dates or
 certificates and to write placeholders like `[price]` instead. Without the key the page still works, with samples

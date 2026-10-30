@@ -14,7 +14,7 @@
    Guards: POST from the site only, 1,500 characters at most, a few calls per visitor
    per 10 minutes (per server instance, so a soft limit), 9-second timeout. */
 
-const MODEL   = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const MODEL   = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';   // Llama 3.3 70B was shut down on 16 August 2026
 const ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://arcline-ai-ace.vercel.app').split(',').map(s => s.trim());
 const MAX_CHARS = 1500;
 const LIMIT = 6, WINDOW = 10 * 60 * 1000;
@@ -60,7 +60,8 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         model: MODEL,
         temperature: 0.2,
-        max_tokens: 500,
+        max_tokens: 1500,   // GPT-OSS thinks first, and its thinking counts here
+        ...(MODEL.startsWith('openai/gpt-oss') && { reasoning_effort: 'low' }),
         response_format: { type: 'json_object' },
         messages: [{ role: 'system', content: PROMPT }, { role: 'user', content: text }],
       }),
