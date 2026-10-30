@@ -85,18 +85,19 @@ one is built. These are sold as a build service; no finished product exists yet.
   shirt. The photo looks up and to the side, so it can't be used with moving eyes; a real-photo version would need a
   straight-to-camera shot (eyes open and sharp, even light, 1000px+) and redrawn irises, shown before going live.
   Offered tweaks, not asked for yet: skin tone, taller quiff, thinner beard, calmer smile, tie.
-- **Try it and Your first pilot (30 October 2026), on the feature branch, preview first:** the owner asked for
-  AI demos on open-source models via Groq ("Grok" in the request meant Groq, the host, not xAI's model) that make
-  clients convert. Of seven ideas, only two were kept: (1) the hero example became "Try it": a buyer's email in,
-  what they want and a drafted reply out, then Approve; two samples (German flanges, Dubai basmati) and "Paste your
-  own", sent to `api/demo.js` (Groq). The owner chose: replace the hero example, scripted fallback, preview first.
-  (2) A "Your first pilot" section after Process: three questions build a one-page outline sent to WhatsApp or
-  email. The outline is rule-based, not a model, so it is instant and only promises what's confirmed (Tally and
-  paper: "we check on the call"). Cut as low-conversion: sample-company Q&A, export-document filling, sheet
-  reports (risk of wrong numbers), team-permission switch; Hindi/Marathi stays an idea for later.
-  The samples are illustrative ("Example" chip). Pasted emails go to a public host, so the box says so and
-  suggests leaving out names and prices. Groq's model list changes; `GROQ_MODEL` overrides the default.
-  Not live until the owner adds `GROQ_API_KEY` in Vercel; until then pasted emails get the WhatsApp fallback.
+- **Live demo and pilot (30 October 2026), on the feature branch, preview first:** the owner asked for AI demos on
+  open-source models via Groq ("Grok" in the request meant Groq, the host, not xAI's model) that make clients
+  convert. Of seven ideas, two were kept: the hero example as a buyer-email reply with "try your own email" (sent to
+  `api/demo.js`, Groq), and a "Your first pilot" section after Process that is sent on WhatsApp. Cut as
+  low-conversion: sample-company Q&A, export-document filling, sheet reports (risk of wrong numbers), team switch.
+  The owner chose: replace the hero example, scripted fallback, preview first.
+  **Keep it simple (owner's words):** the first version (a details table, sources, language toggle, two samples,
+  three pilot questions) was "too complex for a person who just visited" and "cluttered". Now the hero box is one
+  buyer email, one reply, Approve, and a quiet "Try it with your own buyer email" link; the pilot is one question
+  with five chips and a three-line pilot. Don't add back detail without asking.
+  The pilot is rule-based, not a model: instant, and it only says what's confirmed. Pasted emails go to a public
+  host, so the box says so. Not live until the owner adds `GROQ_API_KEY` in Vercel; until then pasted emails get
+  the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default.
 
 ## Portable copy for other hosts (30 October 2026)
 
@@ -125,8 +126,8 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
 
 - The hero box's state is in its classes: `is-thinking` (typing dots), `is-answered`, `is-approved`. `python3 -m
   http.server` answers POSTs with 501, so a pasted email shows the WhatsApp fallback; test the live path with
-  `page.route('**/api/demo', ...)` returning JSON (`enquiry`, `product`, `quantity`, `delivery`, `missing`,
-  `language`, `reply`, `reply_en`). The pilot's chips are hidden radio/checkbox inputs: `check({ force: true })`.
+  `page.route('**/api/demo', ...)` returning JSON (`enquiry`, `missing`, `reply`). The pilot's chips are hidden
+  radio inputs: `check({ force: true })`.
 - The strip never stops moving, so Playwright's `scrollIntoViewIfNeeded` and locator actions on pills time out
   ("element is not stable"). Scroll `.marquee` into view with `evaluate`, keep the mouse off it (it pauses the
   strip), find a pill on screen with `getBoundingClientRect()` and hover it with `page.mouse.move`. The strip sits

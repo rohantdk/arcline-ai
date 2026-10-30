@@ -10,13 +10,13 @@ sites are kept separate on purpose and don't link to each other.
 
 | Section | id | Job |
 |---|---|---|
-| Hero | `#top` | The "a." mark with a dot per tile, the headline "Your company's own AI. Not rented. Not shared.", the outcomes line (time, cost, orders), two buttons, and "Try it": a buyer's email in, what they want and a drafted reply out, for approval |
+| Hero | `#top` | The "a." mark with a dot per tile, the headline "Your company's own AI. Not rented. Not shared.", the outcomes line (time, cost, orders), two buttons, and the example: a buyer's email, the reply the AI drafted, and Approve; visitors can try their own email |
 | The problem | `#problem` | Dark panel: time lost to paperwork while orders wait |
 | What we build | `#build` | "One AI for your whole company.": three tiles, Win more orders, Save hours, Cut costs (the first one tall) |
 | And it stays yours | `#why` | Three promises in giant type (own it, data stays inside, never trains anyone else's AI), then four stats (30, 14, 4, 2) |
 | Proof | `#proof` | Four AI systems already built, one line each; the right column sits lower |
 | Process | `#process` | Four steps as a staircase: call, fixed quote, one-workflow pilot, grow across teams |
-| Your first pilot | `#pilot` | Three questions (task, where its data lives, who does it); the answers build a one-page pilot outline beside them, sent to us on WhatsApp or by email |
+| Your first pilot | `#pilot` | One question, "Which task eats your team's week?" (five chips); the pick shows a three-line pilot beside it, sent to us on WhatsApp |
 | Questions | `#questions` | Four questions that open on click (`<details>`, no script) |
 | Contact | `#contact` | Dark rounded panel; WhatsApp (pre-filled message) and email |
 
@@ -49,29 +49,22 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   violet in turn) for each section, and the section's name shows beside the logo on wide screens.
 - Sections and cards fade up on scroll; the process steps grow up from the floor like a staircase.
 - Tiles lift on hover; pointing at one promise fades the other two (mouse only).
-- Try it (hero): the German buyer's email is in the HTML with its answer, so the page reads without JavaScript.
-  With it, the answer plays in once (typing dots, then what they want, the reply, sources, Approve). The visitor
-  picks "German buyer", "Dubai buyer" (a `<template>`) or "Paste your own". A pasted email goes to `/api/demo`
-  (`api/demo.js`, an open-source model on Groq) and the answer fills the `demo-live` template. When the API isn't
-  there (no key, busy, timeout, or a local server) the `demo-rest` template offers WhatsApp with the email
-  pre-filled. The bar's chip reads "Example" for samples and "Live" for model answers. Approve shows "That's your
-  team's only step." and a link to Contact. German replies can be read in English.
-- Your first pilot: picking answers fills the outline beside them at once. Its lines are the inputs' `data-build`,
-  `data-still`, `data-needs` and `data-who` in `index.html` (no model), and the WhatsApp and email links carry it
-  as text. Without JavaScript the form is hidden and a line with a WhatsApp link shows instead.
-- Contact: the "a." draws in and a dot slides along its line to land as the full stop.
-- Contact: the founder's face, a geometric face in the logo's style on a violet disc beside the headline. Its
-  square pupils follow the cursor and it blinks; drag it (mouse or touch) and it stretches toward the pointer, then
-  wobbles back on a spring. Shapes are read from the SVG in `index.html`. Static without JavaScript and under
-  reduced motion.
-- Magnetic buttons and the contact glow, mouse only.
+- Hero example: one buyer email and the reply the AI drafted, in the HTML so the page reads without JavaScript.
+  With it, typing dots play once when the box comes into view, then the reply; Approve pulses until pressed, then
+  shows "That's your team's only step." Under the box, "Try it with your own buyer email" opens a text box; that
+  email goes to `/api/demo` (`api/demo.js`, an open-source model on Groq) and the answer fills the `demo-live`
+  template. When the API isn't there (no key, busy, timeout, or a local server) the `demo-rest` template offers
+  WhatsApp with the email pre-filled. The bar's chip reads "Example", or "Live" for a model answer.
+- Your first pilot: picking a task fills the pilot beside it (`data-build`, `data-still` on the inputs in
+  `index.html`; no model) and the WhatsApp link. Without JavaScript the chips are hidden and a line with a WhatsApp
+  link shows instead.
 
 ## The live demo (`api/demo.js`)
 
 A Vercel serverless function with no dependencies. It needs `GROQ_API_KEY` in the Vercel project's environment
 variables; `GROQ_MODEL` (default `llama-3.3-70b-versatile`) and `ALLOWED_ORIGINS` (default the live site) are
 optional. It accepts POSTs from the site only, 1,500 characters at most, six calls per visitor per 10 minutes (per
-server instance) and waits 9 seconds at most. The prompt tells the model never to state prices, stock, dates or
+server instance) and waits 9 seconds at most. It returns only `missing` and `reply`. The prompt tells the model never to state prices, stock, dates or
 certificates and to write placeholders like `[price]` instead. Without the key the page still works, with samples
 and the WhatsApp fallback.
 

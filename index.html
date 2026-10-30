@@ -77,43 +77,25 @@
             </div>
           </div>
 
-          <figure class="demo" aria-label="Try it: the AI reads a buyer's email and drafts the reply">
+          <figure class="demo" aria-label="Example: the AI drafts a reply to a buyer">
             <div class="demo__window">
               <p class="demo__bar"><i></i><i></i><i></i><span>Your company's AI</span><b class="demo__mode">Example</b></p>
               <div class="demo__chat" aria-live="polite">
                 <div class="demo__mail">
-                  <p class="demo__from">Buyer email · <span class="demo__who">Germany</span></p>
-                  <p class="demo__text">Guten Tag, wir suchen ca. 2.000 Edelstahl-Flansche DN50 PN16, Lieferung bis Ende März. Bitte senden Sie uns Ihr Angebot mit Lieferzeit und Zertifikaten. Mit freundlichen Grüßen, M. Weber, Einkauf</p>
+                  <p class="demo__from">Buyer email</p>
+                  <p class="demo__text">Hi, please quote 2,000 stainless steel flanges DN50, delivered by March. Certificates needed.</p>
                 </div>
                 <p class="demo__typing" aria-hidden="true"><i></i><i></i><i></i></p>
                 <div class="demo__a">
-                  <p class="demo__lead">They want:</p>
-                  <dl class="demo__wants">
-                    <div><dt>Product</dt><dd>Stainless steel flanges DN50, PN16</dd></div>
-                    <div><dt>Quantity</dt><dd>About 2,000 pieces</dd></div>
-                    <div><dt>Delivery</dt><dd>By the end of March</dd></div>
-                    <div class="is-missing"><dt>Missing</dt><dd>Steel grade and certificate type</dd></div>
-                  </dl>
-                  <div class="demo__reply">
-                    <p class="demo__reply-top"><span>Reply drafted · German</span><button class="demo__lang" type="button" data-to="Show in English" data-back="Show in German" hidden>Show in English</button></p>
-                    <p class="demo__reply-text" lang="de">Guten Tag Herr Weber, vielen Dank für Ihre Anfrage über ca. 2.000 Edelstahl-Flansche DN50 PN16. Damit wir genau anbieten können: Benötigen Sie 1.4301 oder 1.4404, und reicht ein Zeugnis 3.1 nach EN 10204? Unser Angebot mit Preis und Lieferzeit folgt direkt nach Ihrer Antwort.</p>
-                    <p class="demo__reply-text" lang="en" data-alt>Dear Mr Weber, thank you for your enquiry for about 2,000 stainless steel flanges DN50 PN16. So we can quote exactly: do you need grade 1.4301 or 1.4404, and is a 3.1 certificate to EN 10204 enough? Our quote with price and lead time follows as soon as you reply.</p>
-                  </div>
-                  <ul class="demo__src" aria-label="Sources">
-                    <li><span>PDF</span>Flange spec sheet · grades</li>
-                    <li><span>Excel</span>Price list · ready for the quote</li>
-                  </ul>
-                  <p class="demo__doc"><span class="demo__file">Mail</span><span class="demo__name">Reply to the buyer</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
-                  <p class="demo__note">That's your team's only step. <a href="#contact">Want this on your inbox?</a></p>
+                  <p class="demo__lead">Reply drafted. It asks for the one thing missing: the steel grade.</p>
+                  <p class="demo__reply">Hello, thanks for your enquiry. Happy to quote 2,000 flanges DN50 with certificates, delivered by March. Which grade do you need, 304 or 316? Price and lead time follow as soon as you reply.</p>
+                  <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
+                  <p class="demo__note">That's your team's only step.</p>
                 </div>
               </div>
               <form class="demo__ask" hidden>
-                <div class="demo__picks" role="group" aria-label="Choose a buyer email">
-                  <button class="demo__pick" type="button" data-sample="de" aria-pressed="true">German buyer</button>
-                  <button class="demo__pick" type="button" data-sample="ae" aria-pressed="false">Dubai buyer</button>
-                  <button class="demo__pick" type="button" data-sample="own" aria-pressed="false">Paste your own</button>
-                </div>
-                <div class="demo__own" hidden>
+                <button class="demo__try" type="button" aria-expanded="false" aria-controls="demoOwn">Try it with your own buyer email</button>
+                <div class="demo__own" id="demoOwn" hidden>
                   <label class="sr" for="demoMail">A buyer's email</label>
                   <textarea id="demoMail" rows="3" maxlength="1500" placeholder="Paste a buyer's enquiry. Leave out names and prices."></textarea>
                   <p class="demo__send-row"><span class="demo__fine">Runs on a public open-source model. Your own AI runs on your servers.</span><button class="demo__send" type="submit">Draft the reply</button></p>
@@ -121,62 +103,22 @@
               </form>
             </div>
 
-            <!-- the second sample, and the answers to a pasted email (filled by script.js) -->
-            <template id="demo-ae">
-              <div class="demo__mail">
-                <p class="demo__from">Buyer email · <span class="demo__who">Dubai</span></p>
-                <p class="demo__text">Hi, need price for one 20 ft container of 1121 sella basmati, 25 kg bags, CIF Jebel Ali. Can you ship in 3 weeks? Pls send spec sheet.</p>
-              </div>
-              <div class="demo__a">
-                <p class="demo__lead">They want:</p>
-                <dl class="demo__wants">
-                  <div><dt>Product</dt><dd>1121 sella basmati rice, 25 kg bags</dd></div>
-                  <div><dt>Quantity</dt><dd>One 20 ft container</dd></div>
-                  <div><dt>Delivery</dt><dd>CIF Jebel Ali, within 3 weeks</dd></div>
-                  <div class="is-missing"><dt>Missing</dt><dd>Bag branding and payment terms</dd></div>
-                </dl>
-                <div class="demo__reply">
-                  <p class="demo__reply-top"><span>Reply drafted · English</span></p>
-                  <p class="demo__reply-text">Hello, thank you for your enquiry. We can quote one 20 ft container of 1121 sella basmati in 25 kg bags, CIF Jebel Ali. Our spec sheet is attached. To confirm the price: do you need plain or private-label bags, and which payment terms suit you? We'll confirm the three-week shipment with the quote.</p>
-                </div>
-                <ul class="demo__src" aria-label="Sources">
-                  <li><span>PDF</span>Spec sheet · 1121 sella, attached</li>
-                  <li><span>Excel</span>Price list · CIF rates</li>
-                </ul>
-                <p class="demo__doc"><span class="demo__file">Mail</span><span class="demo__name">Reply to the buyer</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
-                <p class="demo__note">That's your team's only step. <a href="#contact">Want this on your inbox?</a></p>
-              </div>
-            </template>
+            <!-- answers to a pasted email, filled by script.js -->
             <template id="demo-live">
               <div class="demo__a">
-                <p class="demo__lead">They want:</p>
-                <dl class="demo__wants">
-                  <div data-slot="product"><dt>Product</dt><dd></dd></div>
-                  <div data-slot="quantity"><dt>Quantity</dt><dd></dd></div>
-                  <div data-slot="delivery"><dt>Delivery</dt><dd></dd></div>
-                  <div class="is-missing" data-slot="missing"><dt>Missing</dt><dd></dd></div>
-                </dl>
-                <div class="demo__reply">
-                  <p class="demo__reply-top"><span>Reply drafted<span data-slot="language"></span></span><button class="demo__lang" type="button" data-to="Show in English" data-back="Show the original">Show in English</button></p>
-                  <p class="demo__reply-text" data-slot="reply"></p>
-                  <p class="demo__reply-text" lang="en" data-alt data-slot="reply_en"></p>
-                </div>
-                <ul class="demo__src" aria-label="Sources">
-                  <li><span>Pilot</span>Yours adds your own prices, specs and files.</li>
-                </ul>
-                <p class="demo__doc"><span class="demo__file">Mail</span><span class="demo__name">Reply to the buyer</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
-                <p class="demo__note">That's your team's only step. <a href="#contact">Want this on your inbox?</a></p>
+                <p class="demo__lead">Reply drafted.<span data-slot="missing"></span></p>
+                <p class="demo__reply" data-slot="reply"></p>
+                <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
+                <p class="demo__note">That's your team's only step.</p>
               </div>
             </template>
             <template id="demo-odd">
-              <div class="demo__a">
-                <p>That doesn't look like a buyer's enquiry. Paste one, or pick a sample.</p>
-              </div>
+              <div class="demo__a"><p>That doesn't look like a buyer's enquiry. Try pasting one.</p></div>
             </template>
             <template id="demo-rest">
               <div class="demo__a">
-                <p>The live demo is resting right now. Send us this email on WhatsApp and we'll show you the reply your own AI would draft.</p>
-                <p class="demo__doc"><span class="demo__file">Chat</span><span class="demo__name">Send it to Arcline</span><a class="demo__ok demo__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                <p>The live demo is resting right now. Send us this email on WhatsApp and we'll show you the reply.</p>
+                <p class="demo__doc"><span class="demo__name">Send it to Arcline</span><a class="demo__ok demo__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
               </div>
             </template>
           </figure>
@@ -297,54 +239,32 @@
       </div>
     </section>
 
-    <!-- YOUR FIRST PILOT: three answers, a one-page outline to send us -->
+    <!-- YOUR FIRST PILOT: pick a task, see the pilot, send it -->
     <section class="block" id="pilot" aria-labelledby="pilot-title">
       <div class="wrap">
         <p class="eyebrow">Your first pilot</p>
-        <h2 class="block__title" id="pilot-title">Three questions. Your pilot on one page.</h2>
-        <p class="pilot__plain">Message us the task that eats your team's hours, where its data lives and who does it today. <a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
+        <h2 class="block__title" id="pilot-title">Which task eats your team's week?</h2>
+        <p class="pilot__plain">Tell us the task on WhatsApp and we'll plan the pilot with you. <a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
         <div class="pilot">
           <form class="pilot__form">
             <fieldset>
-              <legend><span>1</span>Which task eats your team's hours?</legend>
-              <label><input type="radio" name="task" value="Quotes" data-build="An AI that drafts quotes from your price list and past orders." data-still="Check each quote and approve it before it goes out." /><span>Quotes</span></label>
-              <label><input type="radio" name="task" value="Export documents" data-build="An AI that fills packing lists, invoices and export documents from the order and your records." data-still="Check each document and approve it." /><span>Export documents</span></label>
-              <label><input type="radio" name="task" value="Buyer replies" data-build="An AI that reads buyer emails, sums up what they want and drafts the reply from your files." data-still="Approve each reply before it is sent." /><span>Buyer replies</span></label>
-              <label><input type="radio" name="task" value="Reports" data-build="An AI that answers questions on orders, payments and stock, each answer showing the file it came from." data-still="Ask the questions and decide what to do." /><span>Reports</span></label>
-              <label><input type="radio" name="task" value="Sheet updates" data-build="An AI that updates your sheets from emails and orders." data-still="Approve each change before it is saved." /><span>Sheet updates</span></label>
+              <legend class="sr">Pick a task</legend>
+              <label><input type="radio" name="task" value="Quotes" data-build="An AI that drafts quotes from your price list." data-still="Approves each quote." /><span>Quotes</span></label>
+              <label><input type="radio" name="task" value="Export documents" data-build="An AI that fills export documents from the order." data-still="Approves each document." /><span>Export documents</span></label>
+              <label><input type="radio" name="task" value="Buyer replies" data-build="An AI that drafts replies to buyer emails." data-still="Approves each reply." /><span>Buyer replies</span></label>
+              <label><input type="radio" name="task" value="Reports" data-build="An AI that answers questions on orders and stock." data-still="Decides what to do." /><span>Reports</span></label>
+              <label><input type="radio" name="task" value="Sheet updates" data-build="An AI that updates your sheets from orders and emails." data-still="Approves each change." /><span>Sheet updates</span></label>
             </fieldset>
-            <fieldset>
-              <legend><span>2</span>Where does its data live?</legend>
-              <label><input type="checkbox" name="data" value="Email" data-needs="the inbox the work arrives in" /><span>Email</span></label>
-              <label><input type="checkbox" name="data" value="Excel" data-needs="the sheets you use today" /><span>Excel</span></label>
-              <label><input type="checkbox" name="data" value="ERP" data-needs="read access to your ERP" /><span>ERP</span></label>
-              <label><input type="checkbox" name="data" value="Tally" data-needs="your Tally data (we check how to read it on the call)" /><span>Tally</span></label>
-              <label><input type="checkbox" name="data" value="Shared folders" data-needs="the folders where the files are saved" /><span>Shared folders</span></label>
-              <label><input type="checkbox" name="data" value="Paper" data-needs="a few paper samples, to look at on the call" /><span>Paper</span></label>
-            </fieldset>
-            <fieldset>
-              <legend><span>3</span>Who does it today?</legend>
-              <label><input type="radio" name="who" value="One person" data-who="The one person who does it today." /><span>One person</span></label>
-              <label><input type="radio" name="who" value="2 to 5 people" data-who="The 2 to 5 people who do it today." /><span>2 to 5 people</span></label>
-              <label><input type="radio" name="who" value="A whole team" data-who="One team, seeing only what that team may see." /><span>A whole team</span></label>
-            </fieldset>
-            <label class="pilot__note"><span>Anything else? <em>Optional</em></span><input type="text" name="note" maxlength="200" placeholder="e.g. Our buyers write in German and French." /></label>
           </form>
 
-          <aside class="plan" aria-live="polite" aria-label="Your pilot outline">
+          <aside class="plan" aria-live="polite" aria-label="Your pilot">
             <p class="plan__top"><span>Your first pilot</span><b data-plan="task">Pick a task</b></p>
             <dl class="plan__list">
-              <div><dt>What we build</dt><dd data-plan="build" data-empty="Pick the task on the left.">Pick the task on the left.</dd></div>
-              <div><dt>What it needs</dt><dd data-plan="needs" data-empty="Pick where its data lives.">Pick where its data lives.</dd></div>
-              <div><dt>Who uses it first</dt><dd data-plan="who" data-empty="Pick who does it today.">Pick who does it today.</dd></div>
-              <div><dt>Your team still</dt><dd data-plan="still" data-empty="Approves what the AI does.">Approves what the AI does.</dd></div>
-              <div><dt>Where it runs</dt><dd>Your servers or a private cloud account in your name. It never trains anyone else's AI.</dd></div>
+              <div><dt>We build</dt><dd data-plan="build" data-empty="Pick a task.">Pick a task.</dd></div>
+              <div><dt>Your team</dt><dd data-plan="still" data-empty="Approves what the AI does.">Approves what the AI does.</dd></div>
               <div><dt>Next step</dt><dd>A 30-minute call, then a fixed quote.</dd></div>
             </dl>
-            <div class="plan__actions">
-              <a class="btn btn--solid plan__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Send this on WhatsApp</a>
-              <a class="btn btn--line plan__mail" href="mailto:tidkerohan8228@gmail.com?subject=Pilot%20outline">Email it</a>
-            </div>
+            <a class="btn btn--solid plan__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Send this on WhatsApp</a>
           </aside>
         </div>
       </div>
