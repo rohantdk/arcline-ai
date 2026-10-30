@@ -8,6 +8,11 @@ the other. Read `README.md` for structure, tokens and motion.
 Live at https://arcline-ai-ace.vercel.app (Vercel project from this repo, deploys every push to `main`). The
 network here blocks `*.vercel.app`; check deployments with the Vercel tools and `web_fetch_vercel_url`.
 
+**Keep `.vercelignore`.** It stops Vercel publishing this file (`CLAUDE.md`), which holds private notes; before it
+(30 October 2026) anyone could read them at /CLAUDE.md. Don't delete it, and add any new private file to it.
+After a change to it, check that /CLAUDE.md returns 404 (the Context web-scrape tool can reach `*.vercel.app`
+with `maxAgeMs: 0`). The GitHub repo itself is public, so the notes can still be read there.
+
 ## Ground rules (same as the main site)
 
 - **Vanilla only.** No libraries, frameworks or CDN scripts.
