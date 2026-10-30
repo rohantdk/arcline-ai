@@ -37,6 +37,9 @@ until one is built. These are sold as a build service; no finished product exist
   if the headline or address changes.
 - Name: "Arcline" only (not "Arcline AI" or "Arcline Ace").
 - Discovery call: 30 minutes.
+- **Minimal copy** (30 October 2026): the owner found the page too wordy, so the copy was cut by half (about
+  560 words). Say each point once, in the fewest words; no extra "You get" / "What it proves" lines. The share
+  image still shows the old, longer headline.
 - No "pilots start from ₹X" line for now.
 - The hero example (spec sheet question) is illustrative and labelled "Example, not client data".
 
