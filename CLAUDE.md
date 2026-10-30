@@ -66,11 +66,25 @@ one is built. These are sold as a build service; no finished product exists yet.
   `main` (branches get no preview).
 - The hero example (packing list request) is illustrative and labelled "Example".
 
+## Portable copy for other hosts (30 October 2026)
+
+- The owner asked for the site as a zip, to deploy on Vercel or Netlify later with a new custom domain. Given as
+  `arcline-ai-site.zip`: one top folder `arcline-ai-site/` with `index.html`, `style.css`, `script.js` and
+  `assets/` (`favicon.svg`, `og-banner.jpg`). Internal paths are relative, so it works on any host unchanged;
+  tested by serving the extracted folder.
+- Leave `CLAUDE.md`, `README.md` and `.git` out of any deploy copy. Don't commit the zip; build it in the
+  scratchpad and make a fresh one whenever the owner asks (it goes stale with the next change).
+- Told the owner: Netlify Drop (app.netlify.com/drop) takes the folder; on Vercel, add the domain to the existing
+  Git-linked `arcline-ai` project (recommended) or run `npx vercel --prod` in the folder.
+- On a new domain, update `og:url`, `og:image` and `canonical` in `index.html` (lines 11, 13 and 20) and redraw
+  the share image, whose printed address is arcline-ai-ace.vercel.app.
+
 ## Open items
 
 1. Fill the testimonial and result slots when real ones exist.
 2. A/B test a second headline once there is traffic. Measure WhatsApp and email clicks.
 3. Studio email on an own domain to replace the Gmail address.
+4. Own domain: when bought, update the three address tags and the share image (see "Portable copy").
 
 ## Checking a change
 
