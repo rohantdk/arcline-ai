@@ -23,8 +23,12 @@ network here blocks `*.vercel.app`; check deployments with the Vercel tools and 
 
 ## Positioning (30 October 2026)
 
-**First: outcomes.** "Save time. Cut costs. Win more orders." The owner wants time, cost and revenue as the main
-message; privacy and ownership are the second message ("And it stays yours"). Keep outcomes concrete (tasks:
+**First: outcomes.** The owner wants time, cost and revenue as the main message; privacy and ownership are the
+second message ("And it stays yours"). The owner then mixed the two versions section by section: the hero
+headline stays "Your company's own AI. Not rented. Not shared." with the outcomes in the line under it ("It saves
+time, cuts costs and wins orders."); the problem, the three tiles (Win more orders, Save hours, Cut costs), the
+ChatGPT answer and Contact ("Let's find the hours your team loses.") lead with outcomes; the tiles' title is "One
+AI for your whole company." Keep outcomes concrete (tasks:
 quotes, export documents, reports, sheet updates) and never print numbers until a pilot has measured them.
 Angles advised: speed wins export orders ("reply to buyers first"); the big tools sell seats, Arcline builds the
 finished workflow. Pending the owner's yes: "no per-user fees" (ownership as a cost argument) and "we measure
