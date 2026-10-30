@@ -21,16 +21,26 @@ network here blocks `*.vercel.app`; check deployments with the Vercel tools and 
   the finished state (hidden states inside `prefers-reduced-motion: no-preference`); pointer effects check
   `(hover: hover) and (pointer: fine)`.
 
+## Positioning (30 October 2026)
+
+"Your company's own AI. Not rented. Not shared." Arcline builds custom AI for the whole company, owned by the
+company: built on its data, on its own servers or a private cloud account in its name (the client's choice). Not
+"a private ChatGPT that finds documents". The way in stays one workflow pilot, then grow across teams; don't sell
+a company-wide setup from day one until a reference client exists.
+
 ## Promises the copy makes (must be deliverable)
 
-Answers that show their source document; an on-premises option (office computer) or a private cloud account in
-the client's name; never used to train AI; answers in English, Hindi and Marathi; reads email, spreadsheets and
-shared folders. "Tally" appears in the problem story only as where data lives; don't promise a Tally connection
-until one is built. These are sold as a build service; no finished product exists yet.
+The owner confirmed these can be delivered: answers that show their source document; actions a person approves
+(drafts quotes, fills export documents, updates sheets); work across email, Excel and the client's ERP; a separate
+AI per team (sales, accounts, production) with access limited to what that team may see; learning the company's
+products and terms (tuned on its own data, never used to train anyone else's AI); answers in English, Hindi and
+Marathi. "Tally" appears in the problem story only as where data lives; don't promise a Tally connection until
+one is built. These are sold as a build service; no finished product exists yet.
 
 ## Owner's decisions (October 2026)
 
-- The owner wanted the main site's vibe: the hero "a." mark (three job dots instead of seven categories), the
+- The owner wanted the main site's vibe: the hero "a." mark (three dots instead of seven categories: "Knows your
+  business", "Does the work", "Fits every team"; ids and colours still named docs, queries, reports), the
   scrolling strip, decoding labels, counting stats, nav section label, card spotlight. The headline stays the
   promise under the mark; don't swap it back for the brand name (the Ogilvy audit's main fix).
 - Share image: `assets/og-banner.jpg` (1200 × 630), headline on the dark band with the live address. Rebuild it
@@ -38,16 +48,14 @@ until one is built. These are sold as a build service; no finished product exist
 - Name: "Arcline" only (not "Arcline AI" or "Arcline Ace").
 - Discovery call: 30 minutes.
 - **Minimal copy** (30 October 2026): the owner found the page too wordy, so the copy was cut by half (about
-  560 words). Say each point once, in the fewest words; no extra "You get" / "What it proves" lines. The share
-  image still shows the old, longer headline.
+  560 words). Say each point once, in the fewest words; no extra "You get" / "What it proves" lines.
 - No "pilots start from ₹X" line for now.
 - The hero example (spec sheet question) is illustrative and labelled "Example, not client data".
 
 ## Open items
 
 1. Fill the testimonial and result slots when real ones exist.
-2. A/B test: headline B "Private AI that answers from your own export files. Your data never leaves your
-   control."; CTA B "Show us one task that eats your team's week". Measure WhatsApp and email clicks.
+2. A/B test a second headline once there is traffic. Measure WhatsApp and email clicks.
 3. Studio email on an own domain to replace the Gmail address.
 
 ## Checking a change
