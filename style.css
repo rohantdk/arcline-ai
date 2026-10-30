@@ -125,22 +125,30 @@ a { color: inherit; }
 .btn--ghost { border-color: rgba(255,255,255,0.4); color: #fff; }
 .btn--ghost:hover { border-color: var(--accent-light); color: var(--accent-light); }
 
-/* ════ NAV: a floating pill ════ */
-.nav {
-  position: sticky; top: 12px; z-index: 200;
-  padding: 0 var(--gutter);
-  margin-top: 12px;
-}
+/* ════ NAV: a flat bar at the top, a floating pill once the page scrolls ════ */
+.nav { position: sticky; top: 0; z-index: 200; height: var(--nav-h); }
 .nav__inner {
   position: relative;
-  max-width: calc(var(--max) - 2 * var(--gutter)); margin: 0 auto;
+  max-width: 100%; margin: 0 auto;
   height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 8px 0 24px;
-  background: rgba(255,255,255,0.8);
+  /* flat: edge to edge, its content lined up with the page */
+  padding: 0 max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+  background: rgba(246,245,242,0.9);
   backdrop-filter: saturate(1.4) blur(14px);
   -webkit-backdrop-filter: saturate(1.4) blur(14px);
-  border-radius: var(--pill);
+  border-radius: 0;
+  box-shadow: 0 1px 0 var(--rule);
+  transition: max-width .6s var(--ease), padding .6s var(--ease), border-radius .6s var(--ease),
+              transform .6s var(--ease), background .4s, box-shadow .4s;
+}
+/* scrolled: it lifts off the top edge and rounds into a pill (script.js sets .is-scrolled) */
+.nav.is-scrolled .nav__inner {
+  max-width: min(calc(var(--max) - 2 * var(--gutter)), calc(100% - 2 * var(--gutter)));
+  padding: 0 8px 0 24px;
+  border-radius: calc(var(--nav-h) / 2);
+  transform: translateY(12px);
+  background: rgba(255,255,255,0.82);
   box-shadow: 0 0 0 1px var(--rule), 0 14px 34px -22px rgba(34,22,42,0.45);
 }
 .nav__logo { display: inline-flex; align-items: center; text-decoration: none; }
@@ -234,7 +242,9 @@ a { color: inherit; }
 .hero__sub { font-size: clamp(19px, 1.9vw, 23px); line-height: 1.45; max-width: 19em; margin-bottom: 32px; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
-/* the example: one request, one answer with its sources, in a tilted window */
+/* the example: one request, one answer with its sources and the document it made.
+   Hovering it with a mouse plays the task out (script.js): typing, answer, sources,
+   the document, then approval. */
 .demo { margin: 0; position: relative; }
 .demo::before {
   /* a soft violet glow behind the window */
@@ -247,8 +257,7 @@ a { color: inherit; }
   border-radius: var(--r);
   box-shadow: 0 40px 80px -36px rgba(34,22,42,0.5), 0 0 0 1px var(--rule);
   overflow: hidden;
-  rotate: 2.5deg;
-  transition: rotate .6s var(--spring);
+  transition: box-shadow .4s, translate .5s var(--spring);
 }
 .demo__bar {
   display: flex; align-items: center; gap: 6px; padding: 12px 16px;
@@ -261,7 +270,7 @@ a { color: inherit; }
   margin-left: auto; font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
   color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: var(--pill);
 }
-.demo__chat { display: grid; gap: 14px; padding: clamp(18px, 2.6vw, 28px); }
+.demo__chat { display: grid; align-content: start; gap: 14px; padding: clamp(18px, 2.6vw, 28px); }
 .demo__q {
   justify-self: end; max-width: 86%;
   background: var(--ink); color: #fff;
@@ -281,6 +290,53 @@ a { color: inherit; }
   font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
   color: #fff; background: var(--accent); padding: 2px 8px; border-radius: var(--pill);
 }
+/* the document it made, waiting for approval */
+.demo__doc {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 12px; padding: 8px 8px 8px 10px;
+  background: var(--paper-2); border-radius: var(--r-sm);
+  box-shadow: 0 0 0 1px rgba(90,60,158,0.16);
+  font-size: 13.5px;
+  transition: box-shadow .4s;
+}
+.demo__file {
+  flex: none; display: grid; place-items: center; width: 34px; height: 38px; border-radius: 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em; color: #fff; background: var(--queries);
+}
+.demo__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo__ok {
+  flex: none; padding: 6px 13px; border-radius: var(--pill);
+  font-size: 12.5px; font-weight: 500; color: var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  transition: background .35s, color .35s, box-shadow .35s;
+}
+.demo__ok span:last-child { display: none; }
+.demo.is-approved .demo__doc { box-shadow: 0 0 0 1.5px var(--reports); }
+.demo.is-approved .demo__ok { background: var(--reports); color: #fff; box-shadow: none; animation: ok-pop .45s var(--spring); }
+.demo.is-approved .demo__ok span:first-child { display: none; }
+.demo.is-approved .demo__ok span:last-child { display: inline; }
+.demo.is-approved .demo__ok span:last-child::before { content: '✓ '; }
+@keyframes ok-pop { 40% { transform: scale(1.12); } }
+
+/* typing dots, shown while the example plays */
+.demo__typing {
+  display: none; justify-self: start; gap: 5px;
+  background: var(--accent-soft); padding: 15px 18px; border-radius: 20px 20px 20px 6px;
+}
+.demo__typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: typing 1s ease-in-out infinite; }
+.demo__typing i:nth-child(2) { animation-delay: .15s; }
+.demo__typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes typing { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+
+.demo.is-acting .demo__window { translate: 0 -6px; box-shadow: 0 50px 90px -36px rgba(34,22,42,0.55), 0 0 0 1.5px var(--accent); }
+.demo.is-acting:not(.is-answered) .demo__typing { display: flex; }
+.demo.is-acting:not(.is-answered) .demo__a { display: none; }
+.demo.is-answered .demo__a { animation: act-in .5s var(--ease) both; }
+.demo.is-answered .demo__src li { animation: act-in .5s var(--ease) both; }
+.demo.is-answered .demo__src li:nth-child(1) { animation-delay: .35s; }
+.demo.is-answered .demo__src li:nth-child(2) { animation-delay: .5s; }
+.demo.is-answered .demo__doc { animation: act-in .55s var(--ease) .85s both; }
+@keyframes act-in { from { opacity: 0; transform: translateY(8px); } }
 
 /* what your AI works with: a strip of pills that drifts and speeds up with the scroll */
 .marquee {
@@ -546,7 +602,6 @@ a { color: inherit; }
   .card:hover::before { opacity: 1; }
   /* tiles lift; the example window straightens */
   .jobs li:hover { translate: 0 -8px; }
-  .demo:hover .demo__window { rotate: 0deg; }
   /* point at one promise and the others step back */
   .vows:hover li:not(:hover) { opacity: .28; }
   .vows li:hover { color: var(--c); }
@@ -582,10 +637,11 @@ a { color: inherit; }
   .js .hero__mark.is-in .mark__pop { transform: none; }
   .js .hero__mark.is-in .mark__halo { animation: halo 4.2s ease-in-out calc(2.4s + var(--i) * .6s) infinite; }
 
-  /* the example: the window swings in, then the request, the answer and each source */
-  .js .demo .demo__window { rotate: 9deg; translate: 0 40px; opacity: 0; transition: rotate 1s var(--spring) .3s, translate 1s var(--ease) .3s, opacity .6s ease .3s; }
-  .js .demo.is-in .demo__window { rotate: 2.5deg; translate: none; opacity: 1; }
-  .js .demo .demo__q, .js .demo .demo__a, .js .demo .demo__src li {
+  /* the example: the window rises in, then the request, the answer, each source and the document */
+  .js .demo .demo__window { translate: 0 40px; opacity: 0; transition: translate 1s var(--ease) .3s, opacity .6s ease .3s; }
+  .js .demo.is-in .demo__window { translate: none; opacity: 1; }
+  .js .demo.is-in.is-acting .demo__window { translate: 0 -6px; transition: translate .5s var(--spring), box-shadow .4s; }
+  .js .demo .demo__q, .js .demo .demo__a, .js .demo .demo__src li, .js .demo .demo__doc {
     opacity: 0; transform: translateY(10px);
     transition: opacity .6s var(--ease), transform .7s var(--ease);
   }
@@ -593,13 +649,11 @@ a { color: inherit; }
   .js .demo .demo__a { transition-delay: 1.8s; }
   .js .demo .demo__src li:nth-child(1) { transition-delay: 2.4s; }
   .js .demo .demo__src li:nth-child(2) { transition-delay: 2.6s; }
-  .js .demo.is-in .demo__q, .js .demo.is-in .demo__a, .js .demo.is-in .demo__src li { opacity: 1; transform: none; }
+  .js .demo .demo__doc { transition-delay: 3s; }
+  .js .demo.is-in .demo__q, .js .demo.is-in .demo__a, .js .demo.is-in .demo__src li, .js .demo.is-in .demo__doc { opacity: 1; transform: none; }
 
   .js .contact__mark .mark__traveller { opacity: 0; transition: opacity .8s ease .9s; }
   .js .contact__mark.is-in .mark__traveller { opacity: 1; }
-}
-@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-  .js .demo.is-in:hover .demo__window { rotate: 0deg; transition: rotate .6s var(--spring); }
 }
 
 @keyframes halo {
@@ -610,7 +664,7 @@ a { color: inherit; }
 
 /* ════ RESPONSIVE ════ */
 @media (max-width: 960px) {
-  .hero__grid { grid-template-columns: 1fr; }
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
   .demo { margin-top: 8px; max-width: 560px; }
   .jobs { grid-template-columns: 1fr; }
   .jobs li:first-child { grid-row: auto; }
@@ -624,8 +678,7 @@ a { color: inherit; }
 
 @media (max-width: 760px) {
   body { font-size: 16px; }
-  .nav { top: 8px; margin-top: 8px; }
-  .nav__inner { padding: 0 6px 0 20px; }
+  .nav.is-scrolled .nav__inner { padding: 0 6px 0 20px; transform: translateY(8px); }
   .nav__toggle { display: block; }
   .nav__links {
     position: absolute; top: calc(100% + 8px); left: 0; right: 0;
@@ -645,8 +698,6 @@ a { color: inherit; }
   .card__top { padding-bottom: 24px; }
   .jobs li { min-height: 0; gap: 28px; }
   .demo__q, .demo__a { max-width: 100%; }
-  .demo__window { rotate: 1.5deg; }
-  .js .demo.is-in .demo__window { rotate: 1.5deg; }
   .hero__mark { width: min(100%, 240px); }
   .mark__tip { font-size: 11px; }
   .panel::after { width: 16px; height: 16px; box-shadow: -26px 0 0 var(--queries-light), -52px 0 0 var(--docs-light); }

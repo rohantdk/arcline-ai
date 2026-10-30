@@ -1,10 +1,11 @@
 /* Arcline — Your company's own AI
    - Mobile menu toggle
    - Highlight the nav link for the part of the page in view
-   - Scroll progress on the nav logo's baseline, and the section in view beside it
+   - Scroll progress on the nav logo's baseline, the section in view beside it, and
+     the nav bar rounding into a pill once the page scrolls
    - Hero: the logo's "a." with a dot per job as its full stop
    - Scroll reveals, counting stats, labels that decode; the hero example plays
-     question, answer, sources
+     question, answer, sources; hovering it plays the task out (mouse only)
    - Strip of what the AI works with, which speeds up and turns with the scroll
    - The mark in Contact, with a dot that slides along its line
    - Card spotlight, magnetic buttons and the contact glow (mouse only)
@@ -51,13 +52,15 @@
   navLinks.map(a => $(a.getAttribute('href'))).filter(Boolean).forEach(t => navIO.observe(t));
 
 
-  /* ─── SCROLL PROGRESS: the logo's baseline fills ─── */
+  /* ─── SCROLL PROGRESS: the logo's baseline fills; the bar rounds into a pill ─── */
+  const nav = $('#nav');
   const markFill = $('.nav__mark-fill');
   let progressQueued = false;
   const updateProgress = () => {
     progressQueued = false;
     const max = root.scrollHeight - innerHeight;
     markFill.style.strokeDashoffset = String(1 - (max > 0 ? clamp(scrollY / max, 0, 1) : 0));
+    nav.classList.toggle('is-scrolled', scrollY > 16);
     updateWhere();
   };
 
@@ -238,6 +241,29 @@
     dot.addEventListener('pointerleave', hide);
     dot.addEventListener('blur', hide);
   });
+
+
+  /* ─── THE EXAMPLE ACTS (mouse only) ───
+     Hovering the example plays the task: typing, the answer, its sources, the
+     document, then approval. Leaving puts back the finished example. */
+  if (fine && !reduce) {
+    const chat = $('.demo__chat', demo);
+    let timers = [];
+    const reset = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      demo.classList.remove('is-acting', 'is-answered', 'is-approved');
+      chat.style.minHeight = '';
+    };
+    demo.addEventListener('pointerenter', (e) => {
+      if (e.pointerType !== 'mouse' || demo.classList.contains('is-acting')) return;
+      chat.style.minHeight = chat.offsetHeight + 'px';   // the window keeps its height while it plays
+      demo.classList.add('is-acting');
+      timers.push(setTimeout(() => demo.classList.add('is-answered'), 1100));
+      timers.push(setTimeout(() => demo.classList.add('is-approved'), 2700));
+    });
+    demo.addEventListener('pointerleave', reset);
+  }
 
 
   /* ─── STRIP: what the AI works with ─── */
