@@ -85,7 +85,7 @@ one is built. These are sold as a build service; no finished product exists yet.
   shirt. The photo looks up and to the side, so it can't be used with moving eyes; a real-photo version would need a
   straight-to-camera shot (eyes open and sharp, even light, 1000px+) and redrawn irises, shown before going live.
   Offered tweaks, not asked for yet: skin tone, taller quiff, thinner beard, calmer smile, tie.
-- **Live demo and pilot (30 October 2026), on the feature branch, preview first:** the owner asked for AI demos on
+- **Live demo and pilot (30 October 2026), live:** the owner asked for AI demos on
   open-source models via Groq ("Grok" in the request meant Groq, the host, not xAI's model) that make clients
   convert. Of seven ideas, two were kept: the hero example as a buyer-email reply with "try your own email" (sent to
   `api/demo.js`, Groq), and a "Your first pilot" section after Process that is sent on WhatsApp. Cut as
@@ -96,8 +96,8 @@ one is built. These are sold as a build service; no finished product exists yet.
   buyer email, one reply, Approve, and a quiet "Try it with your own buyer email" link; the pilot is one question
   with five chips and a three-line pilot. Don't add back detail without asking.
   The pilot is rule-based, not a model: instant, and it only says what's confirmed. Pasted emails go to a public
-  host, so the box says so. Not live until the owner adds `GROQ_API_KEY` in Vercel; until then pasted emails get
-  the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default. The first default,
+  host, so the box says so. The owner added `GROQ_API_KEY` in Vercel and confirmed the chip shows "Live" (30 October
+  2026); without the key, pasted emails get the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default. The first default,
   `llama-3.3-70b-versatile`, had been shut down for free and developer accounts on 16 August 2026 (the owner spotted
   it when the 503 said "resting"); now `openai/gpt-oss-120b` with `reasoning_effort: 'low'`. When the demo stops
   answering, check console.groq.com/docs/deprecations; the 503's `why` names Groq's error code.
