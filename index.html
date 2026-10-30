@@ -77,23 +77,50 @@
             </div>
           </div>
 
-          <figure class="demo" aria-label="Example of the company AI preparing a document">
+          <figure class="demo" aria-label="Example: the AI drafts a reply to a buyer">
             <div class="demo__window">
-              <p class="demo__bar"><i></i><i></i><i></i><span>Your company's AI</span><b>Example</b></p>
-              <div class="demo__chat">
-                <p class="demo__q">Prepare the packing list for the Netherlands order.</p>
+              <p class="demo__bar"><i></i><i></i><i></i><span>Your company's AI</span><b class="demo__mode">Example</b></p>
+              <div class="demo__chat" aria-live="polite">
+                <div class="demo__mail">
+                  <p class="demo__from">Buyer email</p>
+                  <p class="demo__text">Hi, please quote 2,000 stainless steel flanges DN50, delivered by March. Certificates needed.</p>
+                </div>
                 <p class="demo__typing" aria-hidden="true"><i></i><i></i><i></i></p>
                 <div class="demo__a">
-                  <p>Done, from the order and last shipment's weights. Ready for your approval.</p>
-                  <ul class="demo__src" aria-label="Sources">
-                    <li><span>Email</span>Purchase order · 14 Aug</li>
-                    <li><span>Excel</span>August shipment · weights</li>
-                  </ul>
-                  <p class="demo__doc"><span class="demo__file">PDF</span><span class="demo__name">Packing list · Netherlands</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
+                  <p class="demo__lead">Reply drafted. It asks for the one thing missing: the steel grade.</p>
+                  <p class="demo__reply">Hello, thanks for your enquiry. Happy to quote 2,000 flanges DN50 with certificates, delivered by March. Which grade do you need, 304 or 316? Price and lead time follow as soon as you reply.</p>
+                  <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
                   <p class="demo__note">That's your team's only step.</p>
                 </div>
               </div>
+              <form class="demo__ask" hidden>
+                <button class="demo__try" type="button" aria-expanded="false" aria-controls="demoOwn">Try it with your own buyer email</button>
+                <div class="demo__own" id="demoOwn" hidden>
+                  <label class="sr" for="demoMail">A buyer's email</label>
+                  <textarea id="demoMail" rows="3" maxlength="1500" placeholder="Paste a buyer's enquiry. Leave out names and prices."></textarea>
+                  <p class="demo__send-row"><span class="demo__fine">Runs on a public open-source model. Your own AI runs on your servers.</span><button class="demo__send" type="submit">Draft the reply</button></p>
+                </div>
+              </form>
             </div>
+
+            <!-- answers to a pasted email, filled by script.js -->
+            <template id="demo-live">
+              <div class="demo__a">
+                <p class="demo__lead">Reply drafted.<span data-slot="missing"></span></p>
+                <p class="demo__reply" data-slot="reply"></p>
+                <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
+                <p class="demo__note">That's your team's only step.</p>
+              </div>
+            </template>
+            <template id="demo-odd">
+              <div class="demo__a"><p>That doesn't look like a buyer's enquiry. Try pasting one.</p></div>
+            </template>
+            <template id="demo-rest">
+              <div class="demo__a">
+                <p>The live demo is resting right now. Send us this email on WhatsApp and we'll show you the reply.</p>
+                <p class="demo__doc"><span class="demo__name">Send it to Arcline</span><a class="demo__ok demo__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+              </div>
+            </template>
           </figure>
         </div>
       </div>
@@ -209,6 +236,37 @@
           <li><span class="steps__n">03</span><h3>One-workflow pilot</h3></li>
           <li><span class="steps__n">04</span><h3>Grow across teams</h3></li>
         </ol>
+      </div>
+    </section>
+
+    <!-- YOUR FIRST PILOT: pick a task, see the pilot, send it -->
+    <section class="block" id="pilot" aria-labelledby="pilot-title">
+      <div class="wrap">
+        <p class="eyebrow">Your first pilot</p>
+        <h2 class="block__title" id="pilot-title">Which task eats your team's week?</h2>
+        <p class="pilot__plain">Tell us the task on WhatsApp and we'll plan the pilot with you. <a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
+        <div class="pilot">
+          <form class="pilot__form">
+            <fieldset>
+              <legend class="sr">Pick a task</legend>
+              <label><input type="radio" name="task" value="Quotes" data-build="An AI that drafts quotes from your price list." data-still="Approves each quote." /><span>Quotes</span></label>
+              <label><input type="radio" name="task" value="Export documents" data-build="An AI that fills export documents from the order." data-still="Approves each document." /><span>Export documents</span></label>
+              <label><input type="radio" name="task" value="Buyer replies" data-build="An AI that drafts replies to buyer emails." data-still="Approves each reply." /><span>Buyer replies</span></label>
+              <label><input type="radio" name="task" value="Reports" data-build="An AI that answers questions on orders and stock." data-still="Decides what to do." /><span>Reports</span></label>
+              <label><input type="radio" name="task" value="Sheet updates" data-build="An AI that updates your sheets from orders and emails." data-still="Approves each change." /><span>Sheet updates</span></label>
+            </fieldset>
+          </form>
+
+          <aside class="plan" aria-live="polite" aria-label="Your pilot">
+            <p class="plan__top"><span>Your first pilot</span><b data-plan="task">Pick a task</b></p>
+            <dl class="plan__list">
+              <div><dt>We build</dt><dd data-plan="build" data-empty="Pick a task.">Pick a task.</dd></div>
+              <div><dt>Your team</dt><dd data-plan="still" data-empty="Approves what the AI does.">Approves what the AI does.</dd></div>
+              <div><dt>Next step</dt><dd>A 30-minute call, then a fixed quote.</dd></div>
+            </dl>
+            <a class="btn btn--solid plan__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Send this on WhatsApp</a>
+          </aside>
+        </div>
       </div>
     </section>
 

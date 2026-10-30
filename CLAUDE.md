@@ -85,6 +85,19 @@ one is built. These are sold as a build service; no finished product exists yet.
   shirt. The photo looks up and to the side, so it can't be used with moving eyes; a real-photo version would need a
   straight-to-camera shot (eyes open and sharp, even light, 1000px+) and redrawn irises, shown before going live.
   Offered tweaks, not asked for yet: skin tone, taller quiff, thinner beard, calmer smile, tie.
+- **Live demo and pilot (30 October 2026), on the feature branch, preview first:** the owner asked for AI demos on
+  open-source models via Groq ("Grok" in the request meant Groq, the host, not xAI's model) that make clients
+  convert. Of seven ideas, two were kept: the hero example as a buyer-email reply with "try your own email" (sent to
+  `api/demo.js`, Groq), and a "Your first pilot" section after Process that is sent on WhatsApp. Cut as
+  low-conversion: sample-company Q&A, export-document filling, sheet reports (risk of wrong numbers), team switch.
+  The owner chose: replace the hero example, scripted fallback, preview first.
+  **Keep it simple (owner's words):** the first version (a details table, sources, language toggle, two samples,
+  three pilot questions) was "too complex for a person who just visited" and "cluttered". Now the hero box is one
+  buyer email, one reply, Approve, and a quiet "Try it with your own buyer email" link; the pilot is one question
+  with five chips and a three-line pilot. Don't add back detail without asking.
+  The pilot is rule-based, not a model: instant, and it only says what's confirmed. Pasted emails go to a public
+  host, so the box says so. Not live until the owner adds `GROQ_API_KEY` in Vercel; until then pasted emails get
+  the WhatsApp fallback. Groq's model list changes; `GROQ_MODEL` overrides the default.
 
 ## Portable copy for other hosts (30 October 2026)
 
@@ -111,9 +124,10 @@ one is built. These are sold as a build service; no finished product exists yet.
 Serve with `python3 -m http.server`, test in Playwright (Node package, `NODE_PATH=/opt/node22/lib/node_modules`)
 at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth` equal to the viewport width.
 
-- The hero example's state is in its classes: `is-acting` (typing), `is-answered`, `is-approved`, `is-waiting`
-  (hover pause), `is-yours` (the visitor approved), `is-clearing` (fading before a replay). Read them over time to
-  check the loop.
+- The hero box's state is in its classes: `is-thinking` (typing dots), `is-answered`, `is-approved`. `python3 -m
+  http.server` answers POSTs with 501, so a pasted email shows the WhatsApp fallback; test the live path with
+  `page.route('**/api/demo', ...)` returning JSON (`enquiry`, `missing`, `reply`). The pilot's chips are hidden
+  radio inputs: `check({ force: true })`.
 - The strip never stops moving, so Playwright's `scrollIntoViewIfNeeded` and locator actions on pills time out
   ("element is not stable"). Scroll `.marquee` into view with `evaluate`, keep the mouse off it (it pauses the
   strip), find a pill on screen with `getBoundingClientRect()` and hover it with `page.mouse.move`. The strip sits

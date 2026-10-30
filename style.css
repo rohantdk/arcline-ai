@@ -242,9 +242,8 @@ a { color: inherit; }
 .hero__sub { font-size: clamp(19px, 1.9vw, 23px); line-height: 1.45; max-width: 19em; margin-bottom: 32px; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
-/* the example: one request, one answer with its sources and the document it made.
-   Hovering it with a mouse plays the task out (script.js): typing, answer, sources,
-   the document, then approval. */
+/* the example: a buyer's email, the reply the AI drafted, and Approve.
+   A visitor can paste their own email; it goes to /api/demo (script.js). */
 .demo { margin: 0; position: relative; }
 .demo::before {
   /* a soft violet glow behind the window */
@@ -257,7 +256,6 @@ a { color: inherit; }
   border-radius: var(--r);
   box-shadow: 0 40px 80px -36px rgba(34,22,42,0.5), 0 0 0 1px var(--rule);
   overflow: hidden;
-  transition: box-shadow .4s, translate .5s var(--spring);
 }
 .demo__bar {
   display: flex; align-items: center; gap: 6px; padding: 12px 16px;
@@ -270,80 +268,98 @@ a { color: inherit; }
   margin-left: auto; font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
   color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: var(--pill);
 }
+.demo__bar b.is-live { color: #fff; background: var(--reports); }
 .demo__chat { display: grid; align-content: start; gap: 14px; padding: clamp(18px, 2.6vw, 28px); }
-.demo__q {
-  justify-self: end; max-width: 86%;
-  background: var(--ink); color: #fff;
-  padding: 13px 18px; font-size: 15.5px; line-height: 1.5;
-  border-radius: 20px 20px 6px 20px;
+
+/* the buyer's email, on the left */
+.demo__mail {
+  max-width: 88%;
+  background: var(--paper); padding: 13px 18px;
+  box-shadow: inset 0 0 0 1px var(--rule);
+  border-radius: 20px 20px 20px 6px;
+  font-size: 15.5px; line-height: 1.5;
 }
+.demo__from { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--queries); margin-bottom: 4px; }
+.demo__text { overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* the AI's answer, on the right */
 .demo__a {
-  max-width: 94%;
+  justify-self: end; max-width: 94%;
   background: var(--accent-soft); padding: 15px 18px;
   font-size: 15.5px; line-height: 1.55;
-  border-radius: 20px 20px 20px 6px;
+  border-radius: 20px 20px 6px 20px;
 }
-.demo__src { list-style: none; display: grid; gap: 7px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(90,60,158,0.2); }
-.demo__src li { display: flex; align-items: baseline; gap: 10px; font-size: 13.5px; color: var(--ink); }
-.demo__src span {
-  flex: none; min-width: 52px; text-align: center;
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
-  color: #fff; background: var(--accent); padding: 2px 8px; border-radius: var(--pill);
-}
-/* the document it made, waiting for approval */
-.demo__doc {
-  display: flex; align-items: center; gap: 10px;
-  margin-top: 12px; padding: 8px 8px 8px 10px;
+.demo__lead { font-weight: 500; }
+.demo__reply {
+  margin-top: 10px; padding: 12px 14px;
   background: var(--paper-2); border-radius: var(--r-sm);
-  box-shadow: 0 0 0 1px rgba(90,60,158,0.16);
-  font-size: 13.5px;
-  transition: box-shadow .4s;
+  font-size: 14.5px; line-height: 1.5; white-space: pre-line; max-height: 12em; overflow-y: auto;
 }
-.demo__file {
-  flex: none; display: grid; place-items: center; width: 34px; height: 38px; border-radius: 8px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: .06em; color: #fff; background: var(--queries);
-}
-.demo__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* send it? waiting for approval */
+.demo__doc { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; }
+.demo__name { flex: 1; min-width: 0; color: var(--muted); }
 .demo__ok {
-  flex: none; padding: 6px 13px; border: 0; border-radius: var(--pill); background: none; cursor: pointer;
-  font: inherit; font-size: 12.5px; font-weight: 500; color: var(--accent);
-  box-shadow: inset 0 0 0 1.5px var(--accent);
-  transition: background .35s, color .35s, box-shadow .35s;
+  flex: none; padding: 8px 16px; border: 0; border-radius: var(--pill); cursor: pointer;
+  font: inherit; font-size: 14px; font-weight: 500; text-decoration: none;
+  color: #fff; background: var(--accent);
+  transition: background .35s, color .35s;
 }
+.demo__ok:hover { background: var(--ink); }
 .demo__ok span:last-child { display: none; }
-.demo.is-approved .demo__doc { box-shadow: 0 0 0 1.5px var(--reports); }
-.demo.is-approved .demo__ok { background: var(--reports); color: #fff; box-shadow: none; animation: ok-pop .45s var(--spring); }
+.demo.is-approved .demo__ok { background: var(--reports); animation: ok-pop .45s var(--spring); }
 .demo.is-approved .demo__ok span:first-child { display: none; }
 .demo.is-approved .demo__ok span:last-child { display: inline; }
 .demo.is-approved .demo__ok span:last-child::before { content: '✓ '; }
 @keyframes ok-pop { 40% { transform: scale(1.12); } }
 .demo__ok:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-/* hovering pauses the example at the document: the visitor approves it */
-.demo.is-waiting .demo__ok { animation: ok-pulse 1.4s ease-out infinite; }
-@keyframes ok-pulse { 0% { box-shadow: inset 0 0 0 1.5px var(--accent), 0 0 0 0 rgba(90,60,158,.45); } 100% { box-shadow: inset 0 0 0 1.5px var(--accent), 0 0 0 10px rgba(90,60,158,0); } }
-.demo__note { display: none; margin-top: 10px; font-size: 13px; color: var(--reports); font-weight: 500; }
-.demo.is-live .demo__note { display: block; visibility: hidden; }
-.demo.is-yours .demo__note { visibility: visible; animation: act-in .45s var(--ease) both; }
-.demo.is-clearing .demo__a { opacity: 0 !important; transition: opacity .35s ease !important; }
+/* once the answer is in, Approve calls for a press */
+.demo.is-answered:not(.is-approved) .demo__ok { animation: ok-pulse 1.6s ease-out 1.2s infinite; }
+@keyframes ok-pulse { 0% { box-shadow: 0 0 0 0 rgba(90,60,158,.45); } 100% { box-shadow: 0 0 0 10px rgba(90,60,158,0); } }
+.demo__note { margin-top: 8px; font-size: 13.5px; color: var(--reports); font-weight: 500; }
+.js .demo__note { display: none; }
+.js .demo.is-approved .demo__note { display: block; animation: act-in .45s var(--ease) both; }
 
-/* typing dots, shown while the example plays */
+/* typing dots, while the AI works */
 .demo__typing {
-  display: none; justify-self: start; gap: 5px;
-  background: var(--accent-soft); padding: 15px 18px; border-radius: 20px 20px 20px 6px;
+  display: none; justify-self: end; gap: 5px;
+  background: var(--accent-soft); padding: 15px 18px; border-radius: 20px 20px 6px 20px;
 }
 .demo__typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: typing 1s ease-in-out infinite; }
 .demo__typing i:nth-child(2) { animation-delay: .15s; }
 .demo__typing i:nth-child(3) { animation-delay: .3s; }
 @keyframes typing { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
-
-.demo.is-hover .demo__window { translate: 0 -6px; box-shadow: 0 50px 90px -36px rgba(34,22,42,0.55), 0 0 0 1.5px var(--accent); }
-.demo.is-acting:not(.is-answered) .demo__typing { display: flex; }
-.demo.is-acting:not(.is-answered) .demo__a { display: none; }
+.demo.is-thinking .demo__typing { display: flex; }
+.demo.is-thinking .demo__a { display: none; }
 .demo.is-answered .demo__a { animation: act-in .5s var(--ease) both; }
-.demo.is-answered .demo__src li { animation: act-in .5s var(--ease) both; }
-.demo.is-answered .demo__src li:nth-child(1) { animation-delay: .35s; }
-.demo.is-answered .demo__src li:nth-child(2) { animation-delay: .5s; }
-.demo.is-answered .demo__doc { animation: act-in .55s var(--ease) .85s both; }
+.demo__mail.is-new { animation: act-in .45s var(--ease) both; }
+
+/* their own email: one quiet link that opens a box */
+.demo__ask { border-top: 1px solid var(--rule); padding: 12px clamp(18px, 2.6vw, 28px); display: grid; gap: 10px; }
+.demo__try {
+  justify-self: start; border: 0; background: none; cursor: pointer; padding: 4px 0;
+  font: inherit; font-size: 14px; font-weight: 500; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.demo__try:hover { color: var(--ink); }
+.demo__own { display: grid; gap: 8px; }
+.demo__own textarea {
+  width: 100%; resize: vertical; min-height: 76px;
+  font: inherit; font-size: 15px; line-height: 1.5; color: var(--ink);
+  padding: 10px 14px; border: 0; border-radius: var(--r-sm);
+  background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule);
+}
+.demo__own textarea:focus { outline: none; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.demo__own.is-short textarea { box-shadow: inset 0 0 0 1.5px var(--queries); }
+.demo__send-row { display: flex; align-items: center; gap: 12px; }
+.demo__fine { flex: 1; font-size: 11.5px; line-height: 1.4; color: var(--muted); }
+.demo__send {
+  flex: none; border: 0; cursor: pointer; font: inherit; font-size: 14px; font-weight: 500;
+  padding: 10px 18px; border-radius: var(--pill); color: #fff; background: var(--accent);
+  transition: background .2s;
+}
+.demo__send:hover { background: var(--ink); }
+.demo__send:disabled { opacity: .55; cursor: progress; }
+
 @keyframes act-in { from { opacity: 0; transform: translateY(8px); } }
 
 /* what your AI works with: a strip of pills that drifts and speeds up with the scroll */
@@ -562,6 +578,41 @@ a { color: inherit; }
   @starting-style { .faq details[open] p { opacity: 0; translate: 0 -8px; } }
 }
 
+/* your first pilot: pick a task on the left, the pilot appears on the right */
+.pilot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.pilot__plain { font-size: 18px; max-width: 30em; }
+.pilot__plain a { color: var(--accent); font-weight: 500; }
+.js .pilot__plain { display: none; }
+html:not(.js) .pilot { display: none; }
+.pilot__form fieldset { border: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.pilot__form label { position: relative; cursor: pointer; }
+.pilot__form input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.pilot__form label span {
+  display: block; padding: 14px 22px; border-radius: var(--pill);
+  font-size: 17px; font-weight: 500;
+  background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--rule);
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.pilot__form label:hover span { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.pilot__form input:checked + span { background: var(--accent); color: #fff; box-shadow: none; }
+.pilot__form input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* the pilot: a page from a document */
+.plan {
+  background: var(--paper-2); border-radius: var(--r);
+  box-shadow: 0 40px 80px -40px rgba(34,22,42,0.45), 0 0 0 1px var(--rule);
+  padding: clamp(22px, 3vw, 34px);
+}
+.plan__top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.plan__top span { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.plan__top b { font-family: var(--display); font-weight: 800; font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -0.03em; color: var(--accent); text-align: right; }
+.plan__list { display: grid; margin-bottom: 22px; }
+.plan__list div { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.plan__list dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.plan__list dd { font-size: 16px; line-height: 1.5; }
+.plan__list dd.is-empty { color: var(--muted); }
+.plan__list dd.is-new { animation: act-in .45s var(--ease) both; }
+
 /* ════ CONTACT: a dark rounded panel ════ */
 .contact {
   position: relative; isolation: isolate; overflow: hidden;
@@ -706,20 +757,9 @@ a { color: inherit; }
   .js .hero__mark.is-in .mark__pop { transform: none; }
   .js .hero__mark.is-in .mark__halo { animation: halo 4.2s ease-in-out calc(2.4s + var(--i) * .6s) infinite; }
 
-  /* the example: the window rises in, then the request, the answer, each source and the document */
+  /* the example: the window rises in */
   .js .demo .demo__window { translate: 0 40px; opacity: 0; transition: translate 1s var(--ease) .3s, opacity .6s ease .3s; }
   .js .demo.is-in .demo__window { translate: none; opacity: 1; }
-  .js .demo.is-in.is-hover .demo__window { translate: 0 -6px; transition: translate .5s var(--spring), box-shadow .4s; }
-  .js .demo .demo__q, .js .demo .demo__a, .js .demo .demo__src li, .js .demo .demo__doc {
-    opacity: 0; transform: translateY(10px);
-    transition: opacity .6s var(--ease), transform .7s var(--ease);
-  }
-  .js .demo .demo__q { transition-delay: .9s; }
-  .js .demo .demo__a { transition-delay: 1.8s; }
-  .js .demo .demo__src li:nth-child(1) { transition-delay: 2.4s; }
-  .js .demo .demo__src li:nth-child(2) { transition-delay: 2.6s; }
-  .js .demo .demo__doc { transition-delay: 3s; }
-  .js .demo.is-in .demo__q, .js .demo.is-in .demo__a, .js .demo.is-in .demo__src li, .js .demo.is-in .demo__doc { opacity: 1; transform: none; }
 
   .js .contact__mark .mark__traveller { opacity: 0; transition: opacity .8s ease .9s; }
   .js .contact__mark.is-in .mark__traveller { opacity: 1; }
@@ -735,6 +775,7 @@ a { color: inherit; }
 @media (max-width: 960px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr); }
   .demo { margin-top: 8px; max-width: 560px; }
+  .pilot { grid-template-columns: minmax(0, 1fr); }
   .jobs { grid-template-columns: 1fr; }
   .jobs li:first-child { grid-row: auto; }
   .stats { grid-template-columns: repeat(2, 1fr); }
@@ -769,7 +810,8 @@ a { color: inherit; }
   .card { min-height: 0; }
   .card__top { padding-bottom: 24px; }
   .jobs li { min-height: 0; gap: 28px; }
-  .demo__q, .demo__a { max-width: 100%; }
+  .demo__mail, .demo__a { max-width: 100%; }
+  .demo__send-row { flex-direction: column; align-items: stretch; }
   .hero__mark { width: min(100%, 240px); }
   .mark__tip { font-size: 11px; }
   .panel::after { width: 16px; height: 16px; box-shadow: -26px 0 0 var(--queries-light), -52px 0 0 var(--docs-light); }
@@ -789,5 +831,5 @@ a { color: inherit; }
 
 @media print {
   .reveal { opacity: 1 !important; transform: none !important; }
-  .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy { display: none !important; }
+  .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy, .demo__ask, .pilot__form, .plan__wa { display: none !important; }
 }

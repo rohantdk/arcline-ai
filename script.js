@@ -4,9 +4,10 @@
    - Scroll progress on the nav logo's baseline, the section in view beside it, and
      the nav bar rounding into a pill once the page scrolls
    - Hero: the logo's "a." with a dot per job as its full stop
-   - Scroll reveals, counting stats, labels that decode; the hero example plays
-     question, answer, sources; it then plays the task out in a loop, and pausing it
-     with the mouse lets the visitor press Approve
+   - Scroll reveals, counting stats, labels that decode
+   - The hero example: a buyer's email, the reply drafted, Approve; a visitor can
+     try their own email, sent to /api/demo
+   - Your first pilot: picking a task shows the pilot, sent to us on WhatsApp
    - Strip of what the AI works with, which speeds up and turns with the scroll;
      pointing at a pill shows what the AI does with it (mouse only)
    - The mark in Contact, with a dot that slides along its line
@@ -246,69 +247,130 @@
   });
 
 
-  /* ─── THE EXAMPLE PLAYS ───
-     On its own, in a loop while it is on screen: typing, the answer, its sources,
-     the document, then approval. Hovering it with a mouse pauses at the document
-     so the visitor presses Approve; a tap on Approve works anywhere. */
+  /* ─── THE EXAMPLE: a buyer's email, the reply drafted, Approve ───
+     The example is in the HTML, so the page reads without JavaScript; it plays in
+     once when the box comes into view. "Try it with your own buyer email" opens a
+     box; that email goes to /api/demo (an open-source model on Groq, api/demo.js).
+     When that isn't there (no key, busy, offline) the answer offers WhatsApp, so
+     the box never looks broken. Answers are written with textContent only. */
   {
-    const chat = $('.demo__chat', demo);
-    const ok   = $('.demo__ok', demo);
-    let timers = [], onScreen = false, hovering = false, first = true;
-    const later = (ms, fn) => timers.push(setTimeout(fn, ms));
-    const stop  = () => { timers.forEach(clearTimeout); timers = []; };
-    const set   = (...cls) => {
-      demo.classList.remove('is-acting', 'is-answered', 'is-approved', 'is-clearing', 'is-waiting', 'is-yours');
+    const chat   = $('.demo__chat', demo);
+    const ask    = $('.demo__ask', demo);
+    const own    = $('.demo__own', demo);
+    const open   = $('.demo__try', demo);
+    const field  = $('#demoMail');
+    const send   = $('.demo__send', demo);
+    const mode   = $('.demo__mode', demo);
+    const typing = $('.demo__typing', chat);
+    const mailTpl = $('.demo__mail', chat).cloneNode(true);
+    const tpl    = (id) => $('#' + id).content.cloneNode(true).firstElementChild;
+    let asked = 0;
+    const set = (...cls) => {
+      demo.classList.remove('is-thinking', 'is-answered', 'is-approved');
       demo.classList.add(...cls);
     };
-    const wait  = () => { stop(); set('is-acting', 'is-answered', 'is-waiting'); };
-    const play  = () => {
-      stop();
-      if (reduce || !onScreen || document.hidden) return;
-      set('is-acting');
-      later(1100, () => set('is-acting', 'is-answered'));
-      later(2700, () => hovering ? wait() : set('is-acting', 'is-answered', 'is-approved'));
-      later(6600, () => demo.classList.add('is-clearing'));
-      later(7000, play);
+
+    const fill = (data) => {
+      const a = tpl('demo-live');
+      const missing = String(data.missing || '').trim();
+      $('[data-slot="missing"]', a).textContent = missing ? ' It asks for what is missing: ' + missing[0].toLowerCase() + missing.slice(1).replace(/\.$/, '') + '.' : '';
+      $('[data-slot="reply"]', a).textContent = String(data.reply).trim();
+      return a;
     };
-    const replay = (ms) => { stop(); later(ms, () => { demo.classList.add('is-clearing'); later(400, play); }); };
+    const rest = (text) => {
+      const a = tpl('demo-rest');
+      $('.demo__wa', a).href = 'https://wa.me/918857852631?text=' +
+        encodeURIComponent("Hi Arcline, here's a buyer email. Can you show me the reply our own AI would draft?\n\n" + text.slice(0, 1200));
+      return a;
+    };
+    const draft = async (text) => {
+      const mail = mailTpl.cloneNode(true);
+      $('.demo__from', mail).textContent = "Your buyer's email";
+      $('.demo__text', mail).textContent = text;
+      mail.classList.add('is-new');
+      chat.replaceChildren(mail, typing);
+      set('is-thinking');
+      send.disabled = true;
+      const id = ++asked;
+      let node, live = false;
+      try {
+        const r = await fetch('/api/demo', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }), signal: AbortSignal.timeout(15000),
+        });
+        if (!r.ok) throw new Error(r.status);
+        const data = await r.json();
+        if (data.enquiry === false) node = tpl('demo-odd');
+        else if (data.reply) { node = fill(data); live = true; }
+        else throw new Error('empty');
+      } catch (e) {
+        node = rest(text);
+      }
+      send.disabled = false;
+      if (id !== asked) return;
+      chat.append(node);
+      mode.textContent = live ? 'Live' : 'Example';
+      mode.classList.toggle('is-live', live);
+      set('is-answered');
+    };
 
-    // the window keeps its height while the answer comes and goes
-    const measure = () => { chat.style.minHeight = ''; chat.style.minHeight = chat.offsetHeight + 'px'; };
-    demo.classList.add('is-live');
-    measure();
-    addEventListener('resize', () => { if (!demo.classList.contains('is-acting')) measure(); });
+    ask.hidden = false;
+    open.addEventListener('click', () => {
+      own.hidden = !own.hidden;
+      open.setAttribute('aria-expanded', String(!own.hidden));
+      if (!own.hidden) field.focus();
+    });
+    ask.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = field.value.trim();
+      own.classList.toggle('is-short', text.length < 20);
+      if (text.length < 20) { field.focus(); return; }
+      draft(text);
+    });
+    field.addEventListener('input', () => own.classList.remove('is-short'));
 
-    ok.addEventListener('click', () => {
-      stop();
-      set('is-acting', 'is-answered', 'is-approved', 'is-yours');
-      if (!hovering && !reduce) replay(4000);
+    demo.addEventListener('click', (e) => {
+      if (e.target.closest('button.demo__ok')) set('is-answered', 'is-approved');
     });
 
-    if (fine && !reduce) {
-      demo.addEventListener('pointerenter', (e) => {
-        if (e.pointerType !== 'mouse') return;
-        hovering = true;
-        demo.classList.add('is-hover');
-        if (demo.classList.contains('is-answered') && !demo.classList.contains('is-yours')) wait();
-      });
-      demo.addEventListener('pointerleave', (e) => {
-        if (e.pointerType !== 'mouse') return;
-        hovering = false;
-        demo.classList.remove('is-hover');
-        replay(demo.classList.contains('is-yours') ? 1800 : 300);
-      });
-    }
-
+    // the first time the box is on screen, the reply is drafted
     if (!reduce) {
-      new IntersectionObserver(([entry]) => {
-        onScreen = entry.isIntersecting;
-        if (!onScreen) { stop(); set(); return; }
-        stop();
-        later(first ? 1300 : 300, play);   // the first time, after the window has risen in
-        first = false;
-      }).observe(demo);
-      document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); set(); } else play(); });
+      set('is-thinking');
+      const io = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        setTimeout(() => { if (!asked) set('is-answered'); }, 2200);
+      });
+      io.observe(demo);
     }
+  }
+
+
+  /* ─── YOUR FIRST PILOT ───
+     Picking a task fills the pilot beside it. Its lines are the inputs' data-build
+     and data-still in index.html (no model: instant, and it only says what we can
+     deliver). The WhatsApp link carries it as text. */
+  {
+    const form = $('.pilot__form');
+    const plan = $('.plan');
+    const slot = (k) => $(`[data-plan="${k}"]`, plan);
+    const wa   = $('.plan__wa', plan);
+    const put  = (k, text) => {
+      const dd = slot(k);
+      dd.textContent = text || dd.dataset.empty;
+      dd.classList.toggle('is-empty', !text);
+      if (!reduce && text) { dd.classList.remove('is-new'); void dd.offsetWidth; dd.classList.add('is-new'); }
+    };
+    $$('dd[data-empty]', plan).forEach(dd => dd.classList.add('is-empty'));
+
+    form.addEventListener('change', () => {
+      const task = $('input[name="task"]:checked', form);
+      slot('task').textContent = task.value;
+      put('build', task.dataset.build);
+      put('still', task.dataset.still);
+      wa.href = 'https://wa.me/918857852631?text=' + encodeURIComponent(
+        `Hi Arcline, our first pilot would be: ${task.value}. Can we book the 30-minute call?`);
+    });
   }
 
 
