@@ -125,6 +125,13 @@ one is built. These are sold as a build service; no finished product exists yet.
 2. A/B test a second headline once there is traffic. Measure WhatsApp and email clicks.
 3. Studio email on an own domain to replace the Gmail address.
 4. Own domain: when bought, update the three address tags and the share image (see "Portable copy").
+5. **Allow rule for page checks (owner said "later"):** in auto mode, Context Dev scrapes still asked the owner
+   for permission (outbound to a paid third-party service). Offered: commit `.claude/settings.json` in this repo
+   with `permissions.allow: ["mcp__Context_Dev__web-scrape"]`. It only takes effect in sessions with this repo
+   alone, not in two-repo sessions.
+6. Check the live demo's replies with real enquiries (German, terse WhatsApp-style, a non-enquiry) after the
+   prompt change of 30 October: "happy to quote", placeholders like [price], no invented stock or dates. Watch
+   Groq usage weekly at console.groq.com; the per-visitor limit is per server instance, so it is soft.
 
 ## Checking a change
 
@@ -135,6 +142,13 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
   http.server` answers POSTs with 501, so a pasted email shows the WhatsApp fallback; test the live path with
   `page.route('**/api/demo', ...)` returning JSON (`enquiry`, `missing`, `reply`). The pilot's chips are hidden
   radio inputs: `check({ force: true })`.
+- **The live demo can't be tested from a session:** the network blocks `*.vercel.app` for curl and WebFetch, and
+  Context Dev's browser actions (typing, clicking) need a paid plan. Context Dev's plain scrape can read the live
+  page and `script.js` (to confirm a deploy). For the API, the owner runs this in the site's DevTools Console and
+  sends the line back; `why` in a 503 names the cause (no-key, `groq-<status>-<code>`, timeout, failed,
+  empty-reply):
+  `fetch('/api/demo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:'Hello, we need 500 white cotton bath towels, 600 gsm, delivered to Rotterdam by June.'})}).then(r=>r.json().then(j=>console.log(r.status,j)))`.
+  "grm ERROR" lines in the owner's console come from the Grammarly extension.
 - The strip never stops moving, so Playwright's `scrollIntoViewIfNeeded` and locator actions on pills time out
   ("element is not stable"). Scroll `.marquee` into view with `evaluate`, keep the mouse off it (it pauses the
   strip), find a pill on screen with `getBoundingClientRect()` and hover it with `page.mouse.move`. The strip sits
@@ -147,7 +161,11 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
 2. Check the live page with the Context web-scrape tool (`maxAgeMs: 0`, `formats.parse` with CSS rules in
    `parseParams.rules`, e.g. the new element's text or attribute). The Vercel tools may not be in the session.
 3. Restart the feature branch from the new `main` and give the owner the link, with a hard-reload reminder.
-4. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
+4. Restarting the branch: `git checkout -B <branch> origin/main` then `git push --force-with-lease`. Auto mode's
+   safety check blocked `git commit --amend` with a plain `--force` push; make a new commit instead of amending.
+   Backend-only fixes to an approved feature (the model switch, #6) were merged without a new "make it live";
+   anything visible still waits for it.
+5. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
    doesn't set tracking for the feature branch, and a stop hook then reports it as unpushed. Fix with
    `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>'`, `git fetch`,
    `git branch -u origin/<branch>`.
