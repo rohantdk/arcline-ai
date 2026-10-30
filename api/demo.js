@@ -8,6 +8,9 @@
    - GROQ_MODEL       optional; defaults to MODEL below (check console.groq.com/docs/models)
    - ALLOWED_ORIGINS  optional; comma-separated, defaults to the live site
 
+   When it can't answer, `why` says the cause (no-key, groq-<status>-<code>, timeout,
+   failed, empty-reply) and Vercel's logs hold Groq's message.
+
    Guards: POST from the site only, 1,500 characters at most, a few calls per visitor
    per 10 minutes (per server instance, so a soft limit), 9-second timeout. */
 
@@ -36,7 +39,7 @@ module.exports = async (req, res) => {
   if (!ORIGINS.includes(origin) && !/^http:\/\/localhost(:\d+)?$/.test(origin)) return res.status(403).json({ error: 'origin' });
 
   const key = process.env.GROQ_API_KEY;
-  if (!key) return res.status(503).json({ error: 'resting' });
+  if (!key) return res.status(503).json({ error: 'resting', why: 'no-key' });
 
   const text = String((req.body && req.body.text) || '').trim().slice(0, MAX_CHARS);
   if (text.length < 20) return res.status(400).json({ error: 'short' });
@@ -63,16 +66,23 @@ module.exports = async (req, res) => {
       }),
       signal: AbortSignal.timeout(9000),
     });
-    if (!r.ok) return res.status(503).json({ error: 'resting' });
+    if (!r.ok) {
+      // Groq's own error code (e.g. invalid_api_key, model_decommissioned) says what to fix; it holds no secrets
+      const err = await r.json().catch(() => ({}));
+      const why = 'groq-' + r.status + (err.error && err.error.code ? '-' + err.error.code : '');
+      console.error('Groq refused:', why, err.error && err.error.message);
+      return res.status(503).json({ error: 'resting', why });
+    }
 
     const out = JSON.parse((await r.json()).choices[0].message.content);
     if (out.enquiry === false) return res.status(200).json({ enquiry: false });
 
     const clean = { enquiry: true };
     for (const [k, max] of Object.entries(FIELDS)) clean[k] = String(out[k] || '').trim().slice(0, max);
-    if (!clean.reply) return res.status(503).json({ error: 'resting' });
+    if (!clean.reply) return res.status(503).json({ error: 'resting', why: 'empty-reply' });
     return res.status(200).json(clean);
   } catch (e) {
-    return res.status(503).json({ error: 'resting' });
+    console.error('Demo failed:', e.name, e.message);
+    return res.status(503).json({ error: 'resting', why: e.name === 'TimeoutError' ? 'timeout' : 'failed' });
   }
 };
