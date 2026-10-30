@@ -1,4 +1,4 @@
-# Arcline — Private AI for manufacturers and exporters
+# Arcline — Your company's own AI
 
 The niche site of Arcline: AI engineering only, for owners of manufacturing and export firms. One static page
 (`index.html`, `style.css`, `script.js`, `assets/`), hand-coded, no framework, no build step.
@@ -10,20 +10,23 @@ sites are kept separate on purpose and don't link to each other.
 
 | Section | id | Job |
 |---|---|---|
-| Hero | `#top` | The "a." mark with a dot per job, the promise (headline), who it's for, the call to action, three proof points, and an example of the assistant answering with its sources |
-| The problem | `#problem` | The 7 pm buyer email: the story the reader recognises |
-| What we build | `#build` | Three jobs: export documents, buyer queries, live reports, each with "You get" |
-| Why Arcline | `#why` | Four stats (30, 14, 4, 2), then: data stays yours, answers show sources, we already build for exporters, you stay in control |
-| Proof | `#proof` | Four AI systems already built, each with "What it proves for you" |
-| How it works | `#process` | Discovery call (30 min), written scope and fixed quotation, a pilot on one workflow, handover and support |
-| Questions | `#questions` | Data training, software, non-technical staff, wrong answers, cost |
-| Contact | `#contact` | Closes on the headline's promise; WhatsApp (pre-filled message) and email |
+| Hero | `#top` | The "a." mark with a dot per tile, the headline "Your company's own AI. Not rented. Not shared.", the outcomes line (time, cost, orders), two buttons, and the example of the AI preparing a document |
+| The problem | `#problem` | Dark panel: time lost to paperwork while orders wait |
+| What we build | `#build` | "One AI for your whole company.": three tiles, Win more orders, Save hours, Cut costs (the first one tall) |
+| And it stays yours | `#why` | Three promises in giant type (own it, data stays inside, never trains anyone else's AI), then four stats (30, 14, 4, 2) |
+| Proof | `#proof` | Four AI systems already built, one line each; the right column sits lower |
+| Process | `#process` | Four steps as a staircase: call, fixed quote, one-workflow pilot, grow across teams |
+| Questions | `#questions` | Four questions that open on click (`<details>`, no script) |
+| Contact | `#contact` | Dark rounded panel; WhatsApp (pre-filled message) and email |
 
-The copy follows David Ogilvy's principles (scored 94/100; 100 once a real testimonial and a measured result
-exist). The core promise, "answers with their source, data stays yours", is repeated from hero to close; keep it
-that way when editing.
+The copy is minimal: say each point once, in the fewest words (about 370 words). Outcomes (time, cost, orders)
+lead; ownership and privacy come second.
 
-## Colours and type
+## Colours, shape and type
+
+Rounded interface, square logo: the nav (once scrolled), buttons, chips, tiles, cards and panels are rounded
+(`--r-sm` 14px, `--r` 24px, `--r-lg` up to 44px, `--pill`); the logo, the hero "a.", its dots and the strip's
+bullets stay square, and the square is the full stop of the three promises.
 
 The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band` #2B1631, `--accent` #5A3C9E,
 `--accent-soft` #ECE6F7, `--accent-light` #C3AEF2 (on the dark band), `--paper` #F6F5F2. Schibsted Grotesk
@@ -34,15 +37,18 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Hero: the logo's "a." heads the page. Its line and the "a" draw in, then three square dots pop in as its full
   stop, one per job (violet docs, wine queries, teal reports). Hover or focus shows the job's name, read from the
   "What we build" list; click jumps there.
-- A strip under the hero lists what the assistant reads; it drifts, speeds up with the scroll and turns with its
+- Nav: a flat edge-to-edge bar at the top that lifts into a rounded pill once the page scrolls.
+- A strip of pills under the hero lists what the AI works with; it drifts, speeds up with the scroll and turns with its
   direction. Stops under the pointer.
-- Mono labels decode letter by letter; the stats in Why Arcline count up.
+- Mono labels decode letter by letter; the stats count up.
 - The section in view shows beside the nav logo (wide screens), named from each section's label.
 - Live chips pulse; a spotlight follows the cursor on proof cards.
 - Nav logo's baseline fills with scroll progress; it and the logo's dots take the next job colour (wine, teal,
   violet in turn) for each section, and the section's name shows beside the logo on wide screens.
-- Sections and cards fade up on scroll; section rules and process lines draw in.
-- Hero example plays in order: question, answer, then each source.
+- Sections and cards fade up on scroll; the process steps grow up from the floor like a staircase.
+- Tiles lift on hover; pointing at one promise fades the other two (mouse only).
+- Hero example plays in order on load: request, answer, each source, the document. Hovering it with a mouse
+  plays the task out: typing dots, the answer, sources, the packing list, then Approve turns to Approved.
 - Contact: the "a." draws in and a dot slides along its line to land as the full stop.
 - Magnetic buttons and the contact glow, mouse only.
 

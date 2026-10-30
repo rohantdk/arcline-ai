@@ -60,7 +60,11 @@ one is built. These are sold as a build service; no finished product exists yet.
 - **Minimal copy** (30 October 2026): the owner found the page too wordy, so the copy was cut by half (about
   560 words). Say each point once, in the fewest words; no extra "You get" / "What it proves" lines.
 - No "pilots start from ₹X" line for now.
-- The hero example (spec sheet question) is illustrative and labelled "Example, not client data".
+- **Redesign (30 October 2026), live:** minimal copy (about 370 words), rounded interface with a square logo,
+  a different layout per section, a nav that rounds into a pill on scroll, and a hero example that plays the
+  task on hover. Reviewed first on a private claude.ai preview page, because this Vercel project builds only
+  `main` (branches get no preview).
+- The hero example (packing list request) is illustrative and labelled "Example".
 
 ## Open items
 
