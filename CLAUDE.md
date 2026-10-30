@@ -75,14 +75,16 @@ one is built. These are sold as a build service; no finished product exists yet.
   it so the visitor presses Approve ("That's your team's only step."). Each pill shows a small card: a question and
   what the AI does with it (illustrative, like the hero example; no numbers or results claimed, nothing beyond the
   confirmed promises). The strip still stops under the pointer so the card can be read.
-- **Founder face (30 October 2026), live:** after rameerez.com's squishy face. The owner chose full squish and a
-  geometric avatar drawn from the owner's photo (quiff, trimmed beard and moustache, strong brows, warm skin, dark suit
-  over a light shirt; the photo itself is not in the repo); it first went live in the portfolio's About, then moved here at the owner's request.
+- **Founder face (30 October 2026), live:** after rameerez.com's squishy face. The owner chose full squish over
+  the gentler version advised. It first went live in the portfolio's About, then moved here at the owner's request.
   It sits right of the Contact headline on a violet disc (stacked under the buttons below 960px), captioned
   "Founder" (Rohan is still named once, in the Studio line) with a "Drag the face" hint shown only when it's
-  interactive. Pupils follow the mouse only; dragging works with touch. **Next:** the owner will send a photo to
-  replace the drawing (front-facing, eyes open and sharp, even light, 1000px+); moving real eyes needs the
-  irises redrawn, so show the result before it goes live.
+  interactive. Pupils follow the mouse only; dragging works with touch.
+- **The face looks like the owner** (drawn from a photo the owner sent; the photo is not in the repo): quiff, trimmed
+  beard and moustache, strong brows, warm skin (`--skin`, `--lip` on `.founder`), ears, nose, dark suit over a light
+  shirt. The photo looks up and to the side, so it can't be used with moving eyes; a real-photo version would need a
+  straight-to-camera shot (eyes open and sharp, even light, 1000px+) and redrawn irises, shown before going live.
+  Offered tweaks, not asked for yet: skin tone, taller quiff, thinner beard, calmer smile, tie.
 
 ## Portable copy for other hosts (30 October 2026)
 
@@ -108,3 +110,23 @@ one is built. These are sold as a build service; no finished product exists yet.
 
 Serve with `python3 -m http.server`, test in Playwright (Node package, `NODE_PATH=/opt/node22/lib/node_modules`)
 at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth` equal to the viewport width.
+
+- The hero example's state is in its classes: `is-acting` (typing), `is-answered`, `is-approved`, `is-waiting`
+  (hover pause), `is-yours` (the visitor approved), `is-clearing` (fading before a replay). Read them over time to
+  check the loop.
+- The strip never stops moving, so Playwright's `scrollIntoViewIfNeeded` and locator actions on pills time out
+  ("element is not stable"). Scroll `.marquee` into view with `evaluate`, keep the mouse off it (it pauses the
+  strip), find a pill on screen with `getBoundingClientRect()` and hover it with `page.mouse.move`. The strip sits
+  below the fold at 1360 × 900, so a mouse aimed at it without scrolling hits nothing.
+
+## Making a change live
+
+1. Work on the session's feature branch; show the owner screenshots first. Merge only when the owner says
+   "make it live": open a pull request against `main` and squash-merge it. Vercel deploys `main` in about a minute.
+2. Check the live page with the Context web-scrape tool (`maxAgeMs: 0`, `formats.parse` with CSS rules in
+   `parseParams.rules`, e.g. the new element's text or attribute). The Vercel tools may not be in the session.
+3. Restart the feature branch from the new `main` and give the owner the link, with a hard-reload reminder.
+4. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
+   doesn't set tracking for the feature branch, and a stop hook then reports it as unpushed. Fix with
+   `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>'`, `git fetch`,
+   `git branch -u origin/<branch>`.
