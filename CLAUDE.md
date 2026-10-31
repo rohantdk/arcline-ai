@@ -121,6 +121,24 @@ one is built. These are sold as a build service; no finished product exists yet.
   reads "Rohan Tidke" over "Founder · Arcline" (owner's ask, 31 October 2026), and the Studio line became "AI engineering for
   manufacturers and exporters." so Rohan is named once on the page, in the caption.
 
+## Click counting (31 October 2026)
+
+- The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
+  cookies, first-party: Vercel serves `/_vercel/insights/script.js` from the site itself, so the "no CDN scripts"
+  rule holds). Alternatives offered: Umami Cloud (free, real events), an own `/api/click` counter with Upstash.
+- The project is on the **Hobby** plan, which counts page views only (custom events need Pro). So `script.js`
+  counts each click on a `[data-track]` element as a page view of `/click/<name>` (`va('pageview', { route,
+  path })`, the same call as `@vercel/analytics`' `pageview()`). They show in Analytics → Pages. On Pro, switch to
+  `va('event', { name })`.
+- Names: `whatsapp-demo-call` (Book a 30-minute call after Approve), `whatsapp-demo-fallback` (demo resting),
+  `whatsapp-pilot` (pilot section), `whatsapp-contact` / `email-contact` (Contact buttons), `whatsapp-footer` /
+  `email-footer` (Contact list), `email-copy` (Copy button). A new WhatsApp or email link needs `data-track`.
+- The script loads everywhere but localhost; on a non-Vercel host (Netlify) it would 404 harmlessly: remove it
+  there. Analytics must be enabled in the Vercel project (Analytics tab → Enable) before the deploy that uses it;
+  the `/_vercel/insights` route is added at deploy time.
+- The /click/… views add to the page-view total; read visits from the `/` row. Test locally with a fake host
+  (`page.route('https://arcline.test/**', …)` serving the folder) and read `window.vaq`.
+
 ## Portable copy for other hosts (30 October 2026)
 
 - The owner asked for the site as a zip, to deploy on Vercel or Netlify later with a new custom domain. Given as
@@ -131,13 +149,15 @@ one is built. These are sold as a build service; no finished product exists yet.
   scratchpad and make a fresh one whenever the owner asks (it goes stale with the next change).
 - Told the owner: Netlify Drop (app.netlify.com/drop) takes the folder; on Vercel, add the domain to the existing
   Git-linked `arcline-ai` project (recommended) or run `npx vercel --prod` in the folder.
+- Leave out the Vercel Analytics loader on a non-Vercel host (see "Click counting").
 - On a new domain, update `og:url`, `og:image` and `canonical` in `index.html` (lines 11, 13 and 20) and redraw
   the share image, whose printed address is arcline-ai-ace.vercel.app.
 
 ## Open items
 
 1. Fill the testimonial and result slots when real ones exist.
-2. A/B test a second headline once there is traffic. Measure WhatsApp and email clicks.
+2. A/B test a second headline once there is traffic. (WhatsApp and email clicks are now counted; see
+   "Click counting".)
 3. Studio email on an own domain to replace the Gmail address.
 4. Own domain: when bought, update the three address tags and the share image (see "Portable copy").
 5. **Allow rule for page checks (owner said "later"):** in auto mode, Context Dev scrapes still asked the owner

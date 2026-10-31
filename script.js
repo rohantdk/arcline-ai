@@ -14,6 +14,7 @@
    - The founder's face in Contact: eyes follow the cursor, drag to squish
    - Card spotlight, magnetic buttons and the contact glow (mouse only)
    - Copy email
+   - Counting WhatsApp and email clicks (Vercel Web Analytics)
    All motion is skipped under prefers-reduced-motion.
 */
 
@@ -28,6 +29,29 @@
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fine   = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+
+  /* ─── COUNTING CLICKS (Vercel Web Analytics) ───
+     Vercel serves its analytics script from this site, once Analytics is enabled in
+     the project; no cookies. The Hobby plan counts page views only, so each click on
+     a [data-track] link is counted as a visit to /click/<name> (e.g.
+     /click/whatsapp-demo-call) and shows in the dashboard's Pages list.
+     Skipped on a local server, where the script doesn't exist. */
+  window.va = window.va || function (...a) { (window.vaq = window.vaq || []).push(a); };
+  if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && location.protocol !== 'file:') {
+    const va = document.createElement('script');
+    va.defer = true;
+    va.src = '/_vercel/insights/script.js';
+    document.head.append(va);
+  }
+  const count = (e) => {
+    const el = e.target.closest && e.target.closest('[data-track]');
+    if (!el || (e.type === 'auxclick' && e.button !== 1)) return;
+    const path = '/click/' + el.dataset.track;
+    window.va('pageview', { route: path, path });
+  };
+  document.addEventListener('click', count, true);
+  document.addEventListener('auxclick', count, true);   // middle-click opens a new tab too
 
 
   /* ─── MOBILE MENU ─── */
