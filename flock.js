@@ -1,9 +1,10 @@
 /* Arcline — the flock, in windows on the line
    Each main section has a small dark window beside its heading, sitting on the One Line.
    When it comes into view a flock of square dots (the logo's full stop, many times over)
-   streams in and forms the section's figure: loose papers (problem), three bars (build),
-   a vault (why), four blocks (proof), a staircase (process), one block in orbit (pilot),
-   a clock (cost). Chaos into order.
+   streams in and forms a picture of what the heading says: a stack of documents (problem),
+   the letters AI (build), a database locked in a square (why), four AI chips (proof), steps
+   with the first one lit (process), a calendar week mostly taken by one task (pilot), a
+   clock and a stack of coins (cost). Chaos into order.
    - Mouse only: the dots swirl away from the cursor; a click scatters them. Pointing at
      anything with a job colour on the page lights up that colour in the window in view.
    - Only a window on screen animates.
@@ -28,67 +29,107 @@
     return { name, hex, job, r: n >> 16 & 255, g: n >> 8 & 255, b: n & 255 };
   });
   const P = Object.fromEntries(PAL.map(p => [p.name, p.hex]));
+  P.band = css.getPropertyValue('--band').trim();   // drawn but never sampled: it hides what's behind
+  const BAND = (() => { const n = parseInt(P.band.replace('#', ''), 16); return { r: n >> 16 & 255, g: n >> 8 & 255, b: n & 255 }; })();
 
   let seed = 1;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 
-  // the figures, drawn on a hidden canvas at the window's size (S: the figure's size)
+  // the figures, drawn on a hidden canvas at the window's size (S: the figure's size).
+  // Each one shows what its heading says.
+  const FONT = (px) => `800 ${px}px 'Schibsted Grotesk', system-ui, sans-serif`;
   const DRAW = {
-    pile(g, cx, cy, S) {
-      seed = 7;
-      for (let i = 0; i < 9; i++) {
-        g.save();
-        g.translate(cx + (rnd() - 0.5) * S * 0.7, cy + (rnd() - 0.5) * S * 0.65);
-        g.rotate((rnd() - 0.5) * 1.1);
-        g.lineWidth = Math.max(3, S * 0.02);
-        g.strokeStyle = i % 4 === 1 ? P['queries-light'] : i % 3 === 0 ? P.paper : P['on-band'];
-        const w = S * (0.28 + rnd() * 0.1), h = w * 1.35;
-        g.strokeRect(-w / 2, -h / 2, w, h);
+    // "…the day on paperwork.": a fanned stack of documents, lines of text, a folded corner
+    papers(g, cx, cy, S) {
+      const w = S * 0.5, h = S * 0.66, lw = Math.max(3, S * 0.028);
+      const sheet = (dx, dy, rot, stroke, lines, fold) => {
+        g.save(); g.translate(cx + dx, cy + dy); g.rotate(rot);
+        g.fillStyle = P.band; g.fillRect(-w / 2, -h / 2, w, h);     // hides the sheet behind
+        g.lineWidth = lw; g.strokeStyle = stroke;
+        const f = fold ? w * 0.24 : 0;
+        g.beginPath();
+        g.moveTo(-w / 2, -h / 2); g.lineTo(w / 2 - f, -h / 2); g.lineTo(w / 2, -h / 2 + f);
+        g.lineTo(w / 2, h / 2); g.lineTo(-w / 2, h / 2); g.closePath(); g.stroke();
+        if (fold) { g.beginPath(); g.moveTo(w / 2 - f, -h / 2); g.lineTo(w / 2 - f, -h / 2 + f); g.lineTo(w / 2, -h / 2 + f); g.stroke(); }
+        g.fillStyle = lines;
+        for (let k = 0; k < 5; k++) g.fillRect(-w * 0.32, -h * 0.22 + k * h * 0.13, w * (k === 4 ? 0.36 : 0.64), lw);
         g.restore();
-      }
+      };
+      sheet(-S * 0.16, S * 0.02, -0.28, P['on-band'], P['on-band'], false);
+      sheet(S * 0.16, S * 0.0, 0.22, P['on-band'], P['on-band'], false);
+      sheet(0, S * 0.04, 0, P.paper, P['queries-light'], true);
     },
-    columns(g, cx, cy, S) {
-      const bw = S * 0.22, gap = S * 0.08, base = cy + S * 0.45;
-      [[0.9, 'docs-light'], [0.68, 'queries-light'], [0.48, 'reports-light']].forEach(([h, c], i) => {
-        g.fillStyle = P[c];
-        g.fillRect(cx - bw * 1.5 - gap + i * (bw + gap), base - S * h, bw, S * h);
-      });
+    // "One AI for your whole company.": the letters AI on the logo's baseline
+    ai(g, cx, cy, S) {
+      g.font = FONT(S * 0.62); g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+      g.fillStyle = P['docs-light'];
+      g.fillText('AI', cx - S * 0.04, cy + S * 0.2);
+      g.fillStyle = P.paper; g.fillRect(cx - S * 0.42, cy + S * 0.29, S * 0.68, S * 0.07);
+      g.fillStyle = P['queries-light']; g.fillRect(cx + S * 0.32, cy + S * 0.27, S * 0.11, S * 0.11);
     },
-    vault(g, cx, cy, S) {
-      const s = S * 0.82;
-      g.lineWidth = S * 0.07; g.strokeStyle = P.paper;
+    // "Your data stays inside.": a database locked inside a square
+    data(g, cx, cy, S) {
+      const s = S * 0.86;
+      g.lineWidth = S * 0.05; g.strokeStyle = P.paper;
       g.strokeRect(cx - s / 2, cy - s / 2, s, s);
-      g.fillStyle = P['docs-light']; g.fillRect(cx - S * 0.13, cy - S * 0.13, S * 0.26, S * 0.26);
+      const rx = S * 0.2, ry = S * 0.065, top = cy - S * 0.2, bot = cy + S * 0.2;
+      g.lineWidth = Math.max(3, S * 0.03); g.strokeStyle = P['docs-light'];
+      g.beginPath(); g.ellipse(cx, top, rx, ry, 0, 0, Math.PI * 2); g.stroke();
+      [cy, bot].forEach(y => { g.beginPath(); g.ellipse(cx, y, rx, ry, 0, 0, Math.PI); g.stroke(); });
+      g.beginPath(); g.moveTo(cx - rx, top); g.lineTo(cx - rx, bot); g.moveTo(cx + rx, top); g.lineTo(cx + rx, bot); g.stroke();
     },
-    four(g, cx, cy, S) {
-      const s = S * 0.38, gap = S * 0.1;
+    // "Four AI systems, already built.": four AI chips
+    chips(g, cx, cy, S) {
+      const s = S * 0.34, gap = S * 0.16, lw = Math.max(2.5, S * 0.025);
       ['docs-light', 'queries-light', 'reports-light', 'paper'].forEach((c, i) => {
         const x = cx - s - gap / 2 + (i % 2) * (s + gap), y = cy - s - gap / 2 + Math.floor(i / 2) * (s + gap);
-        g.lineWidth = S * 0.055; g.strokeStyle = P[c]; g.strokeRect(x, y, s, s);
-        g.fillStyle = P[c]; g.fillRect(x + s * 0.62, y + s * 0.62, s * 0.38, s * 0.38);
+        g.strokeStyle = P[c]; g.fillStyle = P[c]; g.lineWidth = lw;
+        g.strokeRect(x, y, s, s);
+        for (let k = 1; k <= 3; k++) {          // the pins
+          const o = s * k / 4, p = s * 0.13;
+          g.fillRect(x + o - lw / 2, y - p, lw, p); g.fillRect(x + o - lw / 2, y + s, lw, p);
+          g.fillRect(x - p, y + o - lw / 2, p, lw); g.fillRect(x + s, y + o - lw / 2, p, lw);
+        }
+        g.font = FONT(s * 0.5); g.textAlign = 'center'; g.textBaseline = 'middle';
+        g.fillText('AI', x + s / 2, y + s / 2 + s * 0.04);
       });
     },
+    // "Start with one job. Grow from there.": steps, the first one lit
     stairs(g, cx, cy, S) {
       const bw = S * 0.23, base = cy + S * 0.46;
-      ['on-band', 'accent-soft', 'docs-light', 'paper'].forEach((c, i) => {
+      ['docs-light', 'on-band', 'on-band', 'paper'].forEach((c, i) => {
         const h = S * 0.23 * (i + 1);
         g.fillStyle = P[c];
-        g.fillRect(cx - bw * 2 + i * bw + 2, base - h, bw - 4, h);
+        g.fillRect(cx - bw * 2 + i * bw + 3, base - h, bw - 6, h);
       });
     },
-    one(g, cx, cy, S) {
-      g.lineWidth = Math.max(2, S * 0.02); g.strokeStyle = P['on-band'];
-      g.beginPath(); g.arc(cx, cy, S * 0.48, 0, Math.PI * 2); g.stroke();
-      g.beginPath(); g.arc(cx, cy, S * 0.32, 0, Math.PI * 2); g.stroke();
-      g.fillStyle = P['docs-light']; g.fillRect(cx - S * 0.15, cy - S * 0.15, S * 0.3, S * 0.3);
+    // "Which task eats your team's week?": a calendar week, most of it taken by one task
+    week(g, cx, cy, S) {
+      const w = S * 0.94, h = S * 0.72, x = cx - w / 2, y = cy - h / 2 + S * 0.06, lw = Math.max(3, S * 0.03);
+      g.lineWidth = lw; g.strokeStyle = P.paper; g.strokeRect(x, y, w, h);
+      g.fillStyle = P.paper; g.fillRect(x, y, w, h * 0.2);                       // the header
+      g.fillRect(x + w * 0.22, y - S * 0.1, lw * 1.6, S * 0.16);                 // the rings
+      g.fillRect(x + w * 0.78 - lw * 1.6, y - S * 0.1, lw * 1.6, S * 0.16);
+      const cols = 7, cw = w / cols, top = y + h * 0.3, ch = h * 0.6;
+      for (let d = 0; d < cols; d++) {
+        const taken = d < 5 && d !== 2 ? 1 : 0;   // the task eats most of the week
+        g.fillStyle = taken ? P['queries-light'] : P['on-band'];
+        const ih = taken ? ch * 0.84 : ch * 0.22;
+        g.fillRect(x + d * cw + cw * 0.18, top + ch - ih, cw * 0.64, ih);
+      }
     },
-    clock(g, cx, cy, S) {
-      g.lineWidth = S * 0.07; g.strokeStyle = P['reports-light'];
-      g.beginPath(); g.arc(cx, cy, S * 0.42, 0, Math.PI * 2); g.stroke();
+    // "What does that task cost you now?": time and money, a clock and a stack of coins
+    cost(g, cx, cy, S) {
+      const r = S * 0.27, ox = cx - S * 0.2;
+      g.lineWidth = S * 0.05; g.strokeStyle = P['reports-light'];
+      g.beginPath(); g.arc(ox, cy, r, 0, Math.PI * 2); g.stroke();
       g.strokeStyle = P.paper;
-      g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx, cy - S * 0.28); g.stroke();
-      g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + S * 0.2, cy); g.stroke();
-      g.fillStyle = P['queries-light']; g.fillRect(cx - S * 0.06, cy - S * 0.06, S * 0.12, S * 0.12);
+      g.beginPath(); g.moveTo(ox, cy); g.lineTo(ox, cy - r * 0.62); g.moveTo(ox, cy); g.lineTo(ox + r * 0.45, cy); g.stroke();
+      const kx = cx + S * 0.3, kw = S * 0.32, kh = S * 0.075;
+      g.fillStyle = P['queries-light'];
+      for (let k = 0; k < 5; k++) {
+        g.beginPath(); g.ellipse(kx, cy + S * 0.3 - k * kh * 1.25, kw / 2, kh / 2, 0, 0, Math.PI * 2); g.fill();
+      }
     },
   };
 
@@ -98,7 +139,7 @@
   function sample(fig, w, h, n) {
     off.width = w; off.height = h;
     og.clearRect(0, 0, w, h);
-    DRAW[fig](og, w / 2, h / 2, Math.min(w, h) * 0.78);
+    DRAW[fig](og, w / 2, h / 2, Math.min(w, h) * 0.8);
     const data = og.getImageData(0, 0, w, h).data;
     let area = 0;
     for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) if (data[(y * w + x) * 4 + 3] > 128) area += 4;
@@ -107,6 +148,7 @@
     for (let y = step / 2; y < h; y += step) for (let x = step / 2; x < w; x += step) {
       const i = (Math.floor(y) * w + Math.floor(x)) * 4;
       if (data[i + 3] <= 128) continue;
+      if (Math.abs(data[i] - BAND.r) + Math.abs(data[i + 1] - BAND.g) + Math.abs(data[i + 2] - BAND.b) < 30) continue;   // the window's own colour: empty
       let best = 0, bd = 1e9;
       PAL.forEach((p, k) => { const d = (p.r - data[i]) ** 2 + (p.g - data[i + 1]) ** 2 + (p.b - data[i + 2]) ** 2; if (d < bd) { bd = d; best = k; } });
       pts.push({ x, y, c: best });
@@ -115,7 +157,7 @@
     while (pts.length > n) pts.splice(Math.floor(rnd() * pts.length), 1);
     const base = pts.length;
     for (let k = 0; pts.length < n && base; k++) { const p = pts[k % base]; pts.push({ x: p.x + (rnd() - 0.5) * 2, y: p.y + (rnd() - 0.5) * 2, c: p.c }); }
-    return { pts, size: clamp(step * 0.66, 2, 4.5) };
+    return { pts, size: clamp(step * 0.72, 2, 4) };
   }
 
   /* ─── one flock per window ─── */
@@ -131,7 +173,7 @@
       f.W = Math.max(1, Math.round(r.width)); f.H = Math.max(1, Math.round(r.height));
       f.dpr = Math.min(2, devicePixelRatio || 1);
       cv.width = Math.round(f.W * f.dpr); cv.height = Math.round(f.H * f.dpr);
-      f.N = f.W < 260 ? 380 : 520;
+      f.N = f.W < 260 ? 650 : 900;
       const s = sample(f.fig, f.W, f.H, f.N);
       f.size = s.size;
       const N = f.N;
@@ -235,6 +277,8 @@
 
   const setupAll = () => flocks.forEach(f => f.setup());
   setupAll();
+  // the AI letters use the heading font: draw again once it has loaded
+  if (document.fonts) document.fonts.load("800 40px 'Schibsted Grotesk'").then(setupAll);
   flocks.forEach(f => io.observe(f.box));
   let rz;
   addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(setupAll, 150); });

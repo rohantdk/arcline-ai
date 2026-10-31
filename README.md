@@ -45,7 +45,7 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   pulls it; it springs back. Where it runs is set in `stationFor` (each section's `.head`, or `.steps`, `.faq-wrap`).
 - **The flock** (`flock.js`): seven sections (problem, build, why, proof, process, pilot, cost) have a `.head` with
   their label, heading and a small dark `.flock` window that sits on the line. On screen, a flock of square dots
-  streams in and forms the figure in `data-fig` (pile, columns, vault, four, stairs, one, clock; drawn in `DRAW`).
+  streams in and forms the figure in `data-fig` (papers, ai, data, chips, stairs, week, cost; drawn in `DRAW`).
   Mouse: the dots swirl from the cursor, a click scatters them, hovering anything with `data-job` lights that
   colour.
 - Without JavaScript there is no line and no windows; under reduced motion the line is drawn whole and the figures

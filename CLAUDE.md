@@ -224,10 +224,13 @@ one is built. These are sold as a build service; no finished product exists yet.
   on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark
   windows (`flock.js`): each of seven sections (problem, build, why, proof, process, pilot, cost) has a `.head`
   in `index.html` holding its label, heading and a `.flock` window on the right (below the heading on phones);
-  the line runs under the `.head`, so each window sits on the line. When a window is on screen its flock (about
-  500 dots) streams in and forms the figure named in `data-fig` (pile, columns, vault, four, stairs, one, clock;
-  drawn in `DRAW`). Mouse: dots swirl from the cursor, a click scatters them, hovering a `data-job` element
-  lights that colour. Left out to keep it calm: the split screen and the flock behind the page. Hero, Questions
+  the line runs under the `.head`, so each window sits on the line. When a window is on screen its flock streams in
+  and forms the figure named in `data-fig` (papers, ai, data, chips, stairs, week, cost; drawn in `DRAW`). Mouse: dots swirl from the cursor, a click scatters them, hovering a `data-job` element
+  lights that colour. Each figure must show what its heading says (owner, 31 October 2026, after it went live:
+  "the dynamic thing should be associated with the text surrounding it"): a stack of documents for paperwork, the
+  letters AI, a database locked in a square for "your data stays inside", four AI chips for "four AI systems", steps
+  with the first lit, a calendar week mostly taken by one task, a clock and coins for cost. About 900 dots a window
+  (650 on phones). Left out to keep it calm: the split screen and the flock behind the page. Hero, Questions
   and Contact have no window. Reduced motion: figures drawn at once; no JS: windows hidden.
 
 ## Click counting (31 October 2026)
