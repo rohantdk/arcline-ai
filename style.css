@@ -315,9 +315,21 @@ a { color: inherit; }
 /* once the answer is in, Approve calls for a press */
 .demo.is-answered:not(.is-approved) .demo__ok { animation: ok-pulse 1.6s ease-out 1.2s infinite; }
 @keyframes ok-pulse { 0% { box-shadow: 0 0 0 0 rgba(90,60,158,.45); } 100% { box-shadow: 0 0 0 10px rgba(90,60,158,0); } }
-.demo__note { margin-top: 8px; font-size: 13.5px; color: var(--reports); font-weight: 500; }
+.demo__note {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px;
+  margin-top: 10px; font-size: 13.5px; color: var(--reports); font-weight: 500;
+}
+/* after Approve: the next step for the visitor */
+.demo__call {
+  flex: none; padding: 8px 16px; border-radius: var(--pill);
+  font-size: 14px; font-weight: 500; text-decoration: none;
+  color: #fff; background: var(--ink); transition: background .3s;
+}
+.demo__call::after { content: ' →'; }
+.demo__call:hover { background: var(--accent); }
+.demo__call:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .js .demo__note { display: none; }
-.js .demo.is-approved .demo__note { display: block; animation: act-in .45s var(--ease) both; }
+.js .demo.is-approved .demo__note { display: flex; animation: act-in .45s var(--ease) both; }
 
 /* the cursor that shows the step: glides to Approve and presses it (script.js) */
 .demo__cursor {

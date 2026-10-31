@@ -348,13 +348,15 @@
     });
     field.addEventListener('input', () => { keep(); own.classList.remove('is-short'); });
 
-    const approve = () => {
+    // after Approve, "Book a 30-minute call" shows. When the visitor pressed it, it
+    // stays; the demo cursor's presses go back to the example (all but the last)
+    const approve = (again) => {
       set('is-answered', 'is-approved');
       keep();
-      resetTimer = setTimeout(() => { reset(); guide.next(); }, 3000);
+      if (again) resetTimer = setTimeout(() => { reset(); guide.next(); }, 3000);
     };
     demo.addEventListener('click', (e) => {
-      if (e.target.closest('button.demo__ok')) approve();
+      if (e.target.closest('button.demo__ok')) approve(false);
     });
 
     /* A cursor shows the one step: it glides to Approve and presses it, then the
@@ -393,7 +395,7 @@
           timer = setTimeout(() => {
             hand.classList.remove('is-press');
             if (++plays >= 3) off = true;   // three plays teach the step; then it rests
-            approve();
+            approve(!off);
             timer = setTimeout(() => hand.classList.remove('is-on', 'is-tap'), 700);
           }, 160);
         }, 1050);
