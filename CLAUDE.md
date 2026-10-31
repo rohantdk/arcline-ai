@@ -187,6 +187,19 @@ one is built. These are sold as a build service; no finished product exists yet.
   copy; the yearly cost is double-underlined; Contact is the last page with a signature line and the founder as a
   clipped photo. Palette and copy unchanged. Reduced motion: no dealing, typing or lamp; no JS: every sheet reads.
 
+- **"Murmuration" redesign (31 October 2026), preview only, not live:** the third experiment ("really crazy,
+  something no one ever thought about"), again built from the live site; One Line (9de6003) and The Document
+  (4ff6aa0) stay in this branch's history with their own preview pages. A flock of 1,600 square dots (900 on
+  phones), the logo's full stop many times over, streams like starlings into a figure per section (`swarm.js`):
+  the "a." with three dots, a pile of loose sheets (problem), three bars (build), a vault (why), four blocks
+  (proof), a staircase (process), one block with orbits (pilot), a clock (cost), two chat bubbles (questions),
+  the "a." with one dot (contact). Story: chaos into order. Wide screens (1100px+): a dark stage on the right
+  (44vw) with the section's number and label, the page a reading column on the left; phones: the flock lives
+  behind the page and each figure rides in the 46vh gap above its section. Mouse: the flock swirls from the
+  cursor, a click on the stage scatters it, pointing at anything with `data-job` lights up that colour. Figures
+  are drawn on a hidden canvas and sampled into points, so new ones are a few lines in `DRAW`. Reduced motion:
+  dots jump to each figure, no drift; no JS: the usual page.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
