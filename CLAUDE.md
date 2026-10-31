@@ -176,6 +176,17 @@ one is built. These are sold as a build service; no finished product exists yet.
   logo's ends): `--r*` and `--pill` are 0, hard offset shadows (`--hard`), full-bleed bands; chat bubbles stay round.
   Bigger type (hero 132px max). Reduced motion: full line, no head, no wave; no JS: no line.
 
+- **"The Document" redesign (31 October 2026), preview only, not live:** a second, separate experiment the owner
+  asked for after liking One Line ("whole new redesign, we are just experimenting"). Built from the live site, not
+  on top of One Line, which stays in this branch's history (commit 9de6003) and its own preview page. The page is a
+  dark desk (`--desk`, the band colour, with a lamp glow following the mouse) and every section's `.wrap` is a white
+  sheet at a slight angle, with line numbers, a red margin rule and a page number (`doc.js`). Sheets slide onto the
+  desk; headings type themselves with a violet caret (the full text stays in `aria-label` while typing); the problem
+  is a pink memo with "paperwork." highlighted (a `<mark>`, copy unchanged); the three jobs and the four steps are
+  form boxes that tick; the promises are rubber stamps; proof cards are clipped index cards; the plan is a carbon
+  copy; the yearly cost is double-underlined; Contact is the last page with a signature line and the founder as a
+  clipped photo. Palette and copy unchanged. Reduced motion: no dealing, typing or lamp; no JS: every sheet reads.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
