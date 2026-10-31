@@ -30,7 +30,8 @@ lead; ownership and privacy come second.
 Square, like the logo ("One Line", live 31 October 2026): the logo is one thick line with square ends and square
 dots, and the page is built from it. `--r-sm`, `--r`, `--r-lg` and `--pill` are 0; boxes have hard offset shadows
 (`--hard`); the problem and contact bands run edge to edge. Only the chat bubbles (hero example, questions) stay
-round. Headings are large (hero up to 132px).
+round. Headings are large (hero up to 132px), and so are the section labels: a numbered square and the section's
+name, 18–30px.
 
 The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band` #2B1631, `--accent` #5A3C9E,
 `--accent-soft` #ECE6F7, `--accent-light` #C3AEF2 (on the dark band), `--paper` #F6F5F2. Schibsted Grotesk

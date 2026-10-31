@@ -165,78 +165,52 @@ one is built. These are sold as a build service; no finished product exists yet.
   (`formats.highlights`, query `"name":"@kobra"`; `formats.json` guessed wrong), then scrape the item JSON
   (e.g. `https://kobra.systems/r/conversation.json`) with `formats.bytes` and decode the base64.
 
-- **"One Line" redesign (31 October 2026), first experiment (now live, combined with Murmuration below):** the owner asked for a "crazy, eye-catching,
-  interactive" redesign keeping the palette and every word of copy, with a backup first. Backup: branch
-  `backup/pre-redesign` (commit 5c073bd, the live site before it; the proxy refused the tag push). Restore with
-  `git checkout -B main origin/backup/pre-redesign` in a PR, or just don't merge the redesign. Concept chosen by the
-  owner from four: the logo's one thick line runs through the whole page (`line.js`): it leaves the hero "a.", runs
-  under each heading left-right-left, the process steps are stops on it, and it ends as the baseline of the Contact
-  "a."; it draws with the scroll, a square head takes each section's job colour, section numbers light up when it
-  arrives. Mouse only: crossing it plucks it (a damped wave), grabbing pulls it. Everything else went square (the
-  logo's ends): `--r*` and `--pill` are 0, hard offset shadows (`--hard`), full-bleed bands; chat bubbles stay round.
-  Bigger type (hero 132px max). Reduced motion: full line, no head, no wave; no JS: no line.
+- **Superseded:** the rounded look above (30 October redesign: rounded panels, pill nav, rounded buttons) was
+  replaced on 31 October 2026 by the square "One Line" design below. The copy, demo, pilot, calculator, questions,
+  face and click counting stayed as they were.
 
-- **"The Document" redesign (31 October 2026), preview only, not live:** a second, separate experiment the owner
-  asked for after liking One Line ("whole new redesign, we are just experimenting"). Built from the live site, not
-  on top of One Line, which stays in this branch's history (commit 9de6003) and its own preview page. The page is a
-  dark desk (`--desk`, the band colour, with a lamp glow following the mouse) and every section's `.wrap` is a white
-  sheet at a slight angle, with line numbers, a red margin rule and a page number (`doc.js`). Sheets slide onto the
-  desk; headings type themselves with a violet caret (the full text stays in `aria-label` while typing); the problem
-  is a pink memo with "paperwork." highlighted (a `<mark>`, copy unchanged); the three jobs and the four steps are
-  form boxes that tick; the promises are rubber stamps; proof cards are clipped index cards; the plan is a carbon
-  copy; the yearly cost is double-underlined; Contact is the last page with a signature line and the founder as a
-  clipped photo. Palette and copy unchanged. Reduced motion: no dealing, typing or lamp; no JS: every sheet reads.
+## Live design: One Line + the flock (31 October 2026)
 
-- **"Murmuration" redesign (31 October 2026), preview only, not live:** the third experiment ("really crazy,
-  something no one ever thought about"), again built from the live site; One Line (9de6003) and The Document
-  (4ff6aa0) stay in this branch's history with their own preview pages. A flock of 1,600 square dots (900 on
-  phones), the logo's full stop many times over, streams like starlings into a figure per section (`swarm.js`):
-  the "a." with three dots, a pile of loose sheets (problem), three bars (build), a vault (why), four blocks
-  (proof), a staircase (process), one block with orbits (pilot), a clock (cost), two chat bubbles (questions),
-  the "a." with one dot (contact). Story: chaos into order. Wide screens (1100px+): a dark stage on the right
-  (44vw) with the section's number and label, the page a reading column on the left; phones: the flock lives
-  behind the page and each figure rides in the 46vh gap above its section. Mouse: the flock swirls from the
-  cursor, a click on the stage scatters it, pointing at anything with `data-job` lights up that colour. Figures
-  are drawn on a hidden canvas and sampled into points, so new ones are a few lines in `DRAW`. Reduced motion:
-  dots jump to each figure, no drift; no JS: the usual page.
-
-- **"The Loom" redesign (31 October 2026), preview only, not live:** the fourth experiment, built from the live
-  site (One Line 9de6003, The Document 4ff6aa0 and Murmuration 25cef60 stay in history with their preview pages).
-  The page weaves itself (`loom.js`): a fixed canvas of fine warp threads behind everything (every seventh one
-  violet, with knots) that part around the mouse and spring back; before the strip and each section a band of
-  cloth is woven row by row by a violet shuttle when it comes into view: a twill in the band's job colour (docs,
-  queries, reports in turn) with the logo's three dots woven in, and a fringe above and below. Cards, tiles, stats,
-  steps, panels and solid buttons get dashed stitched seams; section labels are woven labels (ink tag, light
-  square). Story: scattered threads (email, Excel, ERP) woven into one cloth. Reduced motion: bands already woven,
-  threads still; no JS: no threads or bands.
-
-- **"Departures" redesign (31 October 2026), preview only, not live:** the fifth experiment, built from the live
-  site (One Line 9de6003, The Document 4ff6aa0, Murmuration 25cef60, The Loom 3b1cf97 stay in history with their
-  preview pages). The page is a departures board at night (`flap.js`, scoped to `html.has-flap`, so without JS the
-  usual light page shows): a dark hall with a faint slot grid, and every headline (hero, section titles, the
-  problem, contact, the three promises) a row of split-flap tiles that spin through letters and land left to right
-  when in view, and spin again on mouse hover. Words stay unbroken (`.fw`), the heading keeps its text in
-  `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
-  `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
-
-- **Smooth example box (31 October 2026):** the owner saw the page jump when the hero example's reply arrived.
-  The typing dots now sit where the reply will be (same grid cell) and the reply keeps its space while hidden, so
-  the scripted loop doesn't change the box's height; any other change (a pasted email's reply, the call button after
-  Approve, the own-email box) eases the window's height over 0.5 s (a MutationObserver in `script.js`). Measured:
-  the strip below moved 213px in one frame before; now at most about 20px per 50 ms.
-- **Live: One Line + Murmuration (31 October 2026):** after five experiments the owner
-  picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both". Built
-  on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark
-  windows (`flock.js`): each of seven sections (problem, build, why, proof, process, pilot, cost) has a `.head`
-  in `index.html` holding its label, heading and a `.flock` window on the right (below the heading on phones);
-  the line runs under the `.head`, so each window sits on the line. When a window is on screen its flock streams in
-  and forms the figure named in `data-fig` (papers, ai, data, chips, stairs, week, cost; drawn in `DRAW`). Mouse: dots swirl from the cursor, a click scatters them, hovering a `data-job` element
-  lights that colour. Each figure must show what its heading says (owner, 31 October 2026, after it went live:
-  "the dynamic thing should be associated with the text surrounding it"): a stack of documents for paperwork, the
-  letters AI, a database locked in a square for "your data stays inside", four AI chips for "four AI systems", steps
-  with the first lit, a calendar week mostly taken by one task, a clock and coins for cost. About 900 dots a window
-  (650 on phones). Left out to keep it calm: the split screen and the flock behind the page. Hero, Questions
-  and Contact have no window. Reduced motion: figures drawn at once; no JS: windows hidden.
+- **How it came about:** the owner asked for a "crazy, eye-catching, interactive, unconventional" redesign, keeping
+  the palette and every word of copy, with a backup first. Five full experiments were built and previewed (below);
+  the owner picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both".
+  Live as #20, then #21 (clearer figures) and #22 (smooth example box).
+- **Backup of the site before it:** branch `backup/pre-redesign` (commit 5c073bd). To restore, open a PR from it
+  into `main`. (The proxy refused pushing a tag.)
+- **The One Line** (`line.js`): the logo's thick line runs through the page. It leaves the hero "a.", runs under
+  each section's `.head` (left to right, then back; `stationFor`), carries the process steps as stops (the line runs
+  along `.steps`) and ends as the baseline of the Contact "a.". It draws with the scroll; a square head takes each
+  section's colour; section numbers light up (`.is-reached`) when it arrives. Mouse only: crossing it plucks it (a
+  damped wave), grabbing pulls it, it springs back. It rebuilds on any layout change (ResizeObserver on body).
+- **The flock** (`flock.js`): seven sections (problem, build, why, proof, process, pilot, cost) have a `.head` in
+  `index.html` holding the label, the heading and a small dark `.flock` window (right of the heading; below it on
+  phones), so each window sits on the line. On screen, about 900 dots (650 on phones) stream in and form the figure
+  in `data-fig`, drawn in `DRAW`. **Each figure must show what its heading says** (owner: "the dynamic thing should
+  be associated with the text surrounding it"): `papers` (a stack of documents: paperwork), `ai` (the letters AI on
+  the logo's baseline), `data` (a database locked in a square: your data stays inside), `chips` (four AI chips: four
+  AI systems), `stairs` (first step lit: start with one job), `week` (a calendar week mostly taken by one task),
+  `cost` (a clock and a stack of coins). Shapes drawn in `P.band` hide what's behind and are never sampled. Mouse:
+  dots swirl from the cursor, a click scatters them, hovering any `data-job` element lights that colour. Hero,
+  Questions and Contact have no window.
+- **Look:** square like the logo's ends (`--r*`, `--pill` = 0), hard offset shadows (`--hard`), full-bleed problem
+  and contact bands, headings up to about 104px (hero 132px). Only chat bubbles are round. **Section labels are
+  large** (owner, 31 October: "the heading of each section is so small"): the station number square and the name
+  at 18–30px, `.block .eyebrow, .contact .eyebrow`.
+- **Example box doesn't jump** (owner noticed the page jumping when the reply arrived): the typing dots share the
+  reply's grid cell and the reply keeps its space while hidden; any other height change of `.demo__window` eases
+  over 0.5 s (a MutationObserver in `script.js`).
+- Without JS: no line, no windows, the page reads in full. Reduced motion: the whole line drawn, figures drawn at
+  once, nothing moves.
+- **The five experiments** (each built from the live site; code in this repo's history, previews are the owner's
+  private claude.ai pages): One Line (commit 9de6003, https://claude.ai/artifact/VTUZNyu8eXKgPtzZ2pynaZ); The
+  Document, the page as paperwork the AI fills in on a desk (4ff6aa0,
+  https://claude.ai/artifact/VAhLJcAcZt6Zb6dqUSPtj6); Murmuration, a flock drawing each section on a dark stage
+  beside a reading column (25cef60, https://claude.ai/artifact/H3Ri1MedyQhw9RBeN5NDYt); The Loom, the page weaving
+  itself (3b1cf97, https://claude.ai/artifact/PGHBFJaR8vKMRaYW7Z6Bqg); Departures, split-flap headlines on a night
+  board (b678da0, https://claude.ai/artifact/XEvr3fha3MhhYpotv5Vojk). The live mix's preview:
+  https://claude.ai/artifact/CZvKyz9hMvnMCtmivZyx4B (slug 5dad30a4-472f-4fe2-adab-0d4f12deaf94).
+- Advised and agreed: The Document sells best, Murmuration is the most memorable; judge the live design by the call
+  clicks (see "Click counting"), two weeks before and after 31 October.
 
 ## Click counting (31 October 2026)
 
@@ -269,9 +243,9 @@ one is built. These are sold as a build service; no finished product exists yet.
 ## Portable copy for other hosts (30 October 2026)
 
 - The owner asked for the site as a zip, to deploy on Vercel or Netlify later with a new custom domain. Given as
-  `arcline-ai-site.zip`: one top folder `arcline-ai-site/` with `index.html`, `style.css`, `script.js` and
-  `assets/` (`favicon.svg`, `og-banner.jpg`). Internal paths are relative, so it works on any host unchanged;
-  tested by serving the extracted folder.
+  `arcline-ai-site.zip`: one top folder `arcline-ai-site/` with `index.html`, `style.css`, `script.js`, `assets/`
+  (`favicon.svg`, `og-banner.jpg`) and, since 31 October 2026, `line.js` and `flock.js`. Internal paths are
+  relative, so it works on any host unchanged; tested by serving the extracted folder.
 - Leave `CLAUDE.md`, `README.md` and `.git` out of any deploy copy. Don't commit the zip; build it in the
   scratchpad and make a fresh one whenever the owner asks (it goes stale with the next change).
 - Told the owner: Netlify Drop (app.netlify.com/drop) takes the folder; on Vercel, add the domain to the existing
@@ -297,6 +271,10 @@ one is built. These are sold as a build service; no finished product exists yet.
 7. **About December 2026:** after a month of counts, the owner brings the numbers; improve the weakest call button
    or remove buttons with no clicks. The owner's test click (Approve → Book a 30-minute call → a
    `/click/whatsapp-demo-call` row in Analytics → Pages) was not confirmed in the session.
+8. **The redesign on iPhone:** the line, pulling it, the flock windows and the smooth example box were tested in
+   Chromium only. The owner checks on iPhone (Safari); fix anything reported.
+9. **Judge the redesign by calls, not looks:** about mid-November 2026, compare call clicks ÷ visits for the two
+   weeks before and after 31 October (Vercel → Analytics → Pages). If calls fell, simplify (e.g. fewer windows).
 
 ## Checking a change
 
@@ -324,6 +302,11 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
   strip), find a pill on screen with `getBoundingClientRect()` and hover it with `page.mouse.move`. The strip sits
   below the fold at 1360 × 900, so a mouse aimed at it without scrolling hits nothing.
 
+- The line and the flock: check `.oneline__path` has a `d`, every section's id in `.is-reached` after scrolling
+  to the end, and screenshot each `.flock` with `clip` set to its box after ~3.5 s (the dots need time to arrive).
+  To catch layout jumps, sample an element's `top` every 50 ms (the strip under the hero box moved 213px in one
+  frame before #22).
+
 ## Making a change live
 
 1. Work on the session's feature branch; show the owner screenshots first. Merge only when the owner says
@@ -331,11 +314,15 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
 2. Check the live page with the Context web-scrape tool (`maxAgeMs: 0`, `formats.parse` with CSS rules in
    `parseParams.rules`, e.g. the new element's text or attribute). The Vercel tools may not be in the session.
 3. Restart the feature branch from the new `main` and give the owner the link, with a hard-reload reminder.
-4. Restarting the branch: `git checkout -B <branch> origin/main` then `git push --force-with-lease`. Auto mode's
+4. Previews: publish the repo's files as a multi-file claude.ai page with `publish_files` (index.html, style.css,
+   script.js, line.js, flock.js, assets/favicon.svg); for a change, republish only the changed files to the same
+   slug with its `base_version`. Merging via the GitHub tools needs the full 40-character head SHA. To confirm a
+   deploy, scrape the page with `formats.parse` rules or a changed script with `formats.highlights`.
+5. Restarting the branch: `git checkout -B <branch> origin/main` then `git push --force-with-lease`. Auto mode's
    safety check blocked `git commit --amend` with a plain `--force` push; make a new commit instead of amending.
    Backend-only fixes to an approved feature (the model switch, #6) were merged without a new "make it live";
    anything visible still waits for it.
-5. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
+6. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
    doesn't set tracking for the feature branch, and a stop hook then reports it as unpushed. Fix with
    `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>'`, `git fetch`,
    `git branch -u origin/<branch>`.

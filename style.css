@@ -98,12 +98,18 @@ a { color: inherit; }
   margin-bottom: 20px;
   display: flex; align-items: center; gap: 12px;
 }
+/* each section's label is a station sign: a large number square and the section's name,
+   sized to sit with the big headline under it */
+.block .eyebrow, .contact .eyebrow {
+  font-size: clamp(18px, 2.2vw, 30px); letter-spacing: 0.12em; line-height: 1;
+  gap: .6em; margin-bottom: clamp(22px, 2.6vw, 36px);
+}
 .eyebrow--light { color: var(--accent-light); }
 main { counter-reset: station; }
 .block .eyebrow::before, .contact .eyebrow::before {
   counter-increment: station; content: counter(station, decimal-leading-zero);
-  display: inline-grid; place-items: center; width: 2.6em; height: 2.6em; flex: none;
-  font-size: .82em; letter-spacing: 0; color: var(--paper); background: var(--ink);
+  display: inline-grid; place-items: center; width: 2.3em; height: 2.3em; flex: none;
+  font-size: .78em; letter-spacing: 0; color: var(--paper); background: var(--ink);
   transition: background .5s, color .5s, transform .5s var(--spring);
 }
 .contact .eyebrow::before { background: var(--paper); color: var(--band); }
