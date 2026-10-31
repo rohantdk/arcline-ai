@@ -90,7 +90,7 @@
                   <p class="demo__lead">Reply drafted. It asks for the one thing missing: the steel grade.</p>
                   <p class="demo__reply">Hello, thanks for your enquiry. Happy to quote 2,000 flanges DN50 with certificates, delivered by March. Which grade do you need, 304 or 316? Price and lead time follow as soon as you reply.</p>
                   <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
-                  <p class="demo__note"><span>That's your team's only step.</span><a class="demo__call" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%20tried%20the%20buyer-email%20demo%20on%20your%20site.%20I%27d%20like%20to%20book%20a%2030-minute%20discovery%20call." target="_blank" rel="noopener noreferrer">Book a 30-minute call</a></p>
+                  <p class="demo__note"><span>That's your team's only step.</span><a class="demo__call" data-track="whatsapp-demo-call" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%20tried%20the%20buyer-email%20demo%20on%20your%20site.%20I%27d%20like%20to%20book%20a%2030-minute%20discovery%20call." target="_blank" rel="noopener noreferrer">Book a 30-minute call</a></p>
                 </div>
               </div>
               <form class="demo__ask" hidden>
@@ -109,7 +109,7 @@
                 <p class="demo__lead">Reply drafted.<span data-slot="missing"></span></p>
                 <p class="demo__reply" data-slot="reply"></p>
                 <p class="demo__doc"><span class="demo__name">Send this reply?</span><button class="demo__ok" type="button"><span>Approve</span><span>Approved</span></button></p>
-                <p class="demo__note"><span>That's your team's only step.</span><a class="demo__call" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%20tried%20the%20buyer-email%20demo%20on%20your%20site.%20I%27d%20like%20to%20book%20a%2030-minute%20discovery%20call." target="_blank" rel="noopener noreferrer">Book a 30-minute call</a></p>
+                <p class="demo__note"><span>That's your team's only step.</span><a class="demo__call" data-track="whatsapp-demo-call" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%20tried%20the%20buyer-email%20demo%20on%20your%20site.%20I%27d%20like%20to%20book%20a%2030-minute%20discovery%20call." target="_blank" rel="noopener noreferrer">Book a 30-minute call</a></p>
               </div>
             </template>
             <template id="demo-odd">
@@ -118,7 +118,7 @@
             <template id="demo-rest">
               <div class="demo__a">
                 <p>The live demo is resting right now. Send us this email on WhatsApp and we'll show you the reply.</p>
-                <p class="demo__doc"><span class="demo__name">Send it to Arcline</span><a class="demo__ok demo__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                <p class="demo__doc"><span class="demo__name">Send it to Arcline</span><a class="demo__ok demo__wa" data-track="whatsapp-demo-fallback" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
               </div>
             </template>
           </figure>
@@ -244,7 +244,7 @@
       <div class="wrap">
         <p class="eyebrow">Your first pilot</p>
         <h2 class="block__title" id="pilot-title">Which task eats your team's week?</h2>
-        <p class="pilot__plain">Tell us the task on WhatsApp and we'll plan the pilot with you. <a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
+        <p class="pilot__plain">Tell us the task on WhatsApp and we'll plan the pilot with you. <a data-track="whatsapp-pilot" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
         <div class="pilot">
           <form class="pilot__form">
             <fieldset>
@@ -264,7 +264,7 @@
               <div><dt>Your team</dt><dd data-plan="still" data-empty="Approves what the AI does.">Approves what the AI does.</dd></div>
               <div><dt>Next step</dt><dd>A 30-minute call, then a fixed quote.</dd></div>
             </dl>
-            <a class="btn btn--solid plan__wa" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Send this on WhatsApp</a>
+            <a class="btn btn--solid plan__wa" data-track="whatsapp-pilot" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Send this on WhatsApp</a>
           </aside>
         </div>
       </div>
@@ -293,8 +293,8 @@
         <h2 class="contact__title" id="contact-title">Let's find the hours your team loses.</h2>
         <p class="contact__lead">Tell us one task that eats your week.</p>
         <div class="contact__actions">
-          <a class="btn btn--light" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%27d%20like%20to%20book%20a%20discovery%20call%20about%20AI%20for%20our%20company." target="_blank" rel="noopener noreferrer">WhatsApp us</a>
-          <a class="btn btn--ghost" href="mailto:tidkerohan8228@gmail.com?subject=Discovery%20call">Email us</a>
+          <a class="btn btn--light" data-track="whatsapp-contact" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%27d%20like%20to%20book%20a%20discovery%20call%20about%20AI%20for%20our%20company." target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+          <a class="btn btn--ghost" data-track="email-contact" href="mailto:tidkerohan8228@gmail.com?subject=Discovery%20call">Email us</a>
         </div>
         <figure class="founder">
           <svg class="founder__face" viewBox="0 0 240 244" aria-hidden="true">
@@ -327,8 +327,8 @@
           </svg>
         </div>
         <dl class="contact__grid">
-          <div><dt>Email</dt><dd><a href="mailto:tidkerohan8228@gmail.com">tidkerohan8228@gmail.com</a> <button class="copy" type="button" data-copy="tidkerohan8228@gmail.com" hidden>Copy</button></dd></div>
-          <div><dt>WhatsApp</dt><dd><a href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Message us</a></dd></div>
+          <div><dt>Email</dt><dd><a data-track="email-footer" href="mailto:tidkerohan8228@gmail.com">tidkerohan8228@gmail.com</a> <button class="copy" type="button" data-track="email-copy" data-copy="tidkerohan8228@gmail.com" hidden>Copy</button></dd></div>
+          <div><dt>WhatsApp</dt><dd><a data-track="whatsapp-footer" href="https://wa.me/918857852631" target="_blank" rel="noopener noreferrer">Message us</a></dd></div>
           <div><dt>Studio</dt><dd>AI engineering for manufacturers and exporters.</dd></div>
         </dl>
       </div>

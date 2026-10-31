@@ -62,6 +62,13 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
   `index.html`; no model) and the WhatsApp link. Without JavaScript the chips are hidden and a line with a WhatsApp
   link shows instead.
 
+## Click counting
+
+WhatsApp and email links carry `data-track="<name>"`. `script.js` loads Vercel Web Analytics
+(`/_vercel/insights/script.js`, served by Vercel once Analytics is enabled in the project; skipped on localhost)
+and counts each click as a page view of `/click/<name>`, because the Hobby plan has no custom events. Read them in
+the project's Analytics tab under Pages. Give any new WhatsApp or email link a `data-track` name.
+
 ## The live demo (`api/demo.js`)
 
 A Vercel serverless function with no dependencies. It needs `GROQ_API_KEY` in the Vercel project's environment
