@@ -12,7 +12,7 @@ sites are kept separate on purpose and don't link to each other.
 | Section | id | Job |
 |---|---|---|
 | Hero | `#top` | The "a." mark with a dot per tile, the headline "Your company's own AI. Not rented. Not shared.", the outcomes line (time, cost, orders), two buttons, and the example: a buyer's email, the reply the AI drafted, and Approve; visitors can try their own email |
-| The problem | `#problem` | Dark panel: time lost to paperwork while orders wait |
+| The problem | `#problem` | One sentence on the paper: time lost to paperwork while orders wait |
 | What we build | `#build` | "One AI for your whole company.": three tiles, Win more orders, Save hours, Cut costs (the first one tall) |
 | And it stays yours | `#why` | Three promises in giant type (own it, data stays inside, never trains anyone else's AI), then four stats (30, 14, 4, 2) |
 | Proof | `#proof` | Four AI systems already built, one line each; the right column sits lower |

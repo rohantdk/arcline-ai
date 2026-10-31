@@ -197,8 +197,8 @@
       (grid.get(key) || grid.set(key, []).get(key)).push(k);
     });
 
-    // the dark bands: the line turns paper-coloured on them
-    bands = $$('#problem, .contact').map(el => { const r = docPos(el); return [r.top, r.bottom]; });
+    // the dark band: the line turns paper-coloured on it
+    bands = $$('.contact').map(el => { const r = docPos(el); return [r.top, r.bottom]; });
     svg.setAttribute('height', 0);      // measured without the line itself
     const H = root.scrollHeight;
     svg.setAttribute('width', W);

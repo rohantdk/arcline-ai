@@ -192,8 +192,8 @@ one is built. These are sold as a build service; no finished product exists yet.
   `cost` (a clock and a stack of coins). Shapes drawn in `P.band` hide what's behind and are never sampled. Mouse:
   dots swirl from the cursor, a click scatters them, hovering any `data-job` element lights that colour. Hero,
   Questions and Contact have no window.
-- **Look:** square like the logo's ends (`--r*`, `--pill` = 0), hard offset shadows (`--hard`), full-bleed problem
-  and contact bands, headings up to about 104px (hero 132px). Only chat bubbles are round. **Section labels are
+- **Look:** square like the logo's ends (`--r*`, `--pill` = 0), hard offset shadows (`--hard`), a full-bleed dark
+  contact band (the problem section was dark too until the owner asked for it on the paper, 31 October 2026), headings up to about 104px (hero 132px). Only chat bubbles are round. **Section labels are
   large** (owner, 31 October: "the heading of each section is so small"): the station number square and the name
   at 18–30px, `.block .eyebrow, .contact .eyebrow`.
 - **Example box doesn't jump** (owner noticed the page jumping when the reply arrived): the typing dots share the
@@ -211,6 +211,10 @@ one is built. These are sold as a build service; no finished product exists yet.
   https://claude.ai/artifact/CZvKyz9hMvnMCtmivZyx4B (slug 5dad30a4-472f-4fe2-adab-0d4f12deaf94).
 - Advised and agreed: The Document sells best, Murmuration is the most memorable; judge the live design by the call
   clicks (see "Click counting"), two weeks before and after 31 October.
+
+- **Phone menu fix (31 October 2026):** the nav pill's `.nav__links.has-pill { position: relative }` beat the
+  phone rule's `position: absolute`, so the menu opened inside the bar, clipped. The 760px rule now sets
+  `.nav__links, .nav__links.has-pill { position: absolute; }`. Check the menu at 390px after any nav change.
 
 ## Click counting (31 October 2026)
 
