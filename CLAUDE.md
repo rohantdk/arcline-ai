@@ -165,7 +165,7 @@ one is built. These are sold as a build service; no finished product exists yet.
   (`formats.highlights`, query `"name":"@kobra"`; `formats.json` guessed wrong), then scrape the item JSON
   (e.g. `https://kobra.systems/r/conversation.json`) with `formats.bytes` and decode the base64.
 
-- **"One Line" redesign (31 October 2026), preview only, not live:** the owner asked for a "crazy, eye-catching,
+- **"One Line" redesign (31 October 2026), first experiment (now live, combined with Murmuration below):** the owner asked for a "crazy, eye-catching,
   interactive" redesign keeping the palette and every word of copy, with a backup first. Backup: branch
   `backup/pre-redesign` (commit 5c073bd, the live site before it; the proxy refused the tag push). Restore with
   `git checkout -B main origin/backup/pre-redesign` in a PR, or just don't merge the redesign. Concept chosen by the
@@ -219,7 +219,7 @@ one is built. These are sold as a build service; no finished product exists yet.
   `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
   `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
 
-- **Chosen: One Line + Murmuration (31 October 2026), preview, not live yet:** after five experiments the owner
+- **Live: One Line + Murmuration (31 October 2026):** after five experiments the owner
   picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both". Built
   on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark
   windows (`flock.js`): each of seven sections (problem, build, why, proof, process, pilot, cost) has a `.head`
