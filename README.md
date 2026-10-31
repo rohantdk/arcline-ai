@@ -39,7 +39,10 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Hero: the logo's "a." heads the page. Its line and the "a" draw in, then three square dots pop in as its full
   stop, one per job (violet docs, wine queries, teal reports). Hover or focus shows the job's name, read from the
   "What we build" list; click jumps there.
-- Nav: a flat edge-to-edge bar at the top that lifts into a rounded pill once the page scrolls.
+- Nav: a flat edge-to-edge bar at the top that lifts into a rounded pill once the page scrolls. On wide screens one
+  pill (`.nav__pill`, made by `script.js`) sits behind the current section's link and glides to the next as the page
+  scrolls; a violet beam circles its edge every 3 s. The phone menu keeps a plain tint; reduced motion gets a still
+  edge.
 - A strip of pills under the hero lists what the AI works with; it drifts, speeds up with the scroll and turns with its
   direction. Pointing at a pill (mouse only) stops the strip and shows a card above it: something the team might
   ask, and what the AI does with it. The words are each pill's `data-ask` and `data-does` in `index.html`.
@@ -51,6 +54,8 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Sections and cards fade up on scroll; the process steps grow up from the floor like a staircase.
 - Tiles lift on hover; pointing at one promise fades the other two (mouse only).
 - Hero example: one buyer email and the reply the AI drafted, in the HTML so the page reads without JavaScript.
+  It reads as a chat: the buyer's grey bubble on the left, the AI's note and reply as joined violet bubbles on the
+  right under "Your AI" (CSS only, on the same classes).
   With it, typing dots play once when the box comes into view, then the reply; Approve pulses until pressed, then
   shows "That's your team's only step." and a "Book a 30-minute call" button (WhatsApp, pre-filled). A demo cursor
   presses Approve three times (pausing while a mouse moves over the box, stopping after a tap); its first two
@@ -62,6 +67,9 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Your first pilot: picking a task fills the pilot beside it (`data-build`, `data-still` on the inputs in
   `index.html`; no model) and the WhatsApp link. Without JavaScript the chips are hidden and a line with a WhatsApp
   link shows instead.
+- Your numbers: the yearly cost rolls up digit by digit (one 0–9 column per place, on a spring) when the panel comes
+  into view and again on each change. Defaults and per-currency rates: the inputs' `value`s and `CUR` in `script.js`.
+- Questions: answers pop in as violet replies on a spring; the questions below slide to their new places.
 
 ## Click counting
 
