@@ -19,7 +19,7 @@ with `maxAgeMs: 0`). The GitHub repo itself is public, so the notes can still be
 - **Content is the owner's.** Don't change copy, numbers or claims unless asked.
 - **Never invent proof.** No made-up results, testimonials or client names. Two slots are waiting for real ones:
   a client quote (name, role, firm type, with permission) and one measured result from a pilot. They go in Proof.
-- **Studio voice:** "we" / "Arcline", never "I". Rohan is named once, in Contact. Never claim a team; Arcline
+- **Studio voice:** "we" / "Arcline", never "I". Rohan is named once, in the founder caption in Contact. Never claim a team; Arcline
   "brings in specialist partners when a project needs them".
 - **Never say where the studio is.** No city, state or address anywhere (page, meta, README, commits).
 - **Motion:** without JavaScript the page reads in full (hidden states only under `html.js`); reduced motion gets
@@ -115,8 +115,8 @@ one is built. These are sold as a build service; no finished product exists yet.
   bends in an S when pulled sideways, thins as it stretches, with a shadow under the chin. None of it runs under
   reduced motion. The arrow cursor is used on phones too (clearer than a tap circle). Both pause only while the mouse moves over them and resume after 3 seconds
   still (a mouse resting where the face scrolled in had paused the face demo after one pull). The face caption now
-  reads "Rohan Tidke" over "Founder · Arcline" (owner's ask, 31 October 2026), so Rohan is named twice in Contact
-  (also in the Studio line).
+  reads "Rohan Tidke" over "Founder · Arcline" (owner's ask, 31 October 2026), and the Studio line became "AI engineering for
+  manufacturers and exporters." so Rohan is named once on the page, in the caption.
 
 ## Portable copy for other hosts (30 October 2026)
 
