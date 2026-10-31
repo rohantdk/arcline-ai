@@ -1,0 +1,241 @@
+/* Arcline — the flock, in windows on the line
+   Each main section has a small dark window beside its heading, sitting on the One Line.
+   When it comes into view a flock of square dots (the logo's full stop, many times over)
+   streams in and forms the section's figure: loose papers (problem), three bars (build),
+   a vault (why), four blocks (proof), a staircase (process), one block in orbit (pilot),
+   a clock (cost). Chaos into order.
+   - Mouse only: the dots swirl away from the cursor; a click scatters them. Pointing at
+     anything with a job colour on the page lights up that colour in the window in view.
+   - Only a window on screen animates.
+   Without JavaScript the windows are hidden. Under reduced motion each figure is drawn
+   at once and never moves.
+*/
+
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  const css = getComputedStyle(root);
+  const PAL = [
+    ['paper', null], ['on-band', null], ['docs-light', 'docs'], ['queries-light', 'queries'],
+    ['reports-light', 'reports'], ['accent-soft', 'docs'],
+  ].map(([name, job]) => {
+    const hex = css.getPropertyValue('--' + name).trim();
+    const n = parseInt(hex.replace('#', ''), 16);
+    return { name, hex, job, r: n >> 16 & 255, g: n >> 8 & 255, b: n & 255 };
+  });
+  const P = Object.fromEntries(PAL.map(p => [p.name, p.hex]));
+
+  let seed = 1;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  // the figures, drawn on a hidden canvas at the window's size (S: the figure's size)
+  const DRAW = {
+    pile(g, cx, cy, S) {
+      seed = 7;
+      for (let i = 0; i < 9; i++) {
+        g.save();
+        g.translate(cx + (rnd() - 0.5) * S * 0.7, cy + (rnd() - 0.5) * S * 0.65);
+        g.rotate((rnd() - 0.5) * 1.1);
+        g.lineWidth = Math.max(3, S * 0.02);
+        g.strokeStyle = i % 4 === 1 ? P['queries-light'] : i % 3 === 0 ? P.paper : P['on-band'];
+        const w = S * (0.28 + rnd() * 0.1), h = w * 1.35;
+        g.strokeRect(-w / 2, -h / 2, w, h);
+        g.restore();
+      }
+    },
+    columns(g, cx, cy, S) {
+      const bw = S * 0.22, gap = S * 0.08, base = cy + S * 0.45;
+      [[0.9, 'docs-light'], [0.68, 'queries-light'], [0.48, 'reports-light']].forEach(([h, c], i) => {
+        g.fillStyle = P[c];
+        g.fillRect(cx - bw * 1.5 - gap + i * (bw + gap), base - S * h, bw, S * h);
+      });
+    },
+    vault(g, cx, cy, S) {
+      const s = S * 0.82;
+      g.lineWidth = S * 0.07; g.strokeStyle = P.paper;
+      g.strokeRect(cx - s / 2, cy - s / 2, s, s);
+      g.fillStyle = P['docs-light']; g.fillRect(cx - S * 0.13, cy - S * 0.13, S * 0.26, S * 0.26);
+    },
+    four(g, cx, cy, S) {
+      const s = S * 0.38, gap = S * 0.1;
+      ['docs-light', 'queries-light', 'reports-light', 'paper'].forEach((c, i) => {
+        const x = cx - s - gap / 2 + (i % 2) * (s + gap), y = cy - s - gap / 2 + Math.floor(i / 2) * (s + gap);
+        g.lineWidth = S * 0.055; g.strokeStyle = P[c]; g.strokeRect(x, y, s, s);
+        g.fillStyle = P[c]; g.fillRect(x + s * 0.62, y + s * 0.62, s * 0.38, s * 0.38);
+      });
+    },
+    stairs(g, cx, cy, S) {
+      const bw = S * 0.23, base = cy + S * 0.46;
+      ['on-band', 'accent-soft', 'docs-light', 'paper'].forEach((c, i) => {
+        const h = S * 0.23 * (i + 1);
+        g.fillStyle = P[c];
+        g.fillRect(cx - bw * 2 + i * bw + 2, base - h, bw - 4, h);
+      });
+    },
+    one(g, cx, cy, S) {
+      g.lineWidth = Math.max(2, S * 0.02); g.strokeStyle = P['on-band'];
+      g.beginPath(); g.arc(cx, cy, S * 0.48, 0, Math.PI * 2); g.stroke();
+      g.beginPath(); g.arc(cx, cy, S * 0.32, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = P['docs-light']; g.fillRect(cx - S * 0.15, cy - S * 0.15, S * 0.3, S * 0.3);
+    },
+    clock(g, cx, cy, S) {
+      g.lineWidth = S * 0.07; g.strokeStyle = P['reports-light'];
+      g.beginPath(); g.arc(cx, cy, S * 0.42, 0, Math.PI * 2); g.stroke();
+      g.strokeStyle = P.paper;
+      g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx, cy - S * 0.28); g.stroke();
+      g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + S * 0.2, cy); g.stroke();
+      g.fillStyle = P['queries-light']; g.fillRect(cx - S * 0.06, cy - S * 0.06, S * 0.12, S * 0.12);
+    },
+  };
+
+  const off = document.createElement('canvas');
+  const og = off.getContext('2d', { willReadFrequently: true });
+
+  function sample(fig, w, h, n) {
+    off.width = w; off.height = h;
+    og.clearRect(0, 0, w, h);
+    DRAW[fig](og, w / 2, h / 2, Math.min(w, h) * 0.78);
+    const data = og.getImageData(0, 0, w, h).data;
+    let area = 0;
+    for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) if (data[(y * w + x) * 4 + 3] > 128) area += 4;
+    const step = Math.max(2.5, Math.sqrt(area / n));
+    const pts = [];
+    for (let y = step / 2; y < h; y += step) for (let x = step / 2; x < w; x += step) {
+      const i = (Math.floor(y) * w + Math.floor(x)) * 4;
+      if (data[i + 3] <= 128) continue;
+      let best = 0, bd = 1e9;
+      PAL.forEach((p, k) => { const d = (p.r - data[i]) ** 2 + (p.g - data[i + 1]) ** 2 + (p.b - data[i + 2]) ** 2; if (d < bd) { bd = d; best = k; } });
+      pts.push({ x, y, c: best });
+    }
+    seed = 11;
+    while (pts.length > n) pts.splice(Math.floor(rnd() * pts.length), 1);
+    const base = pts.length;
+    for (let k = 0; pts.length < n && base; k++) { const p = pts[k % base]; pts.push({ x: p.x + (rnd() - 0.5) * 2, y: p.y + (rnd() - 0.5) * 2, c: p.c }); }
+    return { pts, size: clamp(step * 0.66, 2, 4.5) };
+  }
+
+  /* ─── one flock per window ─── */
+  let hl = null;
+  const flocks = $$('.flock').map((box) => {
+    const cv = document.createElement('canvas');
+    box.append(cv);
+    const ctx = cv.getContext('2d');
+    const f = { box, cv, ctx, fig: box.dataset.fig, on: false, raf: 0, mx: -1e4, my: -1e4, transit: 1 };
+
+    f.setup = () => {
+      const r = box.getBoundingClientRect();
+      f.W = Math.max(1, Math.round(r.width)); f.H = Math.max(1, Math.round(r.height));
+      f.dpr = Math.min(2, devicePixelRatio || 1);
+      cv.width = Math.round(f.W * f.dpr); cv.height = Math.round(f.H * f.dpr);
+      f.N = f.W < 260 ? 380 : 520;
+      const s = sample(f.fig, f.W, f.H, f.N);
+      f.size = s.size;
+      const N = f.N;
+      f.X = new Float32Array(N); f.Y = new Float32Array(N); f.VX = new Float32Array(N); f.VY = new Float32Array(N);
+      f.TX = new Float32Array(N); f.TY = new Float32Array(N); f.C = new Uint8Array(N); f.DL = new Float32Array(N);
+      // they wait scattered outside the window, then stream in, sorted so they arrive in a sweep
+      seed = 5;
+      const pts = s.pts.slice().sort((a, b) => (a.x + a.y * 0.4) - (b.x + b.y * 0.4));
+      pts.forEach((p, i) => {
+        f.TX[i] = p.x; f.TY[i] = p.y; f.C[i] = p.c;
+        const a = rnd() * Math.PI * 2, d = Math.max(f.W, f.H) * (0.7 + rnd() * 0.5);
+        f.X[i] = reduce ? p.x : f.W / 2 + Math.cos(a) * d - f.W * 0.4;
+        f.Y[i] = reduce ? p.y : f.H / 2 + Math.sin(a) * d;
+        f.DL[i] = (i / N) * 30;
+      });
+      f.transit = 1;
+      f.draw(0);
+    };
+
+    f.draw = (time) => {
+      const { ctx, W, H, N } = f;
+      ctx.setTransform(f.dpr, 0, 0, f.dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < N; i++) {
+        const p = PAL[f.C[i]];
+        let s = f.size, a = 1;
+        if (hl) { if (p.job === hl) s *= 1.6; else a = 0.25; }
+        const sp = Math.hypot(f.VX[i], f.VY[i]);
+        ctx.globalAlpha = a;
+        ctx.fillStyle = p.hex;
+        if (sp > 2) {
+          ctx.save(); ctx.translate(f.X[i], f.Y[i]); ctx.rotate(Math.atan2(f.VY[i], f.VX[i]));
+          const l = Math.min(sp, 10);
+          ctx.fillRect(-s / 2 - l, -s * 0.35, s + l, s * 0.7);
+          ctx.restore();
+        } else {
+          const br = reduce ? 0 : Math.sin(time * 1.6 + i * 0.37) * 0.3;
+          ctx.fillRect(f.X[i] - s / 2 + br, f.Y[i] - s / 2 - br, s, s);
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    f.tick = (t) => {
+      f.raf = 0;
+      const time = t / 1000;
+      f.transit = Math.max(0, f.transit - 0.01);
+      const turb = 0.03 + f.transit * 0.4, R = 70;
+      for (let i = 0; i < f.N; i++) {
+        if (f.DL[i] > 0) { f.DL[i]--; continue; }
+        let ax = (f.TX[i] - f.X[i]) * 0.02, ay = (f.TY[i] - f.Y[i]) * 0.02;
+        const fa = Math.sin(f.Y[i] * 0.03 + time * 0.8) + Math.cos(f.X[i] * 0.025 - time * 0.6);
+        ax += Math.cos(fa * 2.4) * turb; ay += Math.sin(fa * 2.4) * turb;
+        const dx = f.X[i] - f.mx, dy = f.Y[i] - f.my, d2 = dx * dx + dy * dy;
+        if (d2 < R * R) {
+          const d = Math.sqrt(d2) || 1, k = (1 - d / R) * 1.3;
+          ax += dx / d * k - dy / d * k * 0.9; ay += dy / d * k + dx / d * k * 0.9;
+        }
+        f.VX[i] = (f.VX[i] + ax) * 0.86; f.VY[i] = (f.VY[i] + ay) * 0.86;
+        f.X[i] += f.VX[i]; f.Y[i] += f.VY[i];
+      }
+      f.draw(time);
+      if (f.on) f.raf = requestAnimationFrame(f.tick);
+    };
+
+    if (fine && !reduce) {
+      box.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        const r = box.getBoundingClientRect();
+        f.mx = e.clientX - r.left; f.my = e.clientY - r.top;
+      });
+      box.addEventListener('pointerleave', () => { f.mx = f.my = -1e4; });
+      box.addEventListener('pointerdown', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        const r = box.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        for (let i = 0; i < f.N; i++) {
+          const dx = f.X[i] - x, dy = f.Y[i] - y, d = Math.hypot(dx, dy) || 1;
+          if (d < 160) { const k = (1 - d / 160) * 16; f.VX[i] += dx / d * k; f.VY[i] += dy / d * k; }
+        }
+        f.transit = Math.max(f.transit, 0.5);
+      });
+    }
+    return f;
+  });
+  if (!flocks.length) return;
+  root.classList.add('has-flock');
+
+  // light up a job colour while the mouse is on something of that colour
+  if (fine && !reduce) addEventListener('pointerover', (e) => {
+    const j = e.target.closest && e.target.closest('[data-job]');
+    hl = j ? j.dataset.job : null;
+  });
+
+  // only windows on screen move
+  const io = new IntersectionObserver((entries) => entries.forEach(e => {
+    const f = flocks.find(x => x.box === e.target);
+    f.on = e.isIntersecting && !reduce;
+    if (f.on && !f.raf) f.raf = requestAnimationFrame(f.tick);
+  }), { rootMargin: '0px 0px -8% 0px' });
+
+  const setupAll = () => flocks.forEach(f => f.setup());
+  setupAll();
+  flocks.forEach(f => io.observe(f.box));
+  let rz;
+  addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(setupAll, 150); });
+})();

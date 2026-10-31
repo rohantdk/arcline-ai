@@ -219,6 +219,17 @@ one is built. These are sold as a build service; no finished product exists yet.
   `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
   `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
 
+- **Chosen: One Line + Murmuration (31 October 2026), preview, not live yet:** after five experiments the owner
+  picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both". Built
+  on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark
+  windows (`flock.js`): each of seven sections (problem, build, why, proof, process, pilot, cost) has a `.head`
+  in `index.html` holding its label, heading and a `.flock` window on the right (below the heading on phones);
+  the line runs under the `.head`, so each window sits on the line. When a window is on screen its flock (about
+  500 dots) streams in and forms the figure named in `data-fig` (pile, columns, vault, four, stairs, one, clock;
+  drawn in `DRAW`). Mouse: dots swirl from the cursor, a click scatters them, hovering a `data-job` element
+  lights that colour. Left out to keep it calm: the split screen and the flock behind the page. Hero, Questions
+  and Contact have no window. Reduced motion: figures drawn at once; no JS: windows hidden.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
