@@ -140,6 +140,12 @@ one is built. These are sold as a build service; no finished product exists yet.
   Production row → ⋯ → Redeploy). It is served now (script "0.1.3"; `va('pageview', { route, path })` sends a
   view of `path`). The script skips headless browsers, so Playwright can't produce a real count.
 - Check the counts: Vercel → arcline-ai → Analytics → Pages, rows starting `/click/`.
+- **How the owner uses it (advised 31 October 2026):** the score is call clicks (all `whatsapp-*` and `email-*`
+  rows) ÷ visits (the `/` row); `whatsapp-demo-call` is the main number. Change one thing at a time and compare two
+  weeks before and after, once there are at least 100 visits. Use Referrers and countries to see which posts bring
+  visitors. A click isn't a call: monthly, count WhatsApp chats opening with "I tried the buyer-email demo…" and
+  follow clicks → chats → calls → clients. Owner's routine: a test click first (an ad blocker can hide it), then
+  5 minutes every Monday noting visits, call clicks and score; after a month, ask to improve the weakest button.
 - The /click/… views add to the page-view total; read visits from the `/` row. Test locally with a fake host
   (`page.route('https://arcline.test/**', …)` serving the folder) and read `window.vaq`.
 
@@ -160,8 +166,8 @@ one is built. These are sold as a build service; no finished product exists yet.
 ## Open items
 
 1. Fill the testimonial and result slots when real ones exist.
-2. A/B test a second headline once there is traffic. (WhatsApp and email clicks are now counted; see
-   "Click counting".)
+2. A/B test a second headline once there is traffic (100+ visits), judged by the click score (see "Click
+   counting").
 3. Studio email on an own domain to replace the Gmail address.
 4. Own domain: when bought, update the three address tags and the share image (see "Portable copy").
 5. **Allow rule for page checks (owner said "later"):** in auto mode, Context Dev scrapes still asked the owner
@@ -171,6 +177,9 @@ one is built. These are sold as a build service; no finished product exists yet.
 6. Check the live demo's replies with real enquiries (German, terse WhatsApp-style, a non-enquiry) after the
    prompt change of 30 October: "happy to quote", placeholders like [price], no invented stock or dates. Watch
    Groq usage weekly at console.groq.com; the per-visitor limit is per server instance, so it is soft.
+7. **About December 2026:** after a month of counts, the owner brings the numbers; improve the weakest call button
+   or remove buttons with no clicks. The owner's test click (Approve → Book a 30-minute call → a
+   `/click/whatsapp-demo-call` row in Analytics → Pages) was not confirmed in the session.
 
 ## Checking a change
 
