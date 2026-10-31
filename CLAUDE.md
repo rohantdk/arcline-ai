@@ -67,8 +67,8 @@ one is built. These are sold as a build service; no finished product exists yet.
 - No "pilots start from ₹X" line for now.
 - **Redesign (30 October 2026), live:** minimal copy (about 370 words), rounded interface with a square logo,
   a different layout per section, a nav that rounds into a pill on scroll, and a hero example that plays the
-  task on hover. Reviewed first on a private claude.ai preview page, because this Vercel project builds only
-  `main` (branches get no preview).
+  task on hover. Reviewed first on a private claude.ai preview page. (Since then Vercel also builds a Preview
+  deployment for every feature-branch push, seen 31 October 2026; its links sit behind Vercel login.)
 - The hero example (packing list request) is illustrative and labelled "Example".
 - **Example loops, pills explain (30 October 2026):** the owner asked for the hero example to play by default and
   for each strip pill to show something of its own on hover. The example now loops while on screen; hovering pauses
@@ -135,7 +135,11 @@ one is built. These are sold as a build service; no finished product exists yet.
   `email-footer` (Contact list), `email-copy` (Copy button). A new WhatsApp or email link needs `data-track`.
 - The script loads everywhere but localhost; on a non-Vercel host (Netlify) it would 404 harmlessly: remove it
   there. Analytics must be enabled in the Vercel project (Analytics tab → Enable) before the deploy that uses it;
-  the `/_vercel/insights` route is added at deploy time.
+  the `/_vercel/insights` route is added at deploy time. On 31 October the merge (#13) deployed before the switch
+  took effect, so `/_vercel/insights/script.js` gave 404 until the owner redeployed (project → Deployments →
+  Production row → ⋯ → Redeploy). It is served now (script "0.1.3"; `va('pageview', { route, path })` sends a
+  view of `path`). The script skips headless browsers, so Playwright can't produce a real count.
+- Check the counts: Vercel → arcline-ai → Analytics → Pages, rows starting `/click/`.
 - The /click/… views add to the page-view total; read visits from the `/` row. Test locally with a fake host
   (`page.route('https://arcline.test/**', …)` serving the folder) and read `window.vaq`.
 
