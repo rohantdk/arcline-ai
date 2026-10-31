@@ -1,7 +1,8 @@
 # Arcline — Your company's own AI
 
 The niche site of Arcline: AI engineering only, for owners of manufacturing and export firms. One static page
-(`index.html`, `style.css`, `script.js`, `assets/`), hand-coded, no framework, no build step.
+(`index.html`, `style.css`, `script.js`, `line.js`, `flock.js`, `assets/`), hand-coded, no framework, no build
+step.
 
 The studio's full portfolio (websites, Shopify, apps, brand work) lives at `rohantdk/arcline.github.io`. The two
 sites are kept separate on purpose and don't link to each other.
@@ -26,13 +27,29 @@ lead; ownership and privacy come second.
 
 ## Colours, shape and type
 
-Rounded interface, square logo: the nav (once scrolled), buttons, chips, tiles, cards and panels are rounded
-(`--r-sm` 14px, `--r` 24px, `--r-lg` up to 44px, `--pill`); the logo, the hero "a.", its dots and the strip's
-bullets stay square, and the square is the full stop of the three promises.
+Square, like the logo ("One Line", live 31 October 2026): the logo is one thick line with square ends and square
+dots, and the page is built from it. `--r-sm`, `--r`, `--r-lg` and `--pill` are 0; boxes have hard offset shadows
+(`--hard`); the problem and contact bands run edge to edge. Only the chat bubbles (hero example, questions) stay
+round. Headings are large (hero up to 132px).
 
 The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band` #2B1631, `--accent` #5A3C9E,
 `--accent-soft` #ECE6F7, `--accent-light` #C3AEF2 (on the dark band), `--paper` #F6F5F2. Schibsted Grotesk
 (headings), DM Sans (body), DM Mono (labels).
+
+## The One Line and the flock
+
+- **The line** (`line.js`): one thick line, the logo's baseline, runs through the page. It leaves the hero "a.",
+  runs under each section's heading (left to right, then back), carries the four process steps as stops and ends as
+  the baseline of the Contact "a.". It draws itself with the scroll; a square head takes each section's colour and
+  each section's number lights up when the line reaches it. Mouse only: crossing the line plucks it, grabbing it
+  pulls it; it springs back. Where it runs is set in `stationFor` (each section's `.head`, or `.steps`, `.faq-wrap`).
+- **The flock** (`flock.js`): seven sections (problem, build, why, proof, process, pilot, cost) have a `.head` with
+  their label, heading and a small dark `.flock` window that sits on the line. On screen, a flock of square dots
+  streams in and forms the figure in `data-fig` (pile, columns, vault, four, stairs, one, clock; drawn in `DRAW`).
+  Mouse: the dots swirl from the cursor, a click scatters them, hovering anything with `data-job` lights that
+  colour.
+- Without JavaScript there is no line and no windows; under reduced motion the line is drawn whole and the figures
+  are drawn at once, nothing moves.
 
 ## Motion (the main site's vibe)
 

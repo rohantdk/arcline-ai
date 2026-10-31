@@ -165,6 +165,71 @@ one is built. These are sold as a build service; no finished product exists yet.
   (`formats.highlights`, query `"name":"@kobra"`; `formats.json` guessed wrong), then scrape the item JSON
   (e.g. `https://kobra.systems/r/conversation.json`) with `formats.bytes` and decode the base64.
 
+- **"One Line" redesign (31 October 2026), first experiment (now live, combined with Murmuration below):** the owner asked for a "crazy, eye-catching,
+  interactive" redesign keeping the palette and every word of copy, with a backup first. Backup: branch
+  `backup/pre-redesign` (commit 5c073bd, the live site before it; the proxy refused the tag push). Restore with
+  `git checkout -B main origin/backup/pre-redesign` in a PR, or just don't merge the redesign. Concept chosen by the
+  owner from four: the logo's one thick line runs through the whole page (`line.js`): it leaves the hero "a.", runs
+  under each heading left-right-left, the process steps are stops on it, and it ends as the baseline of the Contact
+  "a."; it draws with the scroll, a square head takes each section's job colour, section numbers light up when it
+  arrives. Mouse only: crossing it plucks it (a damped wave), grabbing pulls it. Everything else went square (the
+  logo's ends): `--r*` and `--pill` are 0, hard offset shadows (`--hard`), full-bleed bands; chat bubbles stay round.
+  Bigger type (hero 132px max). Reduced motion: full line, no head, no wave; no JS: no line.
+
+- **"The Document" redesign (31 October 2026), preview only, not live:** a second, separate experiment the owner
+  asked for after liking One Line ("whole new redesign, we are just experimenting"). Built from the live site, not
+  on top of One Line, which stays in this branch's history (commit 9de6003) and its own preview page. The page is a
+  dark desk (`--desk`, the band colour, with a lamp glow following the mouse) and every section's `.wrap` is a white
+  sheet at a slight angle, with line numbers, a red margin rule and a page number (`doc.js`). Sheets slide onto the
+  desk; headings type themselves with a violet caret (the full text stays in `aria-label` while typing); the problem
+  is a pink memo with "paperwork." highlighted (a `<mark>`, copy unchanged); the three jobs and the four steps are
+  form boxes that tick; the promises are rubber stamps; proof cards are clipped index cards; the plan is a carbon
+  copy; the yearly cost is double-underlined; Contact is the last page with a signature line and the founder as a
+  clipped photo. Palette and copy unchanged. Reduced motion: no dealing, typing or lamp; no JS: every sheet reads.
+
+- **"Murmuration" redesign (31 October 2026), preview only, not live:** the third experiment ("really crazy,
+  something no one ever thought about"), again built from the live site; One Line (9de6003) and The Document
+  (4ff6aa0) stay in this branch's history with their own preview pages. A flock of 1,600 square dots (900 on
+  phones), the logo's full stop many times over, streams like starlings into a figure per section (`swarm.js`):
+  the "a." with three dots, a pile of loose sheets (problem), three bars (build), a vault (why), four blocks
+  (proof), a staircase (process), one block with orbits (pilot), a clock (cost), two chat bubbles (questions),
+  the "a." with one dot (contact). Story: chaos into order. Wide screens (1100px+): a dark stage on the right
+  (44vw) with the section's number and label, the page a reading column on the left; phones: the flock lives
+  behind the page and each figure rides in the 46vh gap above its section. Mouse: the flock swirls from the
+  cursor, a click on the stage scatters it, pointing at anything with `data-job` lights up that colour. Figures
+  are drawn on a hidden canvas and sampled into points, so new ones are a few lines in `DRAW`. Reduced motion:
+  dots jump to each figure, no drift; no JS: the usual page.
+
+- **"The Loom" redesign (31 October 2026), preview only, not live:** the fourth experiment, built from the live
+  site (One Line 9de6003, The Document 4ff6aa0 and Murmuration 25cef60 stay in history with their preview pages).
+  The page weaves itself (`loom.js`): a fixed canvas of fine warp threads behind everything (every seventh one
+  violet, with knots) that part around the mouse and spring back; before the strip and each section a band of
+  cloth is woven row by row by a violet shuttle when it comes into view: a twill in the band's job colour (docs,
+  queries, reports in turn) with the logo's three dots woven in, and a fringe above and below. Cards, tiles, stats,
+  steps, panels and solid buttons get dashed stitched seams; section labels are woven labels (ink tag, light
+  square). Story: scattered threads (email, Excel, ERP) woven into one cloth. Reduced motion: bands already woven,
+  threads still; no JS: no threads or bands.
+
+- **"Departures" redesign (31 October 2026), preview only, not live:** the fifth experiment, built from the live
+  site (One Line 9de6003, The Document 4ff6aa0, Murmuration 25cef60, The Loom 3b1cf97 stay in history with their
+  preview pages). The page is a departures board at night (`flap.js`, scoped to `html.has-flap`, so without JS the
+  usual light page shows): a dark hall with a faint slot grid, and every headline (hero, section titles, the
+  problem, contact, the three promises) a row of split-flap tiles that spin through letters and land left to right
+  when in view, and spin again on mouse hover. Words stay unbroken (`.fw`), the heading keeps its text in
+  `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
+  `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
+
+- **Live: One Line + Murmuration (31 October 2026):** after five experiments the owner
+  picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both". Built
+  on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark
+  windows (`flock.js`): each of seven sections (problem, build, why, proof, process, pilot, cost) has a `.head`
+  in `index.html` holding its label, heading and a `.flock` window on the right (below the heading on phones);
+  the line runs under the `.head`, so each window sits on the line. When a window is on screen its flock (about
+  500 dots) streams in and forms the figure named in `data-fig` (pile, columns, vault, four, stairs, one, clock;
+  drawn in `DRAW`). Mouse: dots swirl from the cursor, a click scatters them, hovering a `data-job` element
+  lights that colour. Left out to keep it calm: the split screen and the flock behind the page. Hero, Questions
+  and Contact have no window. Reduced motion: figures drawn at once; no JS: windows hidden.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
