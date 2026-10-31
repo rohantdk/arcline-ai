@@ -219,6 +219,11 @@ one is built. These are sold as a build service; no finished product exists yet.
   `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
   `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
 
+- **Smooth example box (31 October 2026):** the owner saw the page jump when the hero example's reply arrived.
+  The typing dots now sit where the reply will be (same grid cell) and the reply keeps its space while hidden, so
+  the scripted loop doesn't change the box's height; any other change (a pasted email's reply, the call button after
+  Approve, the own-email box) eases the window's height over 0.5 s (a MutationObserver in `script.js`). Measured:
+  the strip below moved 213px in one frame before; now at most about 20px per 50 ms.
 - **Live: One Line + Murmuration (31 October 2026):** after five experiments the owner
   picked a mix of One Line and Murmuration: "don't overflow and overcomplicate, but keep elements of both". Built
   on One Line (the square page, `line.js`, unchanged in behaviour). Murmuration's flock moved into small dark

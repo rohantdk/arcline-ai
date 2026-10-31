@@ -386,6 +386,25 @@
       set('is-answered');
     };
 
+    /* The box grows and shrinks smoothly: whenever its content changes (the reply arrives,
+       Approve shows the call button, the box for their own email opens), its height eases
+       from the old size to the new one, so the page below glides instead of jumping. */
+    if (!reduce) {
+      const win = $('.demo__window', demo);
+      let lastH = win.offsetHeight, anim = null;
+      const ease = () => {
+        const from = anim ? parseFloat(getComputedStyle(win).height) : lastH;
+        if (anim) { anim.cancel(); anim = null; }
+        const to = win.offsetHeight;
+        lastH = to;
+        if (Math.abs(to - from) < 2) return;
+        anim = win.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: 500, easing: 'cubic-bezier(.2,.7,.2,1)' });
+        anim.onfinish = () => { anim = null; };
+      };
+      new MutationObserver(ease).observe(demo, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['class', 'hidden'] });
+      addEventListener('resize', () => { lastH = win.offsetHeight; });
+    }
+
     ask.hidden = false;
     open.addEventListener('click', () => {
       keep();
