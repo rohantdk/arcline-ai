@@ -179,6 +179,38 @@ a { color: inherit; }
 .nav__links a:hover, .nav__links a.is-active { color: var(--text); }
 .nav__links a.is-active:not(.nav__cta) { background: var(--accent-soft); }
 .nav__links .nav__cta { color: #fff; background: var(--accent); padding: 14px 24px; font-weight: 500; margin-left: 10px; }
+/* the current section's pill (script.js): a faint violet edge, a beam circling it, gliding between links */
+.nav__links.has-pill { position: relative; }
+.nav__links.has-pill a { position: relative; z-index: 1; }
+.nav__pill {
+  position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none;
+  border-radius: var(--pill); overflow: hidden; isolation: isolate; opacity: 0;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: 0 0 24px -10px var(--accent);
+  transition: transform .6s cubic-bezier(.34,1.3,.64,1), width .6s cubic-bezier(.34,1.3,.64,1), height .6s var(--ease), opacity .3s;
+}
+.nav__pill.is-on { opacity: 1; }
+.nav__pill.is-still { transition: none; }
+.nav__pill::before {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 320px; aspect-ratio: 1; z-index: -2;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, var(--accent) 335deg, transparent 360deg);
+  transform: translate(-50%, -50%);
+  animation: nav-beam 3s linear infinite;
+}
+.nav__pill::after {
+  content: ''; position: absolute; inset: 1.5px; z-index: -1;
+  border-radius: inherit; background: var(--accent-soft);
+}
+@keyframes nav-beam { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.nav__links.has-pill a.is-active:not(.nav__cta) { background: transparent; }
+@media (max-width: 760px) {
+  .nav__pill { display: none; }
+  .nav__links.has-pill a.is-active:not(.nav__cta) { background: var(--accent-soft); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav__pill { transition: none; background: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .nav__pill::before { display: none; }
+}
 .nav__links .nav__cta:hover { color: #fff; background: var(--ink); }
 
 .nav__toggle {
@@ -271,33 +303,43 @@ a { color: inherit; }
 .demo__bar b.is-live { color: #fff; background: var(--reports); }
 .demo__chat { display: grid; align-content: start; gap: 14px; padding: clamp(18px, 2.6vw, 28px); }
 
-/* the buyer's email, on the left */
-.demo__mail {
-  max-width: 88%;
-  background: var(--paper); padding: 13px 18px;
-  box-shadow: inset 0 0 0 1px var(--rule);
-  border-radius: 20px 20px 20px 6px;
-  font-size: 15.5px; line-height: 1.5;
+/* a conversation (after @kobra/conversation): the buyer's bubble on the left, the AI's on the
+   right; back-to-back bubbles from one side join, with a tight corner where they meet */
+.demo__mail { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; max-width: 86%; }
+.demo__from, .demo__a::before {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); padding: 0 14px;
 }
-.demo__from { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--queries); margin-bottom: 4px; }
-.demo__text { overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.demo__text {
+  background: #ECE9EE; color: var(--ink);
+  padding: 10px 15px; border-radius: 18px 18px 18px 8px;
+  font-size: 15.5px; line-height: 1.45;
+  overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
 
-/* the AI's answer, on the right */
+/* the AI's answer: a short note, then the drafted reply, joined */
 .demo__a {
-  justify-self: end; max-width: 94%;
-  background: var(--accent-soft); padding: 15px 18px;
-  font-size: 15.5px; line-height: 1.55;
-  border-radius: 20px 20px 6px 20px;
+  justify-self: end; max-width: 90%;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
+  font-size: 15.5px; line-height: 1.45;
 }
-.demo__lead { font-weight: 500; }
+.demo__a::before { content: 'Your AI'; margin-bottom: 1px; }
+.demo__lead, .demo__a > p:not([class]) {
+  background: var(--accent-soft); color: var(--ink);
+  padding: 10px 15px; border-radius: 18px 18px 8px 18px; font-weight: 500;
+}
 .demo__reply {
-  margin-top: 10px; padding: 12px 14px;
-  background: var(--paper-2); border-radius: var(--r-sm);
-  font-size: 14.5px; line-height: 1.5; white-space: pre-line; max-height: 12em; overflow-y: auto;
+  position: relative;
+  background: var(--accent); color: #fff;
+  padding: 10px 15px; border-radius: 18px 8px 8px 18px;
+  font-size: 15px; line-height: 1.5; white-space: pre-line;
+  max-height: 12em; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.4) transparent;
 }
+.demo__a > :is(.demo__lead, p:not([class])):last-of-type,
+.demo__a > .demo__reply:last-of-type { border-bottom-right-radius: 8px; }
 /* send it? waiting for approval */
-.demo__doc { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; }
-.demo__name { flex: 1; min-width: 0; color: var(--muted); }
+.demo__doc { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 10px; font-size: 14px; width: 100%; }
+.demo__name { min-width: 0; color: var(--muted); }
 .demo__ok {
   flex: none; padding: 8px 16px; border: 0; border-radius: var(--pill); cursor: pointer;
   font: inherit; font-size: 14px; font-weight: 500; text-decoration: none;
@@ -317,7 +359,7 @@ a { color: inherit; }
 @keyframes ok-pulse { 0% { box-shadow: 0 0 0 0 rgba(90,60,158,.45); } 100% { box-shadow: 0 0 0 10px rgba(90,60,158,0); } }
 .demo__note {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px;
-  margin-top: 10px; font-size: 13.5px; color: var(--reports); font-weight: 500;
+  margin-top: 8px; font-size: 13.5px; color: var(--reports); font-weight: 500; width: 100%;
 }
 /* after Approve: the next step for the visitor */
 .demo__call {
@@ -352,7 +394,7 @@ a { color: inherit; }
 /* typing dots, while the AI works */
 .demo__typing {
   display: none; justify-self: end; gap: 5px;
-  background: var(--accent-soft); padding: 15px 18px; border-radius: 20px 20px 6px 20px;
+  background: var(--accent-soft); padding: 13px 16px; border-radius: 18px 18px 8px 18px;
 }
 .demo__typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: typing 1s ease-in-out infinite; }
 .demo__typing i:nth-child(2) { animation-delay: .15s; }
