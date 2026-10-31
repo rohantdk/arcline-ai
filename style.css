@@ -200,7 +200,7 @@ main { counter-reset: station; }
   padding: 10px 16px; border-radius: var(--pill);
   transition: color .2s, background .2s;
 }
-.nav__links a:hover, .nav__links a.is-active { color: var(--text); }
+.nav__links a:not(.nav__cta):hover, .nav__links a.is-active:not(.nav__cta) { color: var(--text); }
 .nav__links a.is-active:not(.nav__cta) { background: var(--accent-soft); }
 .nav__links .nav__cta { color: #fff; background: var(--accent); padding: 14px 24px; font-weight: 500; margin-left: 10px; }
 /* the current section's pill (script.js): a faint violet edge, a beam circling it, gliding between links */
