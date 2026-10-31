@@ -142,19 +142,28 @@ one is built. These are sold as a build service; no finished product exists yet.
   didn't set; change them in `script.js` (`CUR`) and the inputs' `value`s in `index.html`. Never add a "saved"
   figure until a pilot has measured one.
 
-- **Hero box as a conversation (31 October 2026, preview, awaiting "make it live"):** the owner asked to use
+- **Hero box as a conversation (31 October 2026, live):** the owner asked to use
   `npx shadcn add @kobra/conversation` (React + base-ui + Tailwind, registry kobra.systems/r/{name}.json) for the
   hero box. Rebuilt its look in CSS only, same markup and script: the buyer's email a grey bubble on the left, the
   AI's note (violet tint) and drafted reply (solid violet, white text) as joined bubbles on the right with
   "Your AI" above, 18px corners with an 8px corner on the sender's side. Owner's choices: same demo and words,
   Arcline violet (not the component's iMessage blue), no tap-to-show timestamps, screenshots first.
 
-- **Nav pill with a neon edge (31 October 2026, preview, awaiting "make it live"):** the owner sent a React "Neon
+- **Nav pill with a neon edge (31 October 2026, live):** the owner sent a React "Neon
   Edge Button" (white conic beam circling a black button, lucide Zap icon) for the current section in the nav, and
   asked that it "transfer as we progress". Built in CSS + a few lines in script.js: one `.nav__pill` behind the
   links, faint violet edge, a violet conic beam looping round it every 3 s, gliding (transform + width) to the active
   link. Owner's choices: loop all the time (advised a single run, owner chose the loop), no icon. Desktop bar
   only; the phone menu keeps the plain tint. Reduced motion: a still violet edge, no beam, no glide.
+
+- **Components the owner sends (pattern since 31 October 2026):** the owner often pastes React / shadcn / motion /
+  Tailwind components ("use this code", `npx shadcn add @…`). The site stays vanilla, so each is rebuilt in plain
+  CSS/JS in the site's tokens, keeping its look and motion, and the owner is told why. Swap out brand marks (use the
+  "a." mark), use Arcline violet instead of the component's colour, keep the three motion must-haves, and ask about
+  content, colour, extras and preview vs live first. To read a shadcn registry item: the network blocks the
+  registries, but Context Dev can: find the namespace's URL in `https://ui.shadcn.com/r/registries.json`
+  (`formats.highlights`, query `"name":"@kobra"`; `formats.json` guessed wrong), then scrape the item JSON
+  (e.g. `https://kobra.systems/r/conversation.json`) with `formats.bytes` and decode the base64.
 
 ## Click counting (31 October 2026)
 
@@ -225,6 +234,11 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
   http.server` answers POSTs with 501, so a pasted email shows the WhatsApp fallback; test the live path with
   `page.route('**/api/demo', ...)` returning JSON (`enquiry`, `missing`, `reply`). The pilot's chips are hidden
   radio inputs: `check({ force: true })`.
+- Your numbers: test currencies with Playwright's `timezoneId` (`Asia/Kolkata` → ₹6,24,000, `America/Chicago` →
+  $46,800, `Europe/Berlin` → €46,800, `Asia/Tokyo` → USD fallback); the sum's text is in `.cost__sum .sr`. Try a
+  huge sum (250 × 40 × 2000) on a phone: it must shrink to fit.
+- Right after a jump scroll the nav itself can be out of a screenshot; to see the pill glide, sample `.nav__pill` `getBoundingClientRect().left`
+  every ~90 ms after a scroll to see it glide.
 - **The live demo can't be tested from a session:** the network blocks `*.vercel.app` for curl and WebFetch, and
   Context Dev's browser actions (typing, clicking) need a paid plan. Context Dev's plain scrape can read the live
   page and `script.js` (to confirm a deploy). For the API, the owner runs this in the site's DevTools Console and
