@@ -76,7 +76,37 @@
       const id = '#' + entry.target.id;
       navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === id));
     });
+    placePill();
   }, { rootMargin: '-45% 0px -50% 0px' });
+
+  /* the current section's pill: one pill with a violet beam circling its edge (after the
+     Neon Edge Button), gliding from link to link as the page moves on. Desktop bar only;
+     the phone menu keeps the plain tint. */
+  const pill = document.createElement('span');
+  pill.className = 'nav__pill';
+  pill.setAttribute('aria-hidden', 'true');
+  links.prepend(pill);
+  links.classList.add('has-pill');
+  const phoneMenu = matchMedia('(max-width: 760px)');
+  function placePill() {
+    const a = $('a.is-active:not(.nav__cta)', links);
+    if (!a || phoneMenu.matches) { pill.classList.remove('is-on'); return; }
+    Object.assign(pill.style, {
+      width: a.offsetWidth + 'px', height: a.offsetHeight + 'px',
+      transform: `translate(${a.offsetLeft}px, ${a.offsetTop}px)`,
+    });
+    if (!pill.classList.contains('is-on')) {
+      // the first time it appears in place; after that it glides
+      pill.classList.add('is-still');
+      pill.classList.add('is-on');
+      pill.offsetWidth;
+      requestAnimationFrame(() => pill.classList.remove('is-still'));
+    }
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(placePill).observe(links);
+  phoneMenu.addEventListener('change', placePill);
+  if (document.fonts) document.fonts.ready.then(placePill);
+
   navLinks.map(a => $(a.getAttribute('href'))).filter(Boolean).forEach(t => navIO.observe(t));
 
 

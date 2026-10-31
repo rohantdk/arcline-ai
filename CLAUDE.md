@@ -149,6 +149,13 @@ one is built. These are sold as a build service; no finished product exists yet.
   "Your AI" above, 18px corners with an 8px corner on the sender's side. Owner's choices: same demo and words,
   Arcline violet (not the component's iMessage blue), no tap-to-show timestamps, screenshots first.
 
+- **Nav pill with a neon edge (31 October 2026, preview, awaiting "make it live"):** the owner sent a React "Neon
+  Edge Button" (white conic beam circling a black button, lucide Zap icon) for the current section in the nav, and
+  asked that it "transfer as we progress". Built in CSS + a few lines in script.js: one `.nav__pill` behind the
+  links, faint violet edge, a violet conic beam looping round it every 3 s, gliding (transform + width) to the active
+  link. Owner's choices: loop all the time (advised a single run, owner chose the loop), no icon. Desktop bar
+  only; the phone menu keeps the plain tint. Reduced motion: a still violet edge, no beam, no glide.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
