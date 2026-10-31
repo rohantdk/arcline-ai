@@ -129,6 +129,19 @@ one is built. These are sold as a build service; no finished product exists yet.
   fades; arrow keys, Home and End move between questions. No JS: every answer shows. Reduced motion: instant.
   Copy unchanged.
 
+- **"Your numbers" cost calculator (31 October 2026, live):** the owner asked for a measurable "see the difference"
+  section, like EV sites' fuel-savings calculators, using a React rolling-counter component, in the visitor's
+  currency. Advised against a savings figure: it needs a percentage we haven't measured (the "no numbers until a
+  pilot" rule). The owner chose option 1: the visitor's **current** cost only. After the pilot section: people ×
+  hours each a week × cost per hour × 52 → "Every year ₹6,24,000 and 1,560 hours of your team's time. That's one
+  repetitive task, today. Let's cut it." + "Book a 30-minute call" (WhatsApp with the figure, `data-track=
+  "whatsapp-calculator"`). Rebuilt in vanilla: one 0–9 column per place on a spring, rolling up when on screen.
+  Currency from the time zone (Asia/Kolkata → INR, London → GBP, Dubai → AED, eurozone → EUR, Americas → USD),
+  then the browser language region, else USD; menu to change. INR uses Indian grouping (6,24,000). Default rates
+  per currency (INR 400, USD 30, EUR 30, GBP 25, AED 100) and 3 people × 10 hours are placeholders the owner
+  didn't set; change them in `script.js` (`CUR`) and the inputs' `value`s in `index.html`. Never add a "saved"
+  figure until a pilot has measured one.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
@@ -139,7 +152,7 @@ one is built. These are sold as a build service; no finished product exists yet.
   path })`, the same call as `@vercel/analytics`' `pageview()`). They show in Analytics → Pages. On Pro, switch to
   `va('event', { name })`.
 - Names: `whatsapp-demo-call` (Book a 30-minute call after Approve), `whatsapp-demo-fallback` (demo resting),
-  `whatsapp-pilot` (pilot section), `whatsapp-contact` / `email-contact` (Contact buttons), `whatsapp-footer` /
+  `whatsapp-pilot` (pilot section), `whatsapp-calculator` (Your numbers), `whatsapp-contact` / `email-contact` (Contact buttons), `whatsapp-footer` /
   `email-footer` (Contact list), `email-copy` (Copy button). A new WhatsApp or email link needs `data-track`.
 - The script loads everywhere but localhost; on a non-Vercel host (Netlify) it would 404 harmlessly: remove it
   there. Analytics must be enabled in the Vercel project (Analytics tab → Enable) before the deploy that uses it;
