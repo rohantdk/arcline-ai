@@ -212,9 +212,21 @@ one is built. These are sold as a build service; no finished product exists yet.
 - Advised and agreed: The Document sells best, Murmuration is the most memorable; judge the live design by the call
   clicks (see "Click counting"), two weeks before and after 31 October.
 
-- **Phone menu fix (31 October 2026):** the nav pill's `.nav__links.has-pill { position: relative }` beat the
-  phone rule's `position: absolute`, so the menu opened inside the bar, clipped. The 760px rule now sets
-  `.nav__links, .nav__links.has-pill { position: absolute; }`. Check the menu at 390px after any nav change.
+- **Problem section on the paper (live 31 October 2026, #24):** the owner, on their phone: "the first section
+  background is purple? It should be white like the rest". Told them the dark band was a deliberate break in the
+  One Line design; they kept white. `#problem` has no background now: heading in ink, "Meanwhile, orders wait."
+  in `--queries`, the three dots in full colours (`--docs`, `--queries`, `--reports`), the eyebrow without
+  `--light`; `line.js` treats only `.contact` as a dark band. Its flock window stays dark, like every other.
+  **Contact keeps its dark band:** advised keeping it (it ends the page, the call buttons stand out); the owner
+  said "make it live" without choosing. Change it only if they ask.
+- **Phone menu fix (31 October 2026, #24):** the nav pill's `.nav__links.has-pill { position: relative }` beat the
+  phone rule's `position: absolute`, so the menu opened inside the bar, clipped at the top, "Book a call" wrapped.
+  The 760px rule now sets `.nav__links, .nav__links.has-pill { position: absolute; }`. Check the menu at 390px
+  after any nav change.
+- **"Book a call" stays white (31 October 2026, #25):** the nav button links to `#contact`, so in Contact it gets
+  `.is-active`, and `.nav__links a.is-active { color: var(--text) }` turned its text dark on violet (phone and
+  desktop; the owner spotted it on the phone). The hover/active text rule now has `:not(.nav__cta)`. Test any nav
+  colour change with Contact in view.
 
 ## Click counting (31 October 2026)
 
@@ -275,8 +287,9 @@ one is built. These are sold as a build service; no finished product exists yet.
 7. **About December 2026:** after a month of counts, the owner brings the numbers; improve the weakest call button
    or remove buttons with no clicks. The owner's test click (Approve → Book a 30-minute call → a
    `/click/whatsapp-demo-call` row in Analytics → Pages) was not confirmed in the session.
-8. **The redesign on iPhone:** the line, pulling it, the flock windows and the smooth example box were tested in
-   Chromium only. The owner checks on iPhone (Safari); fix anything reported.
+8. **The redesign on phones:** the line, pulling it, the flock windows, the smooth example box and the 31 October
+   fixes were tested in Chromium only. The owner checks on an Android phone (their 31 October screenshots) and on
+   iPhone (Safari); fix anything reported.
 9. **Judge the redesign by calls, not looks:** about mid-November 2026, compare call clicks ÷ visits for the two
    weeks before and after 31 October (Vercel → Analytics → Pages). If calls fell, simplify (e.g. fewer windows).
 
@@ -325,7 +338,8 @@ at 1360px, 390px and `reducedMotion: 'reduce'`: no console errors, `scrollWidth`
 5. Restarting the branch: `git checkout -B <branch> origin/main` then `git push --force-with-lease`. Auto mode's
    safety check blocked `git commit --amend` with a plain `--force` push; make a new commit instead of amending.
    Backend-only fixes to an approved feature (the model switch, #6) were merged without a new "make it live";
-   anything visible still waits for it.
+   anything visible still waits for it. Exception used once (#25): a one-line fix for a bug the owner reported in
+   what they had just made live was merged straight away, and they were told so.
 6. When this repo is added to a session mid-way (`add_repo`), the shallow clone tracks only `main`: `git push -u`
    doesn't set tracking for the feature branch, and a stop hook then reports it as unpushed. Fix with
    `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>'`, `git fetch`,
