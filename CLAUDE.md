@@ -200,6 +200,16 @@ one is built. These are sold as a build service; no finished product exists yet.
   are drawn on a hidden canvas and sampled into points, so new ones are a few lines in `DRAW`. Reduced motion:
   dots jump to each figure, no drift; no JS: the usual page.
 
+- **"The Loom" redesign (31 October 2026), preview only, not live:** the fourth experiment, built from the live
+  site (One Line 9de6003, The Document 4ff6aa0 and Murmuration 25cef60 stay in history with their preview pages).
+  The page weaves itself (`loom.js`): a fixed canvas of fine warp threads behind everything (every seventh one
+  violet, with knots) that part around the mouse and spring back; before the strip and each section a band of
+  cloth is woven row by row by a violet shuttle when it comes into view: a twill in the band's job colour (docs,
+  queries, reports in turn) with the logo's three dots woven in, and a fringe above and below. Cards, tiles, stats,
+  steps, panels and solid buttons get dashed stitched seams; section labels are woven labels (ink tag, light
+  square). Story: scattered threads (email, Excel, ERP) woven into one cloth. Reduced motion: bands already woven,
+  threads still; no JS: no threads or bands.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no

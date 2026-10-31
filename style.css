@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════
-   ARCLINE — Your company's own AI · "Murmuration"
-   A flock of square dots (swarm.js) streams into a figure for each section: on wide screens
-   on a dark stage to the right of a reading column, on phones behind the page.
+   ARCLINE — Your company's own AI · "The Loom"
+   The page weaves itself (loom.js): fine warp threads behind everything, a band of cloth
+   woven between sections, and stitched seams on cards, buttons and labels.
    The studio's "Vineyard" palette (aubergine ink, soft paper ground),
    with the AI category's violet as the accent.
    Rounded interface, square logo: panels, tiles, buttons and chips are soft;
@@ -950,79 +950,56 @@ html:not(.js) .pilot { display: none; }
 }
 
 /* ════════════════════════════════════════════════════
-   MURMURATION (swarm.js)
+   THE LOOM (loom.js)
 ════════════════════════════════════════════════════ */
-.swarm {
-  position: fixed; z-index: 150; top: 0; right: 0; width: 44vw; height: 100vh; height: 100dvh;
-  pointer-events: none; overflow: hidden;
-  background:
-    radial-gradient(60% 50% at 50% 45%, rgba(195,174,242,0.14), transparent 70%),
-    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1.5px) 0 0 / 24px 24px,
-    var(--band);
-}
-.swarm canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
-.swarm__label {
-  position: absolute; left: clamp(20px, 3vw, 44px); bottom: clamp(20px, 3vw, 40px); right: 20px;
-  display: flex; align-items: baseline; gap: 14px;
-  font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-band);
-}
-.swarm__label b {
-  font-family: var(--display); font-weight: 800; font-size: clamp(56px, 6vw, 96px); line-height: .8;
-  letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1.5px var(--accent-light);
-}
-.swarm__label span:not(:empty) { animation: where-in .5s var(--ease); }
+.loom__warp { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.has-loom main { position: relative; z-index: 1; }
+.has-loom .block { padding-top: clamp(48px, 6vw, 88px); }
+.has-loom .contact { margin-top: clamp(48px, 6vw, 88px); }
 
-/* wide screens: the page becomes a reading column on the left */
-@media (min-width: 1100px) {
-  .has-swarm body { padding-right: 44vw; }
-  .has-swarm .nav__where { display: none; }
-  .has-swarm .nav__links a { white-space: nowrap; font-size: 15px; padding: 9px 11px; }
-  .has-swarm .nav__links .nav__cta { padding: 12px 18px; margin-left: 6px; }
-  .has-swarm .nav__mark { height: 28px; }
-  .has-swarm .nav.is-scrolled .nav__inner { max-width: calc(100% - 2 * var(--gutter)); }
-  .has-swarm .hero__grid, .has-swarm .pilot, .has-swarm .cost, .has-swarm .faq-wrap { grid-template-columns: minmax(0, 1fr); }
-  .has-swarm .demo { max-width: 600px; margin-top: 12px; }
-  .has-swarm .stats { grid-template-columns: repeat(2, 1fr); }
-  .has-swarm .steps { grid-template-columns: repeat(2, 1fr); }
-  .has-swarm .steps li:nth-child(n) { min-height: 150px; }
-  .has-swarm .contact__grid { grid-template-columns: 1fr 1fr; }
-  .has-swarm .contact__grid div:last-child { grid-column: 1 / -1; }
-  .has-swarm .founder { position: static; flex-direction: row; justify-content: flex-start; gap: 20px; margin-bottom: 40px; }
-  .has-swarm .founder__face { width: 170px; }
-  .has-swarm .founder figcaption { text-align: left; }
-  .has-swarm .contact__mark { display: none; }   /* the flock lands as the "a." beside it */
-  .has-swarm .hero__title { font-size: clamp(40px, 4.4vw, 72px); }
-  .has-swarm .block__title { font-size: clamp(34px, 4vw, 60px); }
-  .has-swarm .statement { font-size: clamp(38px, 4.6vw, 76px); }
-  .has-swarm .vows li { font-size: clamp(34px, 4.4vw, 72px); }
-  .has-swarm .contact__title { font-size: clamp(38px, 4.4vw, 72px); }
+/* a woven band, edge to edge; the shuttle rides along the row being woven */
+.weave { position: relative; margin-top: clamp(56px, 8vw, 112px); overflow: hidden; }
+.marquee + .weave, .hero + .weave { margin-top: clamp(24px, 3vw, 40px); }
+.weave canvas { display: block; width: 100%; height: 100%; }
+.weave::before, .weave::after {
+  /* fringe: loose warp ends above and below the cloth */
+  content: ''; position: absolute; left: 0; right: 0; height: 6px; z-index: 1;
+  background: repeating-linear-gradient(90deg, transparent 0 3px, rgba(34,22,42,.25) 3px 5px, transparent 5px 10px);
 }
+.weave::before { top: 0; } .weave::after { bottom: 0; }
+.weave__shuttle {
+  position: absolute; left: 0; top: 0; z-index: 2; width: 34px; height: 14px; margin: -7px 0 0 -17px;
+  background: var(--accent); border-radius: 7px 2px 7px 2px; opacity: 0;
+  box-shadow: 0 4px 10px -2px rgba(34,22,42,.5);
+  transition: opacity .3s;
+}
+.weave__shuttle::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px; background: var(--paper); }
 
-/* phones and tablets: the flock lives behind the page, seen in the gaps between sections */
-@media (max-width: 1099px) {
-  .has-swarm .swarm { z-index: 0; width: 100%; }
-  .has-swarm body { background: var(--band); }
-  .has-swarm main { position: relative; z-index: 1; }
-  .has-swarm .hero > .wrap, .has-swarm .block:not(#problem) > .wrap {
-    background: var(--paper); border-radius: var(--r);
-    max-width: min(var(--max), calc(100% - 20px));
-    padding-top: clamp(28px, 5vw, 48px); padding-bottom: clamp(32px, 5vw, 56px);
-  }
-  .has-swarm .hero { padding-top: 12px; }
-  .has-swarm .block { padding-top: 46vh; }
-  .has-swarm .marquee { margin-top: 12px; }
-  .has-swarm .marquee__list li { box-shadow: none; }
-  .has-swarm .panel { box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
-  .has-swarm .contact { margin-top: 46vh; box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
-  .has-swarm .swarm__label { display: none; }
+/* stitched seams: a dashed line inside each card, tile and button, like a woven label */
+.has-loom .jobs li, .has-loom .card, .has-loom .stats div, .has-loom .steps li, .has-loom .plan, .has-loom .cost__result, .has-loom .panel {
+  outline: 1.5px dashed color-mix(in srgb, var(--c, var(--accent)) 45%, transparent);
+  outline-offset: -10px;
 }
+.has-loom .panel, .has-loom .jobs li:first-child, .has-loom .steps li:nth-child(4) { outline-color: rgba(255,255,255,.35); }
+.has-loom .btn--solid, .has-loom .nav__cta, .has-loom .btn--light {
+  outline: 1.5px dashed rgba(255,255,255,.55); outline-offset: -5px;
+}
+.has-loom .btn--light { outline-color: color-mix(in srgb, var(--band) 40%, transparent); }
+/* section labels as woven labels: a tag on a thread */
+.has-loom .block .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--ink); color: var(--paper); padding: 7px 14px 7px 12px; border-radius: 3px;
+  outline: 1.5px dashed rgba(255,255,255,.35); outline-offset: -4px;
+}
+.has-loom .block .eyebrow::before { content: ''; width: 7px; height: 7px; background: var(--accent-light); }
+.has-loom .contact .contact__mark { filter: none; }
+
 @media (max-width: 760px) {
-  .has-swarm .hero > .wrap, .has-swarm .block:not(#problem) > .wrap { max-width: calc(100% - 16px); }
+  .weave__shuttle { width: 26px; height: 11px; margin: -5.5px 0 0 -13px; }
 }
 
 @media print {
-  .swarm { display: none !important; }
-  .has-swarm body { padding-right: 0; }
+  .loom__warp, .weave { display: none !important; }
 
   .reveal { opacity: 1 !important; transform: none !important; }
   .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy, .demo__ask, .pilot__form, .plan__wa, .cost__wa { display: none !important; }
