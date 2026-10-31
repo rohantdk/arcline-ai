@@ -51,11 +51,13 @@ The studio's palette with the AI violet as the accent: `--ink` #22162A, `--band`
 - Tiles lift on hover; pointing at one promise fades the other two (mouse only).
 - Hero example: one buyer email and the reply the AI drafted, in the HTML so the page reads without JavaScript.
   With it, typing dots play once when the box comes into view, then the reply; Approve pulses until pressed, then
-  shows "That's your team's only step." Under the box, "Try it with your own buyer email" opens a text box; that
+  shows "That's your team's only step." and a "Book a 30-minute call" button (WhatsApp, pre-filled). A demo cursor
+  presses Approve three times (pausing while a mouse moves over the box, stopping after a tap); its first two
+  presses return the box to the example after three seconds. Under the box, "Try it with your own buyer email" opens a text box; that
   email goes to `/api/demo` (`api/demo.js`, an open-source model on Groq) and the answer fills the `demo-live`
   template. When the API isn't there (no key, busy, timeout, or a local server) the `demo-rest` template offers
-  WhatsApp with the email pre-filled. The bar's chip reads "Example", or "Live" for a model answer. Three seconds after Approve the box returns
-  to the example (own-email box closed and cleared), unless the visitor is using that box.
+  WhatsApp with the email pre-filled. The bar's chip reads "Example", or "Live" for a model answer. A visitor's own Approve leaves the box
+  approved, so the call button stays.
 - Your first pilot: picking a task fills the pilot beside it (`data-build`, `data-still` on the inputs in
   `index.html`; no model) and the WhatsApp link. Without JavaScript the chips are hidden and a line with a WhatsApp
   link shows instead.
