@@ -78,7 +78,7 @@ one is built. These are sold as a build service; no finished product exists yet.
 - **Founder face (30 October 2026), live:** after rameerez.com's squishy face. The owner chose full squish over
   the gentler version advised. It first went live in the portfolio's About, then moved here at the owner's request.
   It sits right of the Contact headline on a violet disc (stacked under the buttons below 960px), captioned
-  "Founder" (Rohan is still named once, in the Studio line) with a "Drag the face" hint shown only when it's
+  "Rohan Tidke" / "Founder · Arcline" with a "Drag the face" hint shown only when it's
   interactive. Pupils follow the mouse only; dragging works with touch.
 - **The face looks like the owner** (drawn from a photo the owner sent; the photo is not in the repo): quiff, trimmed
   beard and moustache, strong brows, warm skin (`--skin`, `--lip` on `.founder`), ears, nose, dark suit over a light
@@ -113,7 +113,10 @@ one is built. These are sold as a build service; no finished product exists yet.
   face gets a demo hand, three times about 6 seconds apart, that pulls the hairline up and lets go (eyes follow it); it pauses under
   the mouse and stops once a visitor drags. The neck is drawn each frame from the chin to the collar: it stretches,
   bends in an S when pulled sideways, thins as it stretches, with a shadow under the chin. None of it runs under
-  reduced motion. The arrow cursor is used on phones too (clearer than a tap circle).
+  reduced motion. The arrow cursor is used on phones too (clearer than a tap circle). Both pause only while the mouse moves over them and resume after 3 seconds
+  still (a mouse resting where the face scrolled in had paused the face demo after one pull). The face caption now
+  reads "Rohan Tidke" over "Founder · Arcline" (owner's ask, 31 October 2026), so Rohan is named twice in Contact
+  (also in the Studio line).
 
 ## Portable copy for other hosts (30 October 2026)
 

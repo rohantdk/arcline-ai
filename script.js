@@ -405,8 +405,14 @@
         if (seen) guide.next(); else stop();
       }).observe(demo);
       if (fine) {
-        demo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { over = true; stop(); } });
-        demo.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { over = false; guide.next(); } });
+        // same rule as the face: a moving mouse over the box pauses it, a still one doesn't
+        let idle;
+        demo.addEventListener('pointermove', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          if (!over) { over = true; stop(); }
+          clearTimeout(idle);
+          idle = setTimeout(() => { over = false; guide.next(); }, 3000);
+        });
       }
       demo.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { off = true; stop(); } });
       open.addEventListener('click', () => { off = true; stop(); });
@@ -825,8 +831,15 @@
       if (e.isIntersecting) { ghost.stop(); later(1400, ghost.run); } else ghost.stop();
     }).observe(svg);
     if (fine) {
-      founder.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { ghost.over = true; ghost.stop(); } });
-      founder.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { ghost.over = false; ghost.stop(); later(2500, ghost.run); } });
+      // pause only while the mouse actually moves over the face (a mouse resting where the
+      // face scrolls in doesn't count), and pick up again once it has been still a while
+      let idle;
+      founder.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse' || start) return;
+        if (!ghost.over) { ghost.over = true; ghost.stop(); }
+        clearTimeout(idle);
+        idle = setTimeout(() => { ghost.over = false; ghost.run(); }, 3000);
+      });
     }
 
     $('.founder__hint', founder).hidden = false;

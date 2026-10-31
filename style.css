@@ -711,6 +711,7 @@ html:not(.js) .pilot { display: none; }
 .founder__brow { fill: none; stroke: var(--ink); stroke-width: 9; stroke-linecap: square; }
 .founder__mouth { fill: none; stroke: var(--lip); stroke-width: 6; stroke-linecap: square; }
 .founder figcaption { text-align: center; }
+.founder__name { display: block; margin-bottom: 4px; font-size: 19px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
 .founder__label {
   display: block; margin-bottom: 4px;
   font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light);
