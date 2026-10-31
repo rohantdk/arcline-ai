@@ -348,12 +348,69 @@
     });
     field.addEventListener('input', () => { keep(); own.classList.remove('is-short'); });
 
-    demo.addEventListener('click', (e) => {
-      if (!e.target.closest('button.demo__ok')) return;
+    const approve = () => {
       set('is-answered', 'is-approved');
       keep();
-      resetTimer = setTimeout(reset, 3000);
+      resetTimer = setTimeout(() => { reset(); guide.next(); }, 3000);
+    };
+    demo.addEventListener('click', (e) => {
+      if (e.target.closest('button.demo__ok')) approve();
     });
+
+    /* A cursor shows the one step: it glides to Approve and presses it, then the
+       box goes back to the example and it plays again, three times in all. It steps aside while a
+       mouse is over the box (so the visitor can press it), and stops for good
+       once the visitor taps the box or tries their own email. */
+    const guide = { next() {} };
+    if (!reduce) {
+      const hand = document.createElement('span');
+      hand.className = 'demo__cursor';
+      hand.setAttribute('aria-hidden', 'true');
+      hand.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 2v17.5l4.6-4.3 3 6.6 3-1.3-3-6.5H18Z"/></svg>';
+      demo.append(hand);
+
+      let timer, seen = false, over = false, off = false, plays = 0;
+      const stop = () => {
+        clearTimeout(timer);
+        hand.classList.remove('is-on', 'is-press', 'is-tap');
+      };
+      const at = (x, y) => { hand.style.transform = `translate(${x}px, ${y}px)`; };
+      const ready = () => seen && !over && !off && demo.classList.contains('is-answered') &&
+        !demo.classList.contains('is-approved') && own.hidden && $('.demo__ok', chat);
+      const play = () => {
+        if (!ready()) return;
+        const ok = $('.demo__ok', chat), d = demo.getBoundingClientRect(), b = ok.getBoundingClientRect();
+        const x = b.left - d.left + b.width * 0.55, y = b.top - d.top + b.height * 0.55;
+        hand.style.transition = 'none';
+        at(x + 70, y + 90);
+        hand.getBoundingClientRect();
+        hand.style.transition = '';
+        hand.classList.add('is-on');
+        at(x, y);
+        timer = setTimeout(() => {
+          if (!ready()) return stop();
+          hand.classList.add('is-press', 'is-tap');
+          timer = setTimeout(() => {
+            hand.classList.remove('is-press');
+            if (++plays >= 3) off = true;   // three plays teach the step; then it rests
+            approve();
+            timer = setTimeout(() => hand.classList.remove('is-on', 'is-tap'), 700);
+          }, 160);
+        }, 1050);
+      };
+      guide.next = () => { stop(); timer = setTimeout(play, 1500); };
+
+      new IntersectionObserver(([e]) => {
+        seen = e.isIntersecting;
+        if (seen) guide.next(); else stop();
+      }).observe(demo);
+      if (fine) {
+        demo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { over = true; stop(); } });
+        demo.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { over = false; guide.next(); } });
+      }
+      demo.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { off = true; stop(); } });
+      open.addEventListener('click', () => { off = true; stop(); });
+    }
 
     // the first time the box is on screen, the reply is drafted
     if (!reduce) {
@@ -361,7 +418,7 @@
       const io = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
-        setTimeout(() => { if (!asked) set('is-answered'); }, 2200);
+        setTimeout(() => { if (!asked) { set('is-answered'); guide.next(); } }, 2200);
       });
       io.observe(demo);
     }
@@ -569,6 +626,34 @@
     const pupils = $$('.founder__pupil', founder);
     const hc = { x: 120, y: 104, r: 76 };   // the head circle in index.html
 
+    const neck = $('.founder__neck', founder), shade = $('.founder__shade', founder);
+    const NECK = { x: 120, w: 16, top: 150, chin: 172, base: 198 };
+    const ease = (u) => u * u * (3 - 2 * u);
+
+    // the neck: joined to the chin above and the collar below, so it stretches and
+    // bends with the head (an S-curve when pulled sideways) and thins as it stretches
+    const drawNeck = () => {
+      const [tx, ty] = move(NECK.x, NECK.chin);
+      const T = { x: tx - NECK.x, y: ty - NECK.chin };
+      const rest = NECK.base - NECK.chin;
+      const now = Math.hypot(T.x, NECK.base - ty);
+      const thin = clamp(Math.sqrt(rest / Math.max(now, 1)), 0.78, 1.15);
+      const N = 14, L = [], R = [], S = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N, k = 1 - ease(u);
+        const cx = NECK.x + T.x * k, cy = lerp(NECK.chin + T.y, NECK.base, u);
+        const w = NECK.w * (1 + (thin - 1) * Math.sin(Math.PI * Math.min(1, u * 1.3)));
+        L.push([cx - w, cy]); R.push([cx + w, cy]);
+      }
+      const cap = [[NECK.x - NECK.w + T.x, NECK.top + T.y], [NECK.x + NECK.w + T.x, NECK.top + T.y]];
+      const pts = [cap[0], ...L, ...R.reverse(), cap[1]];
+      neck.setAttribute('d', pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('') + 'Z');
+      // a soft shadow under the chin, deeper as the neck stretches
+      const depth = 7 + clamp((now - rest) * 0.25, 0, 12);
+      const top = NECK.chin + T.y, a = L[0], b = R[R.length - 1];
+      shade.setAttribute('d', `M${(a[0] - 1).toFixed(1)} ${(top - 6).toFixed(1)}L${(b[0] + 1).toFixed(1)} ${(top - 6).toFixed(1)}L${(b[0] + 1).toFixed(1)} ${(top + depth * 0.6).toFixed(1)}Q${(NECK.x + T.x).toFixed(1)} ${(top + depth * 1.6).toFixed(1)} ${(a[0] - 1).toFixed(1)} ${(top + depth * 0.6).toFixed(1)}Z`);
+    };
+
     const M = 70, SIGMA = 62;               // how far it stretches, how wide the pull is
     let grab = null, start = null, pull = { x: 0, y: 0 };
     let D = { x: 0, y: 0 }, V = { x: 0, y: 0 };
@@ -614,12 +699,14 @@
         sh.el.setAttribute('d', d);
       });
 
+      drawNeck();
+
       // pupils: look at the pointer, from wherever the eye has been pulled to
       whites.forEach((w, i) => {
         const [ex, ey] = move(w.cx, w.cy);
         let gx = 0, gy = 0;
-        if (aim) {
-          const p = toSvg(aim.x, aim.y);
+        if (ghost.aim || aim) {
+          const p = ghost.aim || toSvg(aim.x, aim.y);
           const vx = p.x - ex, vy = p.y - ey, len = Math.hypot(vx, vy) || 1;
           const r = Math.min(6, len * 0.06);
           gx = vx / len * r; gy = vy / len * r;
@@ -651,6 +738,7 @@
     svg.addEventListener('pointerdown', (e) => {
       const p = toSvg(e.clientX, e.clientY);
       if (Math.hypot(p.x - hc.x, p.y - hc.y) > hc.r + 10) return;
+      ghost.off = true; ghost.stop();
       e.preventDefault();
       svg.setPointerCapture(e.pointerId);
       // grab where the pointer lands on the face as it is drawn now
@@ -678,6 +766,68 @@
     };
     svg.addEventListener('pointerup', release);
     svg.addEventListener('pointercancel', release);
+
+    /* The demo drag: while nobody is using the face, a hand grabs the top of the
+       head every few seconds, pulls it up (the neck stretches), and lets go, three times in all. It
+       steps aside while a mouse is over the face and stops once someone drags it. */
+    const hand = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    hand.setAttribute('class', 'founder__ghost');
+    hand.innerHTML = '<g><path d="M0 0v21l5.5-5.2 3.6 7.9 3.6-1.6-3.6-7.8H17Z"/></g>';
+    svg.append(hand);
+    const ghost = { aim: null, off: false, over: false, timers: [], plays: 0 };
+    const later = (ms, fn) => ghost.timers.push(setTimeout(fn, ms));
+    const place = (x, y) => { hand.style.transform = `translate(${x}px, ${y}px)`; };
+    ghost.stop = () => {
+      ghost.timers.forEach(clearTimeout); ghost.timers = [];
+      cancelAnimationFrame(ghost.raf);
+      if (ghost.held) { ghost.held = false; start = null; wake(); }
+      ghost.aim = null;
+      hand.classList.remove('is-on', 'is-press');
+    };
+    ghost.run = () => {
+      ghost.stop();
+      if (ghost.off || ghost.over || !visible || start) return;
+      const g = { x: 122, y: 64 };                 // the hairline
+      const to = { x: 12 - Math.random() * 24, y: -62 };
+      hand.style.transition = 'none';
+      place(g.x + 60, g.y - 30);
+      hand.getBoundingClientRect();
+      hand.style.transition = '';
+      hand.classList.add('is-on');
+      place(g.x, g.y);
+      ghost.aim = { x: g.x, y: g.y };
+      later(950, () => {
+        hand.classList.add('is-press');
+        hand.style.transition = 'opacity .35s ease';   // follow the face frame by frame
+        ghost.held = true;
+        grab = { x: g.x, y: g.y }; start = { ...g }; pull = { x: 0, y: 0 };
+        wake();
+        const t0 = performance.now();
+        const step = (t) => {
+          const u = Math.min(1, (t - t0) / 900), e = ease(u);
+          pull = { x: to.x * e, y: to.y * e };
+          place(g.x + D.x, g.y + D.y);
+          ghost.aim = { x: g.x + D.x, y: g.y + D.y };
+          if (ghost.held) ghost.raf = requestAnimationFrame(step);
+        };
+        ghost.raf = requestAnimationFrame(step);
+        later(1500, () => {
+          cancelAnimationFrame(ghost.raf);
+          ghost.held = false; start = null; wake();
+          hand.classList.remove('is-press');
+          later(350, () => { hand.classList.remove('is-on'); ghost.aim = null; });
+          if (++ghost.plays >= 3) ghost.off = true;   // three pulls, then it rests
+          else later(5200, ghost.run);
+        });
+      });
+    };
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { ghost.stop(); later(1400, ghost.run); } else ghost.stop();
+    }).observe(svg);
+    if (fine) {
+      founder.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { ghost.over = true; ghost.stop(); } });
+      founder.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { ghost.over = false; ghost.stop(); later(2500, ghost.run); } });
+    }
 
     $('.founder__hint', founder).hidden = false;
     founder.classList.add('is-live');

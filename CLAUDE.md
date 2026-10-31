@@ -106,6 +106,15 @@ one is built. These are sold as a build service; no finished product exists yet.
   the "own email" box. The prompt keeps replies to "happy to quote", never "we can supply", and `missing` a short
   noun phrase (a first live reply read "We can supply 500…" and "missing: please confirm your…").
 
+- **Demo cursors and a stretching neck (31 October 2026, live):** the owner asked for
+  a cursor that shows Approve being pressed, a demo of dragging the face, and a neck that stretches instead of
+  breaking. The hero box now has a cursor that glides to Approve and presses it, then the box resets and it plays
+  again, three times in all (owner's choice, to teach the step without busy motion); it steps aside while a mouse is over the box and stops for good after a tap or "try your own email". The
+  face gets a demo hand, three times about 6 seconds apart, that pulls the hairline up and lets go (eyes follow it); it pauses under
+  the mouse and stops once a visitor drags. The neck is drawn each frame from the chin to the collar: it stretches,
+  bends in an S when pulled sideways, thins as it stretches, with a shadow under the chin. None of it runs under
+  reduced motion. The arrow cursor is used on phones too (clearer than a tap circle).
+
 ## Portable copy for other hosts (30 October 2026)
 
 - The owner asked for the site as a zip, to deploy on Vercel or Netlify later with a new custom domain. Given as

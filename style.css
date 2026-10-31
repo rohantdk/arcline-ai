@@ -319,6 +319,24 @@ a { color: inherit; }
 .js .demo__note { display: none; }
 .js .demo.is-approved .demo__note { display: block; animation: act-in .45s var(--ease) both; }
 
+/* the cursor that shows the step: glides to Approve and presses it (script.js) */
+.demo__cursor {
+  position: absolute; left: 0; top: 0; z-index: 3; width: 26px; height: 26px;
+  margin: -2px 0 0 -4px; pointer-events: none; opacity: 0;
+  transition: transform 1s cubic-bezier(.45,.05,.2,1), opacity .35s ease;
+}
+.demo__cursor.is-on { opacity: 1; }
+.demo__cursor svg { display: block; width: 100%; height: 100%; transform-origin: 15% 8%; transition: transform .14s ease; filter: drop-shadow(0 3px 4px rgba(34,22,42,.3)); }
+.demo__cursor path { fill: var(--ink); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; }
+.demo__cursor.is-press svg { transform: scale(.82); }
+.demo__cursor::after {
+  /* the press: a ring at the tip */
+  content: ''; position: absolute; left: 0; top: 0; width: 34px; height: 34px; margin: -15px 0 0 -13px;
+  border-radius: 50%; border: 2px solid var(--accent); opacity: 0; transform: scale(.3);
+}
+.demo__cursor.is-tap::after { animation: press-ring .5s ease-out forwards; }
+@keyframes press-ring { 0% { opacity: .9; transform: scale(.3); } 100% { opacity: 0; transform: scale(1.2); } }
+
 /* typing dots, while the AI works */
 .demo__typing {
   display: none; justify-self: end; gap: 5px;
@@ -679,6 +697,13 @@ html:not(.js) .pilot { display: none; }
 .founder__body, .founder__hair, .founder__pupil { fill: var(--ink); }
 .founder__skin { fill: var(--skin); }
 .founder__shirt { fill: var(--paper-2); }
+.founder__shade { fill: rgba(34,22,42,.28); }
+/* the demo hand that drags the face (script.js) */
+.founder__ghost { pointer-events: none; opacity: 0; transition: transform .9s cubic-bezier(.45,.05,.2,1), opacity .35s ease; }
+.founder__ghost.is-on { opacity: 1; }
+.founder__ghost > g { transform-origin: 2px 2px; transition: transform .14s ease; }
+.founder__ghost.is-press > g { transform: scale(.82); }
+.founder__ghost path { fill: var(--ink); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; }
 .founder__head, .founder__ear { fill: var(--skin); stroke: var(--ink); stroke-width: 13; }
 .founder__ear { stroke-width: 8; }
 .founder__nose { fill: none; stroke: var(--ink); stroke-width: 5; }
