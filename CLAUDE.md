@@ -210,6 +210,15 @@ one is built. These are sold as a build service; no finished product exists yet.
   square). Story: scattered threads (email, Excel, ERP) woven into one cloth. Reduced motion: bands already woven,
   threads still; no JS: no threads or bands.
 
+- **"Departures" redesign (31 October 2026), preview only, not live:** the fifth experiment, built from the live
+  site (One Line 9de6003, The Document 4ff6aa0, Murmuration 25cef60, The Loom 3b1cf97 stay in history with their
+  preview pages). The page is a departures board at night (`flap.js`, scoped to `html.has-flap`, so without JS the
+  usual light page shows): a dark hall with a faint slot grid, and every headline (hero, section titles, the
+  problem, contact, the three promises) a row of split-flap tiles that spin through letters and land left to right
+  when in view, and spin again on mouse hover. Words stay unbroken (`.fw`), the heading keeps its text in
+  `aria-label`. The light panels (demo, tiles, cards, plan, calculator) sit on it as lit screens. Gotcha: the old
+  `.hero__title span` rules match the tile spans; tile rules are scoped `.is-board …` to win.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no

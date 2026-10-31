@@ -1,7 +1,8 @@
 /* ═══════════════════════════════════════════════════
-   ARCLINE — Your company's own AI · "The Loom"
-   The page weaves itself (loom.js): fine warp threads behind everything, a band of cloth
-   woven between sections, and stitched seams on cards, buttons and labels.
+   ARCLINE — Your company's own AI · "Departures"
+   With JavaScript (html.has-flap) the page is a departures board at night: a dark hall, and
+   every headline a row of split-flap tiles that spin into place (flap.js). Without it, the
+   usual light page.
    The studio's "Vineyard" palette (aubergine ink, soft paper ground),
    with the AI category's violet as the accent.
    Rounded interface, square logo: panels, tiles, buttons and chips are soft;
@@ -950,56 +951,81 @@ html:not(.js) .pilot { display: none; }
 }
 
 /* ════════════════════════════════════════════════════
-   THE LOOM (loom.js)
+   DEPARTURES (flap.js): the hall
 ════════════════════════════════════════════════════ */
-.loom__warp { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-.has-loom main { position: relative; z-index: 1; }
-.has-loom .block { padding-top: clamp(48px, 6vw, 88px); }
-.has-loom .contact { margin-top: clamp(48px, 6vw, 88px); }
+.has-flap body {
+  background:
+    radial-gradient(1000px 600px at 50% -10%, rgba(195,174,242,0.14), transparent 70%),
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px) 0 0 / 100% 44px,
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px) 0 0 / 32px 100%,
+    var(--band);
+  background-attachment: fixed;
+}
+.has-flap :is(.block__title, .hero__title, .statement, .contact__title, .vows li, .hero__sub, .cost__row, .pilot__plain, .cost__row label) { color: var(--paper); }
+.has-flap .eyebrow { color: var(--accent-light); }
+.has-flap .btn--line { border-color: var(--paper); color: var(--paper); }
+.has-flap .btn--line:hover { background: var(--paper); color: var(--ink); }
+.has-flap .btn--solid:hover { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.has-flap .stats dd, .has-flap .card__desc { color: var(--muted); }
+.has-flap .panel { background: var(--ink); box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
+.has-flap .contact { background: var(--ink); box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
+.has-flap .cost__row { border-color: rgba(255,255,255,0.14); }
+.has-flap .cost__row:first-child { border-top-color: rgba(255,255,255,0.14); }
+.has-flap .faq__q { background: #3A2A40; color: var(--paper); }
+.has-flap .faq__q[aria-expanded="true"] { background: var(--paper); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .has-flap .faq__q:hover { background: #46344D; } }
+.has-flap .faq__avatar { background: var(--paper); }
+.has-flap .mark__a path { stroke: var(--paper); }
+.has-flap .marquee__list li { background: var(--ink); color: var(--on-band); box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
 
-/* a woven band, edge to edge; the shuttle rides along the row being woven */
-.weave { position: relative; margin-top: clamp(56px, 8vw, 112px); overflow: hidden; }
-.marquee + .weave, .hero + .weave { margin-top: clamp(24px, 3vw, 40px); }
-.weave canvas { display: block; width: 100%; height: 100%; }
-.weave::before, .weave::after {
-  /* fringe: loose warp ends above and below the cloth */
-  content: ''; position: absolute; left: 0; right: 0; height: 6px; z-index: 1;
-  background: repeating-linear-gradient(90deg, transparent 0 3px, rgba(34,22,42,.25) 3px 5px, transparent 5px 10px);
-}
-.weave::before { top: 0; } .weave::after { bottom: 0; }
-.weave__shuttle {
-  position: absolute; left: 0; top: 0; z-index: 2; width: 34px; height: 14px; margin: -7px 0 0 -17px;
-  background: var(--accent); border-radius: 7px 2px 7px 2px; opacity: 0;
-  box-shadow: 0 4px 10px -2px rgba(34,22,42,.5);
-  transition: opacity .3s;
-}
-.weave__shuttle::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px; background: var(--paper); }
+/* the nav: the board's header */
+.has-flap .nav__inner { background: rgba(34,22,42,0.88); box-shadow: 0 1px 0 rgba(255,255,255,0.08); }
+.has-flap .nav.is-scrolled .nav__inner { background: rgba(34,22,42,0.94); box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 18px 40px -20px rgba(0,0,0,.7); }
+.has-flap .nav__mark-word { stroke: var(--paper); }
+.has-flap .nav__links a { color: var(--on-band); }
+.has-flap .nav__links a:hover { color: #fff; }
+.has-flap .nav__links a.is-active:not(.nav__cta) { color: var(--ink); }
+.has-flap .nav__where { color: var(--on-band); border-left-color: rgba(255,255,255,0.15); }
+.has-flap .nav__toggle span { background: var(--paper); }
+@media (max-width: 760px) { .has-flap .nav__links a { color: var(--text); } }
 
-/* stitched seams: a dashed line inside each card, tile and button, like a woven label */
-.has-loom .jobs li, .has-loom .card, .has-loom .stats div, .has-loom .steps li, .has-loom .plan, .has-loom .cost__result, .has-loom .panel {
-  outline: 1.5px dashed color-mix(in srgb, var(--c, var(--accent)) 45%, transparent);
-  outline-offset: -10px;
+/* ─── the split-flap tiles ─── */
+.is-board { letter-spacing: 0; }
+.is-board .fw { color: inherit; display: inline-flex; gap: .05em; white-space: nowrap; }
+.is-board .ft {
+  position: relative; display: inline-grid; place-items: center;
+  min-width: .66em; padding: .02em .05em .06em; line-height: 1.04;
+  border-radius: .07em;
+  background: linear-gradient(#3B2B42 0 50%, #2A1C31 50% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 .05em .1em rgba(0,0,0,.45);
+  perspective: 3em;
 }
-.has-loom .panel, .has-loom .jobs li:first-child, .has-loom .steps li:nth-child(4) { outline-color: rgba(255,255,255,.35); }
-.has-loom .btn--solid, .has-loom .nav__cta, .has-loom .btn--light {
-  outline: 1.5px dashed rgba(255,255,255,.55); outline-offset: -5px;
+.is-board .ft::after {
+  /* the split between the two flaps */
+  content: ''; position: absolute; left: 0; right: 0; top: 50%; height: max(1px, .025em);
+  background: rgba(0,0,0,.55);
 }
-.has-loom .btn--light { outline-color: color-mix(in srgb, var(--band) 40%, transparent); }
-/* section labels as woven labels: a tag on a thread */
-.has-loom .block .eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--ink); color: var(--paper); padding: 7px 14px 7px 12px; border-radius: 3px;
-  outline: 1.5px dashed rgba(255,255,255,.35); outline-offset: -4px;
+.is-board .ft::before {
+  /* the hinge pins */
+  content: ''; position: absolute; left: -.02em; right: -.02em; top: calc(50% - .04em); height: .08em;
+  background: linear-gradient(90deg, #120A16 .06em, transparent .06em calc(100% - .06em), #120A16 calc(100% - .06em));
 }
-.has-loom .block .eyebrow::before { content: ''; width: 7px; height: 7px; background: var(--accent-light); }
-.has-loom .contact .contact__mark { filter: none; }
-
-@media (max-width: 760px) {
-  .weave__shuttle { width: 26px; height: 11px; margin: -5.5px 0 0 -13px; }
-}
+.is-board .ft > span { display: block; transform-origin: 50% 50%; color: inherit; }
+.has-flap .hero__title .ft { color: inherit; }
+.is-board .ft.is-flip > span { animation: flap .11s ease-out; }
+@keyframes flap { from { transform: rotateX(85deg); filter: brightness(1.8); } }
+/* the second line of the hero title and the vows: coloured flaps */
+.has-flap .hero__title > span:not(.fw) { color: var(--accent-light); }
+.has-flap .hero__title { font-size: clamp(34px, 4.4vw, 64px); line-height: 1.1; }
+.has-flap .block__title { font-size: clamp(30px, 4.2vw, 56px); line-height: 1.12; max-width: 18em; }
+.has-flap .statement { font-size: clamp(32px, 5.2vw, 78px); line-height: 1.1; }
+.has-flap .contact__title { font-size: clamp(32px, 4.8vw, 70px); line-height: 1.1; }
+.has-flap .vows li { font-size: clamp(28px, 5vw, 72px); line-height: 1.12; color: var(--c-light); }
+.has-flap .vows { gap: clamp(8px, 1.2vw, 16px); }
+.has-flap .vows li::after { height: .5em; width: .5em; vertical-align: .1em; }
+.has-flap .statement .fw:last-child .ft { color: var(--queries-light); }
 
 @media print {
-  .loom__warp, .weave { display: none !important; }
 
   .reveal { opacity: 1 !important; transform: none !important; }
   .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy, .demo__ask, .pilot__form, .plan__wa, .cost__wa { display: none !important; }
