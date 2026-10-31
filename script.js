@@ -358,7 +358,7 @@
     });
 
     /* A cursor shows the one step: it glides to Approve and presses it, then the
-       box goes back to the example and it plays again. It steps aside while a
+       box goes back to the example and it plays again, three times in all. It steps aside while a
        mouse is over the box (so the visitor can press it), and stops for good
        once the visitor taps the box or tries their own email. */
     const guide = { next() {} };
@@ -369,7 +369,7 @@
       hand.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 2v17.5l4.6-4.3 3 6.6 3-1.3-3-6.5H18Z"/></svg>';
       demo.append(hand);
 
-      let timer, seen = false, over = false, off = false;
+      let timer, seen = false, over = false, off = false, plays = 0;
       const stop = () => {
         clearTimeout(timer);
         hand.classList.remove('is-on', 'is-press', 'is-tap');
@@ -392,6 +392,7 @@
           hand.classList.add('is-press', 'is-tap');
           timer = setTimeout(() => {
             hand.classList.remove('is-press');
+            if (++plays >= 3) off = true;   // three plays teach the step; then it rests
             approve();
             timer = setTimeout(() => hand.classList.remove('is-on', 'is-tap'), 700);
           }, 160);
@@ -767,13 +768,13 @@
     svg.addEventListener('pointercancel', release);
 
     /* The demo drag: while nobody is using the face, a hand grabs the top of the
-       head every few seconds, pulls it up (the neck stretches), and lets go. It
+       head every few seconds, pulls it up (the neck stretches), and lets go, three times in all. It
        steps aside while a mouse is over the face and stops once someone drags it. */
     const hand = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     hand.setAttribute('class', 'founder__ghost');
     hand.innerHTML = '<g><path d="M0 0v21l5.5-5.2 3.6 7.9 3.6-1.6-3.6-7.8H17Z"/></g>';
     svg.append(hand);
-    const ghost = { aim: null, off: false, over: false, timers: [] };
+    const ghost = { aim: null, off: false, over: false, timers: [], plays: 0 };
     const later = (ms, fn) => ghost.timers.push(setTimeout(fn, ms));
     const place = (x, y) => { hand.style.transform = `translate(${x}px, ${y}px)`; };
     ghost.stop = () => {
@@ -815,7 +816,8 @@
           ghost.held = false; start = null; wake();
           hand.classList.remove('is-press');
           later(350, () => { hand.classList.remove('is-on'); ghost.aim = null; });
-          later(5200, ghost.run);
+          if (++ghost.plays >= 3) ghost.off = true;   // three pulls, then it rests
+          else later(5200, ghost.run);
         });
       });
     };
