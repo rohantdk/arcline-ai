@@ -17,7 +17,7 @@ sites are kept separate on purpose and don't link to each other.
 | Proof | `#proof` | Four AI systems already built, one line each; the right column sits lower |
 | Process | `#process` | Four steps as a staircase: call, fixed quote, one-workflow pilot, grow across teams |
 | Your first pilot | `#pilot` | One question, "Which task eats your team's week?" (five chips); the pick shows a three-line pilot beside it, sent to us on WhatsApp |
-| Questions | `#questions` | Four questions that open on click (`<details>`, no script) |
+| Questions | `#questions` | A chat: four question bubbles; a click opens the answer as a violet reply signed with the "a." mark, one at a time (`script.js`, no library). Without JS every answer shows |
 | Contact | `#contact` | Dark rounded panel; WhatsApp (pre-filled message) and email |
 
 The copy is minimal: say each point once, in the fewest words (about 370 words). Outcomes (time, cost, orders)
