@@ -165,6 +165,17 @@ one is built. These are sold as a build service; no finished product exists yet.
   (`formats.highlights`, query `"name":"@kobra"`; `formats.json` guessed wrong), then scrape the item JSON
   (e.g. `https://kobra.systems/r/conversation.json`) with `formats.bytes` and decode the base64.
 
+- **"One Line" redesign (31 October 2026), preview only, not live:** the owner asked for a "crazy, eye-catching,
+  interactive" redesign keeping the palette and every word of copy, with a backup first. Backup: branch
+  `backup/pre-redesign` (commit 5c073bd, the live site before it; the proxy refused the tag push). Restore with
+  `git checkout -B main origin/backup/pre-redesign` in a PR, or just don't merge the redesign. Concept chosen by the
+  owner from four: the logo's one thick line runs through the whole page (`line.js`): it leaves the hero "a.", runs
+  under each heading left-right-left, the process steps are stops on it, and it ends as the baseline of the Contact
+  "a."; it draws with the scroll, a square head takes each section's job colour, section numbers light up when it
+  arrives. Mouse only: crossing it plucks it (a damped wave), grabbing pulls it. Everything else went square (the
+  logo's ends): `--r*` and `--pill` are 0, hard offset shadows (`--hard`), full-bleed bands; chat bubbles stay round.
+  Bigger type (hero 132px max). Reduced motion: full line, no head, no wave; no JS: no line.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
