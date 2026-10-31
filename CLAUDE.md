@@ -102,8 +102,11 @@ one is built. These are sold as a build service; no finished product exists yet.
   16 August 2026 (the owner spotted it when the 503 said "resting"); now `openai/gpt-oss-120b` with
   `reasoning_effort: 'low'`. When the demo stops answering, check console.groq.com/docs/deprecations; the 503's
   `why` names Groq's error code.
-  After Approve, the box returns to the example after 3 seconds (owner's ask), unless the visitor opens or types in
-  the "own email" box. The prompt keeps replies to "happy to quote", never "we can supply", and `missing` a short
+  After Approve, "Book a 30-minute call" shows under "That's your team's only step." (owner's ask, 31 October
+  2026: the site's goal is a discovery call). It opens WhatsApp with "I tried the buyer-email demo… I'd like to
+  book a 30-minute discovery call." When a visitor presses Approve the box stays approved so the button can be
+  used (this replaces the earlier 3-second return to the example, which would have hidden it); only the demo
+  cursor's first two presses return the box to the example, and after its third the button stays on screen. The prompt keeps replies to "happy to quote", never "we can supply", and `missing` a short
   noun phrase (a first live reply read "We can supply 500…" and "missing: please confirm your…").
 
 - **Demo cursors and a stretching neck (31 October 2026, live):** the owner asked for
