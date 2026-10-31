@@ -262,6 +262,13 @@ one is built. These are sold as a build service; no finished product exists yet.
   `arcline-ai-site.zip`: one top folder `arcline-ai-site/` with `index.html`, `style.css`, `script.js`, `assets/`
   (`favicon.svg`, `og-banner.jpg`) and, since 31 October 2026, `line.js` and `flock.js`. Internal paths are
   relative, so it works on any host unchanged; tested by serving the extracted folder.
+- **Remade 31 October 2026** from `main` after #25 (the paper problem section, phone menu and nav button fixes),
+  built with `git archive origin/main` so only committed files go in; 100 KB; tested by serving the unzipped
+  folder at 390px and 1360px (no errors, no 404s, the line draws). Delivered to the owner as a file in the session.
+- **`api/` is left out of the zip**, so on another host "Try it with your own buyer email" gets the WhatsApp
+  fallback (the scripted example still plays). Offered to add `api/demo.js` for a Vercel deploy (it then also needs
+  `GROQ_API_KEY` in that project); the owner hasn't answered. Recommended keeping the Git-linked Vercel project and
+  adding the domain there, which keeps the live demo and click counting.
 - Leave `CLAUDE.md`, `README.md` and `.git` out of any deploy copy. Don't commit the zip; build it in the
   scratchpad and make a fresh one whenever the owner asks (it goes stale with the next change).
 - Told the owner: Netlify Drop (app.netlify.com/drop) takes the folder; on Vercel, add the domain to the existing
