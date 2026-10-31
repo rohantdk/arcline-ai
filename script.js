@@ -145,7 +145,7 @@
     .forEach(el => el.classList.add('reveal'));
 
   // groups whose children come in one after another
-  [['.jobs', 'li', 110], ['.vows', 'li', 140], ['.stats', 'div', 90], ['.cards', '.card', 90], ['.steps', 'li', 160], ['.faq', '.faq__q', 70], ['.contact__grid', 'div', 80]]
+  [['.jobs', 'li', 110], ['.vows', 'li', 140], ['.stats', 'div', 90], ['.cards', '.card', 90], ['.steps', 'li', 160], ['.faq', '.faq__q', 70], ['.cost__form', '.cost__row', 80], ['.contact__grid', 'div', 80]]
     .forEach(([parent, child, step]) => $$(parent).forEach(p => {
       $$(':scope > ' + child, p).forEach((el, i) => {
         el.classList.add('reveal');
@@ -953,6 +953,162 @@
       e.preventDefault();
       qs[(to + qs.length) % qs.length].focus();
     });
+  }
+
+
+  /* ─── YOUR NUMBERS: what one task costs a year ───
+     people × hours a week × cost an hour × 52, in the visitor's currency, guessed from the
+     time zone, then the browser language (no outside service); the menu changes it. The
+     sum rolls up digit by digit on a spring once it's on screen. No numbers of ours. */
+  const cost = $('.cost');
+  if (cost) {
+    const form = $('.cost__form', cost);
+    const sum = $('[data-cost="money"]', cost);
+    const hoursOut = $('[data-cost="hours"]', cost);
+    const live = $('.cost__live', cost);
+    const wa = $('.cost__wa', cost);
+    const pick = form.elements.currency;
+    const CUR = {
+      INR: { sign: '₹', locale: 'en-IN', rate: 400 },
+      USD: { sign: '$', locale: 'en-US', rate: 30 },
+      EUR: { sign: '€', locale: 'en-US', rate: 30 },
+      GBP: { sign: '£', locale: 'en-US', rate: 25 },
+      AED: { sign: 'AED ', locale: 'en-US', rate: 100 },
+    };
+    const EURO = /^Europe\/(Berlin|Busingen|Paris|Madrid|Rome|Amsterdam|Brussels|Vienna|Dublin|Lisbon|Helsinki|Athens|Luxembourg|Bratislava|Ljubljana|Tallinn|Riga|Vilnius|Malta|Nicosia|Zagreb|Monaco|Andorra|San_Marino|Vatican)$/;
+    const EURO_REGIONS = ['DE','FR','ES','IT','NL','BE','AT','IE','PT','FI','GR','LU','SK','SI','EE','LV','LT','MT','CY','HR'];
+    const guess = () => {
+      const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^Asia\/(Kolkata|Calcutta)$/.test(tz)) return 'INR';
+      if (/^Europe\/(London|Belfast|Guernsey|Jersey|Isle_of_Man)$/.test(tz)) return 'GBP';
+      if (tz === 'Asia/Dubai') return 'AED';
+      if (EURO.test(tz)) return 'EUR';
+      if (/^(America|US|Pacific\/Honolulu)/.test(tz)) return 'USD';
+      const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+      for (const l of langs) {
+        const r = (l.split('-')[1] || '').toUpperCase();
+        if (r === 'IN' || /^(hi|mr)\b/.test(l)) return 'INR';
+        if (r === 'GB') return 'GBP';
+        if (r === 'AE') return 'AED';
+        if (EURO_REGIONS.includes(r)) return 'EUR';
+      }
+      return 'USD';
+    };
+
+    let cur = guess();
+    pick.value = cur;
+    pick.hidden = false;
+    form.elements.rate.value = CUR[cur].rate;
+
+    // rolling digits: one column per place, keyed by its distance from the right
+    const k = (2 * Math.PI / (.6 * 1.2)) ** 2, c = 2 * .82 * Math.sqrt(k);
+    const mod = (n, m) => ((n % m) + m) % m;
+    const cols = new Map();
+    const makeCol = () => {
+      const el = document.createElement('span');
+      el.className = 'roll';
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '0123456789'.split('').map(d => `<span class="roll__size">${d}</span>`).join('') +
+        '<span class="roll__stack">' + '01234567890'.split('').map(d => `<span>${d}</span>`).join('') + '</span>';
+      return { el, stack: el.lastChild, pos: 0, goal: 0, vel: 0 };
+    };
+    const paint = (col) => { col.stack.style.transform = `translateY(${-mod(col.pos, 10) * 100 / 11}%)`; };
+    let raf = 0, last = 0;
+    const tick = (now) => {
+      const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+      let busy = false;
+      cols.forEach(col => {
+        for (let i = 0; i < 4; i++) {
+          const h = dt / 4;
+          col.vel += (k * (col.goal - col.pos) - c * col.vel) * h;
+          col.pos += col.vel * h;
+        }
+        if (Math.abs(col.goal - col.pos) < .002 && Math.abs(col.vel) < .01) { col.pos = col.goal; col.vel = 0; }
+        else busy = true;
+        paint(col);
+      });
+      raf = busy ? requestAnimationFrame(tick) : 0;
+      if (!busy) last = 0;
+    };
+
+    let shown = reduce, prevTotal = 0;
+    const draw = (text, up) => {
+      const count = (text.match(/\d/g) || []).length;
+      let place = count;
+      const nodes = [];
+      for (const ch of text) {
+        if (ch >= '0' && ch <= '9') {
+          const key = place--;
+          let col = cols.get(key);
+          if (!col) { col = makeCol(); cols.set(key, col); paint(col); }
+          const d = +ch;
+          if (reduce) { col.pos = col.goal = d; col.vel = 0; paint(col); }
+          else if (mod(col.goal, 10) !== d) {
+            col.goal = up ? col.pos + mod(d - col.pos, 10) : col.pos - mod(col.pos - d, 10);
+            if (Math.abs(col.goal - col.pos) < .001) col.goal += up ? 10 : -10;
+          }
+          nodes.push(col.el);
+        } else {
+          const m = document.createElement('span');
+          m.className = 'roll__mark';
+          m.setAttribute('aria-hidden', 'true');
+          m.textContent = ch === ' ' ? ' ' : ch;
+          nodes.push(m);
+        }
+      }
+      cols.forEach((_, key) => { if (key > count) cols.delete(key); });
+      const said = document.createElement('span');
+      said.className = 'sr';
+      said.textContent = text;
+      sum.replaceChildren(said, ...nodes);
+      sum.parentNode.style.setProperty('--n', Math.max(9, text.length));
+      if (!reduce && !raf) raf = requestAnimationFrame(tick);
+    };
+
+    const num = (name, max) => {
+      const v = parseFloat(form.elements[name].value);
+      return Number.isFinite(v) ? Math.min(max, Math.max(0, v)) : 0;
+    };
+    let liveTimer = 0;
+    const update = () => {
+      const people = num('people', 999), hours = num('hours', 80), rate = num('rate', 100000);
+      const yearHours = Math.round(people * hours * 52);
+      const total = Math.round(yearHours * rate);
+      const { sign, locale } = CUR[cur];
+      const money = sign + total.toLocaleString(locale);
+      const hrs = yearHours.toLocaleString(locale);
+      hoursOut.textContent = hrs;
+      wa.href = 'https://wa.me/918857852631?text=' + encodeURIComponent(
+        `Hi Arcline, your calculator says one task costs us ${money} a year (${hrs} hours of our team's time). I'd like to book a 30-minute discovery call.`);
+      if (shown) draw(money, total >= prevTotal);
+      prevTotal = total;
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(() => { live.textContent = `${money} a year, and ${hrs} hours.`; }, 700);
+    };
+
+    pick.addEventListener('change', () => {
+      const was = CUR[cur].rate;
+      cur = pick.value;
+      if (num('rate', 1e9) === was) form.elements.rate.value = CUR[cur].rate;
+      update();
+    });
+    form.addEventListener('input', (e) => { if (e.target !== pick) update(); });
+    form.addEventListener('submit', (e) => e.preventDefault());
+
+    // until it's on screen the sum sits at zero, then it rolls up
+    if (reduce) update();
+    else {
+      update();
+      const { sign } = CUR[cur];
+      draw(sign + '0', true);
+      new IntersectionObserver((entries, io) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        shown = true;
+        prevTotal = 0;
+        setTimeout(update, 250);
+      }, { threshold: .5 }).observe($('.cost__result', cost));
+    }
   }
 
 

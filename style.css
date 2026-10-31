@@ -570,6 +570,49 @@ a { color: inherit; }
 .steps li:nth-child(4) .steps__n { background: rgba(255,255,255,0.16); color: #fff; }
 .steps h3 { font-family: var(--display); font-weight: 800; font-size: clamp(21px, 2.2vw, 28px); line-height: 1.05; letter-spacing: -0.025em; }
 
+/* your numbers: three inputs on the left, the yearly cost rolling up on the right */
+.cost { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(24px, 4vw, 56px); align-items: stretch; }
+.cost__form { display: grid; align-content: start; }
+.cost__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 17px;
+}
+.cost__row:first-child { border-top: 1px solid var(--rule); }
+.cost__money { display: flex; gap: 8px; }
+.cost input, .cost select {
+  font: 600 18px/1 var(--body); color: var(--ink);
+  background: var(--paper-2); border: 0; border-radius: var(--pill);
+  box-shadow: inset 0 0 0 1px var(--rule); padding: 11px 16px; height: 46px;
+  transition: box-shadow .2s;
+}
+.cost input { width: 6.5em; text-align: right; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.cost input::-webkit-inner-spin-button { opacity: .4; }
+.cost select { cursor: pointer; padding-right: 12px; }
+.cost input:hover, .cost select:hover { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.cost input:focus-visible, .cost select:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
+.cost__result {
+  background: var(--accent-soft); border-radius: var(--r); container-type: inline-size;
+  padding: clamp(24px, 3.4vw, 40px); display: flex; flex-direction: column; align-items: flex-start;
+}
+.cost__label { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.cost__total {
+  font-family: var(--display); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1;
+  font-size: min(clamp(44px, 6.4vw, 84px), 100cqi / (var(--n, 9) * .62)); color: var(--ink); margin: 6px 0 4px;
+  font-variant-numeric: tabular-nums; max-width: 100%;
+}
+.cost__sum { display: inline-flex; align-items: center; }
+.cost__hours { font-size: 18px; color: var(--muted); }
+.cost__hours b { color: var(--ink); font-weight: 600; }
+.cost__note { margin: auto 0 18px; padding-top: 28px; font-size: 18px; font-weight: 500; }
+/* the rolling digits: a column of 0-9 per place, faded at the top and bottom */
+.roll { position: relative; display: inline-grid; overflow: hidden; height: 1.15em; line-height: 1.15;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 80%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 80%, transparent 100%); }
+.roll__size { visibility: hidden; grid-area: 1 / 1; }
+.roll__stack { position: absolute; inset: 0 0 auto; display: flex; flex-direction: column; will-change: transform; }
+.roll__stack span { height: 1.15em; display: flex; align-items: center; justify-content: center; }
+.roll__mark { display: inline-block; margin: 0 -.05em; }
+
 /* questions: a chat. Questions are grey bubbles on the left; each opens its answer as
    a violet reply on the right, signed with the "a." mark. Without JS every answer shows. */
 .faq-wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
@@ -808,6 +851,7 @@ html:not(.js) .pilot { display: none; }
   .hero__grid { grid-template-columns: minmax(0, 1fr); }
   .demo { margin-top: 8px; max-width: 560px; }
   .pilot { grid-template-columns: minmax(0, 1fr); }
+  .cost { grid-template-columns: minmax(0, 1fr); }
   .jobs { grid-template-columns: 1fr; }
   .jobs li:first-child { grid-row: auto; }
   .stats { grid-template-columns: repeat(2, 1fr); }
@@ -863,5 +907,5 @@ html:not(.js) .pilot { display: none; }
 
 @media print {
   .reveal { opacity: 1 !important; transform: none !important; }
-  .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy, .demo__ask, .pilot__form, .plan__wa { display: none !important; }
+  .nav, .mark__dots, .contact__mark, .marquee, .toast, .copy, .demo__ask, .pilot__form, .plan__wa, .cost__wa { display: none !important; }
 }

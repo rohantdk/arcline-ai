@@ -270,6 +270,42 @@
       </div>
     </section>
 
+    <!-- YOUR NUMBERS: what one repetitive task costs a year, in the visitor's currency -->
+    <section class="block" id="cost" aria-labelledby="cost-title">
+      <div class="wrap">
+        <p class="eyebrow">Your numbers</p>
+        <h2 class="block__title" id="cost-title">What does that task cost you now?</h2>
+        <div class="cost">
+          <form class="cost__form" novalidate>
+            <label class="cost__row"><span>People on the task</span><input type="number" name="people" value="3" min="1" max="999" step="1" inputmode="numeric" /></label>
+            <label class="cost__row"><span>Hours each, per week</span><input type="number" name="hours" value="10" min="0" max="80" step="1" inputmode="numeric" /></label>
+            <div class="cost__row">
+              <label for="cost-rate">Cost per hour, per person</label>
+              <span class="cost__money">
+                <select name="currency" aria-label="Currency" hidden>
+                  <option value="INR">₹ INR</option>
+                  <option value="USD">$ USD</option>
+                  <option value="EUR">€ EUR</option>
+                  <option value="GBP">£ GBP</option>
+                  <option value="AED">AED</option>
+                </select>
+                <input id="cost-rate" type="number" name="rate" value="400" min="0" max="100000" step="1" inputmode="numeric" />
+              </span>
+            </div>
+          </form>
+
+          <div class="cost__result">
+            <p class="cost__label">Every year</p>
+            <p class="cost__total"><span class="cost__sum" data-cost="money">₹6,24,000</span></p>
+            <p class="cost__hours">and <b data-cost="hours">1,560</b> hours of your team's time.</p>
+            <p class="cost__live sr" aria-live="polite"></p>
+            <p class="cost__note">That's one repetitive task, today. Let's cut it.</p>
+            <a class="btn btn--solid cost__wa" data-track="whatsapp-calculator" href="https://wa.me/918857852631?text=Hi%20Arcline%2C%20I%27d%20like%20to%20book%20a%2030-minute%20discovery%20call." target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- QUESTIONS: a chat; each question opens its answer as a reply -->
     <section class="block" id="questions" aria-labelledby="questions-title">
       <div class="wrap faq-wrap">
