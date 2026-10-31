@@ -270,7 +270,7 @@
       </div>
     </section>
 
-    <!-- QUESTIONS: open on click -->
+    <!-- QUESTIONS: a chat; each question opens its answer as a reply -->
     <section class="block" id="questions" aria-labelledby="questions-title">
       <div class="wrap faq-wrap">
         <div>
@@ -278,10 +278,15 @@
           <h2 class="block__title" id="questions-title">What owners ask first.</h2>
         </div>
         <div class="faq">
-          <details><summary>How is this different from ChatGPT?</summary><p>ChatGPT gives your staff a chat box. We build the finished workflow, on your data.</p></details>
-          <details><summary>Does our data train anyone's AI?</summary><p>No. It stays on your servers or your own cloud.</p></details>
-          <details><summary>Our staff aren't technical.</summary><p>If they use WhatsApp, they can use this. In English, Hindi or Marathi.</p></details>
-          <details><summary>What does it cost?</summary><p>A fixed quote, agreed before work starts.</p></details>
+          <svg width="0" height="0" class="faq__defs" aria-hidden="true"><symbol id="faq-mark" viewBox="-4 14 104 72"><path d="M46.5 50 A20 20 0 1 0 6.5 50 A20 20 0 1 0 46.5 50 M46.5 30 V70 M6.5 70 H62.3" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter"/><rect x="76.7" y="61.88" width="16.25" height="16.25" style="fill: var(--accent)"/></symbol></svg>
+          <button class="faq__q" type="button" id="faq-chatgpt-q" aria-expanded="false" aria-controls="faq-chatgpt-a">How is this different from ChatGPT?</button>
+          <div class="faq__a" id="faq-chatgpt-a" role="region" aria-labelledby="faq-chatgpt-q"><p>ChatGPT gives your staff a chat box. We build the finished workflow, on your data.</p><svg class="faq__avatar" aria-hidden="true"><use href="#faq-mark"/></svg></div>
+          <button class="faq__q" type="button" id="faq-data-q" aria-expanded="false" aria-controls="faq-data-a">Does our data train anyone's AI?</button>
+          <div class="faq__a" id="faq-data-a" role="region" aria-labelledby="faq-data-q"><p>No. It stays on your servers or your own cloud.</p><svg class="faq__avatar" aria-hidden="true"><use href="#faq-mark"/></svg></div>
+          <button class="faq__q" type="button" id="faq-staff-q" aria-expanded="false" aria-controls="faq-staff-a">Our staff aren't technical.</button>
+          <div class="faq__a" id="faq-staff-a" role="region" aria-labelledby="faq-staff-q"><p>If they use WhatsApp, they can use this. In English, Hindi or Marathi.</p><svg class="faq__avatar" aria-hidden="true"><use href="#faq-mark"/></svg></div>
+          <button class="faq__q" type="button" id="faq-cost-q" aria-expanded="false" aria-controls="faq-cost-a">What does it cost?</button>
+          <div class="faq__a" id="faq-cost-a" role="region" aria-labelledby="faq-cost-q"><p>A fixed quote, agreed before work starts.</p><svg class="faq__avatar" aria-hidden="true"><use href="#faq-mark"/></svg></div>
         </div>
       </div>
     </section>

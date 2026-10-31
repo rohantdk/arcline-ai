@@ -570,43 +570,36 @@ a { color: inherit; }
 .steps li:nth-child(4) .steps__n { background: rgba(255,255,255,0.16); color: #fff; }
 .steps h3 { font-family: var(--display); font-weight: 800; font-size: clamp(21px, 2.2vw, 28px); line-height: 1.05; letter-spacing: -0.025em; }
 
-/* questions: title on the left, answers open on click */
+/* questions: a chat. Questions are grey bubbles on the left; each opens its answer as
+   a violet reply on the right, signed with the "a." mark. Without JS every answer shows. */
 .faq-wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
-.faq { display: grid; gap: 10px; }
-.faq details {
-  background: var(--paper-2); border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--rule);
-  transition: box-shadow .25s;
+.faq { position: relative; display: flex; flex-direction: column; gap: 12px; }
+.faq__defs { position: absolute; }
+.faq__q {
+  align-self: flex-start; max-width: 85%;
+  padding: 13px 20px; border: 0; cursor: pointer; text-align: left;
+  border-radius: 22px 22px 22px 7px;
+  background: #ECE9EE; color: var(--ink);
+  font: 500 clamp(16.5px, 1.4vw, 18px)/1.4 var(--body); letter-spacing: -0.01em;
+  transition: background-color .2s, box-shadow .2s;
+  -webkit-tap-highlight-color: transparent;
 }
-.faq details[open] { box-shadow: 0 0 0 1.5px var(--accent); }
-.faq summary {
-  list-style: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 20px 22px 20px 24px;
-  font-family: var(--display); font-weight: 700; font-size: clamp(18px, 1.7vw, 21px); letter-spacing: -0.01em; line-height: 1.25;
+.faq__q[aria-expanded="true"] { background: var(--paper-2); box-shadow: 0 1px 2px rgba(34,22,42,.08), 0 0 0 1px var(--rule); }
+.faq__q:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.faq__a { display: flex; align-items: flex-end; justify-content: flex-end; gap: 8px; transform-origin: 100% 100%; }
+.faq__a p {
+  max-width: 85%; padding: 13px 20px;
+  border-radius: 22px 22px 7px 22px;
+  background: var(--accent); color: #fff;
+  font-size: clamp(16.5px, 1.4vw, 18px); line-height: 1.45; letter-spacing: -0.01em;
 }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after {
-  content: '+'; flex: none;
-  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
-  background: var(--accent-soft); color: var(--accent);
-  font-family: var(--body); font-weight: 400; font-size: 22px; line-height: 1;
-  transition: transform .35s var(--spring), background .25s, color .25s;
+.faq__avatar {
+  flex: none; width: 34px; height: 34px; padding: 8px 7px; border-radius: 50%;
+  background: var(--paper-2); color: var(--ink);
+  box-shadow: 0 0 0 1px var(--rule), 0 12px 28px -12px rgba(34,22,42,.3);
 }
-.faq details[open] summary::after { transform: rotate(45deg); background: var(--accent); color: #fff; }
-.faq details p { padding: 0 24px 22px; color: var(--muted); font-size: 16.5px; max-width: 32em; }
-/* answers slide open and fade in: CSS where ::details-content exists (Chrome, Edge),
-   script.js elsewhere; under reduced motion they simply open */
-@media (prefers-reduced-motion: no-preference) {
-  :root { interpolate-size: allow-keywords; }
-  .faq details::details-content {
-    block-size: 0; overflow: hidden;
-    transition: block-size .45s var(--ease), content-visibility .45s allow-discrete;
-  }
-  .faq details[open]::details-content { block-size: auto; }
-  .faq details p { transition: opacity .4s ease .08s, translate .45s var(--ease) .05s; }
-  .faq details:not([open]) p { opacity: 0; translate: 0 -8px; }
-  @starting-style { .faq details[open] p { opacity: 0; translate: 0 -8px; } }
-}
+/* with JS, only the open answer shows */
+.js .faq__a[hidden] { display: none; }
 
 /* your first pilot: pick a task on the left, the pilot appears on the right */
 .pilot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
@@ -763,7 +756,8 @@ html:not(.js) .pilot { display: none; }
   /* point at one promise and the others step back */
   .vows:hover li:not(:hover) { opacity: .28; }
   .vows li:hover { color: var(--c); }
-  .faq summary:hover::after { background: var(--accent); color: #fff; }
+  .faq__q:hover { background: #E3DFE6; }
+  .faq__q[aria-expanded="true"]:hover { background: var(--paper-2); }
 }
 
 /* live chips keep a slow pulse */

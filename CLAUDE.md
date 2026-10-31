@@ -121,6 +121,14 @@ one is built. These are sold as a build service; no finished product exists yet.
   reads "Rohan Tidke" over "Founder · Arcline" (owner's ask, 31 October 2026), and the Studio line became "AI engineering for
   manufacturers and exporters." so Rohan is named once on the page, in the caption.
 
+- **Chat-style questions (31 October 2026, live):** the owner sent a React + motion FAQ component ("use this code
+  for FAQs"); rebuilt in vanilla, since the site has no framework. Questions are grey bubbles on the left; a click
+  opens the answer as a violet reply bubble on the right with the "a." mark as avatar (the component's RareMark is
+  another company's logo, so it wasn't used). One open at a time; the answer pops in on a spring (a damped spring
+  sampled into a CSS `linear()` easing), the questions below slide (FLIP), a closing answer leaves the flow and
+  fades; arrow keys, Home and End move between questions. No JS: every answer shows. Reduced motion: instant.
+  Copy unchanged.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no

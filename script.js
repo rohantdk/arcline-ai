@@ -145,7 +145,7 @@
     .forEach(el => el.classList.add('reveal'));
 
   // groups whose children come in one after another
-  [['.jobs', 'li', 110], ['.vows', 'li', 140], ['.stats', 'div', 90], ['.cards', '.card', 90], ['.steps', 'li', 160], ['.faq', 'details', 70], ['.contact__grid', 'div', 80]]
+  [['.jobs', 'li', 110], ['.vows', 'li', 140], ['.stats', 'div', 90], ['.cards', '.card', 90], ['.steps', 'li', 160], ['.faq', '.faq__q', 70], ['.contact__grid', 'div', 80]]
     .forEach(([parent, child, step]) => $$(parent).forEach(p => {
       $$(':scope > ' + child, p).forEach((el, i) => {
         el.classList.add('reveal');
@@ -873,27 +873,85 @@
   }
 
 
-  /* ─── QUESTIONS: answers slide open and shut ───
-     Browsers with ::details-content do this in CSS; this covers the rest. */
-  if (!reduce && !CSS.supports('selector(::details-content)')) {
-    $$('.faq details').forEach(d => {
-      const answer = $('p', d);
-      let anim = null, isOpen = d.open;
-      const slide = (open) => {
-        if (anim) anim.cancel();
-        if (open) d.open = true;
-        const h = answer.offsetHeight;
-        answer.style.overflow = 'hidden';
-        anim = answer.animate(
-          [{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }],
-          { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)', direction: open ? 'normal' : 'reverse' });
-        anim.onfinish = () => { if (!open) d.open = false; answer.style.overflow = ''; anim = null; };
-      };
-      $('summary', d).addEventListener('click', (e) => {
-        e.preventDefault();
-        isOpen = !isOpen;
-        slide(isOpen);
+  /* ─── QUESTIONS: a chat ───
+     One answer open at a time. The answer pops up from its bottom-right corner on a
+     spring, the bubbles below slide to their new places (FLIP), and a closing answer
+     leaves the flow at once and fades where it was. Arrow keys, Home and End move
+     between questions. Without JS every answer shows; under reduced motion it's instant. */
+  const faq = $('.faq');
+  if (faq) {
+    const qs = $$('.faq__q', faq);
+    const answerOf = (q) => document.getElementById(q.getAttribute('aria-controls'));
+    qs.forEach(q => { answerOf(q).hidden = true; });
+
+    // a damped spring sampled into a CSS linear() easing: [easing, duration in ms]
+    const spring = (visual, bounce) => {
+      const k = (2 * Math.PI / (visual * 1.2)) ** 2;
+      const c = 2 * Math.min(1, Math.max(.05, 1 - bounce)) * Math.sqrt(k);
+      let x = 0, v = 0, t = 0;
+      const dt = 1 / 120, pts = [0];
+      while (t < 2) {
+        v += (k * (1 - x) - c * v) * dt; x += v * dt; t += dt;
+        pts.push(x);
+        if (t > visual && Math.abs(1 - x) < .001 && Math.abs(v) < .01) break;
+      }
+      const step = Math.max(1, Math.round(pts.length / 60));
+      const s = pts.filter((_, i) => i % step === 0).concat(1).map(n => +n.toFixed(4));
+      return [`linear(${s.join(', ')})`, Math.round(t * 1000)];
+    };
+    const hasLinear = CSS.supports('transition-timing-function', 'linear(0, 1)');
+    const [sendEase, sendMs] = hasLinear ? spring(.42, .28) : ['cubic-bezier(.34,1.56,.64,1)', 520];
+    const [shiftEase, shiftMs] = hasLinear ? spring(.4, .1) : ['cubic-bezier(.2,.7,.2,1)', 450];
+
+    let open = null;
+    const toggle = (q) => {
+      const next = open === q ? null : q;
+      const before = new Map(qs.map(el => [el, el.getBoundingClientRect().top]));
+
+      // close the open answer: out of the flow now, fading where it stood
+      if (open) {
+        const a = answerOf(open);
+        open.setAttribute('aria-expanded', 'false');
+        if (reduce) a.hidden = true;
+        else {
+          const box = faq.getBoundingClientRect(), r = a.getBoundingClientRect();
+          Object.assign(a.style, { position: 'absolute', top: (r.top - box.top) + 'px', left: (r.left - box.left) + 'px', width: r.width + 'px' });
+          a.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.9)' }],
+            { duration: 160, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards' })
+            .onfinish = (e) => { a.hidden = true; a.style.cssText = ''; e.target.cancel(); };
+        }
+      }
+      if (next) {
+        next.setAttribute('aria-expanded', 'true');
+        const a = answerOf(next);
+        a.getAnimations().forEach(an => an.cancel());
+        a.style.cssText = '';
+        a.hidden = false;
+        if (!reduce) a.animate(
+          [{ opacity: 0, transform: 'translateY(12px) scale(.6)' }, { opacity: 1, transform: 'none' }],
+          { duration: sendMs, easing: sendEase });
+      }
+      open = next;
+      if (reduce) return;
+
+      // the questions slide from where they were to where they are now
+      qs.forEach(el => {
+        const dy = before.get(el) - el.getBoundingClientRect().top;
+        if (Math.abs(dy) < 1) return;
+        el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }],
+          { duration: shiftMs, easing: shiftEase, composite: 'add' });
       });
+    };
+
+    qs.forEach(q => q.addEventListener('click', () => toggle(q)));
+    faq.addEventListener('keydown', (e) => {
+      const i = qs.indexOf(e.target);
+      if (i < 0) return;
+      const last = qs.length - 1;
+      const to = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: last }[e.key];
+      if (to === undefined) return;
+      e.preventDefault();
+      qs[(to + qs.length) % qs.length].focus();
     });
   }
 
