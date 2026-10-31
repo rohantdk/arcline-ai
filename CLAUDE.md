@@ -142,6 +142,13 @@ one is built. These are sold as a build service; no finished product exists yet.
   didn't set; change them in `script.js` (`CUR`) and the inputs' `value`s in `index.html`. Never add a "saved"
   figure until a pilot has measured one.
 
+- **Hero box as a conversation (31 October 2026, preview, awaiting "make it live"):** the owner asked to use
+  `npx shadcn add @kobra/conversation` (React + base-ui + Tailwind, registry kobra.systems/r/{name}.json) for the
+  hero box. Rebuilt its look in CSS only, same markup and script: the buyer's email a grey bubble on the left, the
+  AI's note (violet tint) and drafted reply (solid violet, white text) as joined bubbles on the right with
+  "Your AI" above, 18px corners with an 8px corner on the sender's side. Owner's choices: same demo and words,
+  Arcline violet (not the component's iMessage blue), no tap-to-show timestamps, screenshots first.
+
 ## Click counting (31 October 2026)
 
 - The owner asked to count WhatsApp and email clicks and chose **Vercel Web Analytics** (no new account, no
